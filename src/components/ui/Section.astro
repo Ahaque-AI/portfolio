@@ -1,0 +1,47 @@
+---
+/**
+ * Section — the standard "labeled region" wrapper for the homepage and any
+ * page-level content section.
+ *
+ * Props:
+ *   - id:    anchors the section so nav links / skip links can target it.
+ *   - title: optional eyebrow-style heading rendered above the slot.
+ *   - eyebrow: optional small label above the title (e.g. "01").
+ *
+ * Spacing and rhythm are deliberately uniform so a future visual pass can
+ * adjust them in one place.
+ */
+
+export interface Props {
+  id?: string;
+  title?: string;
+  eyebrow?: string;
+}
+
+const { id, title, eyebrow } = Astro.props;
+---
+
+<section
+  id={id}
+  aria-labelledby={title && id ? `${id}-title` : undefined}
+  class="scroll-mt-24 py-16 sm:py-20"
+>
+  {(eyebrow || title) && (
+    <header class="mb-8 flex flex-col gap-1">
+      {eyebrow && (
+        <span class="text-xs uppercase tracking-[0.2em] text-fg-subtle">
+          {eyebrow}
+        </span>
+      )}
+      {title && (
+        <h2
+          id={title && id ? `${id}-title` : undefined}
+          class="text-2xl font-semibold tracking-tight sm:text-3xl"
+        >
+          {title}
+        </h2>
+      )}
+    </header>
+  )}
+  <slot />
+</section>

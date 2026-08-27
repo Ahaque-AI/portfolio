@@ -1,0 +1,11 @@
+---
+/**
+ * Prose — a thin wrapper for long-form markdown rendered inside a page
+ * (case studies, about copy, body content). Doesn't impose a heavy
+ * typography theme; the visual direction can refine this later.
+ */
+---
+
+<div class="prose-scope max-w-none text-fg leading-relaxed [&_a]:underline [&_a]:hover:text-fg-muted [&_h2]:mt-8 [&_h2]:text-xl [&_h2]:font-semibold [&_h3]:mt-6 [&_h3]:text-lg [&_h3]:font-semibold [&_p]:mt-3 [&_ul]:mt-3 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mt-1 [&_code]:rounded [&_code]:bg-surface [&_code]:px-1 [&_code]:py-0.5 [&_code]:text-sm">
+  <slot />
+</div>

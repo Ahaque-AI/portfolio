@@ -1,0 +1,99 @@
+---
+/**
+ * BaseLayout — the single HTML shell every page composes on top of.
+ *
+ * Responsibilities:
+ *   - Set <html lang>, charset, viewport.
+ *   - Load global styles exactly once.
+ *   - Wire SEO defaults + per-page overrides via props.
+ *   - Render Nav, a <main> slot, and Footer.
+ *
+ * The page-specific content is a single default <slot /> — keep page
+ * templates small and let this layout own document-level concerns.
+ */
+
+import '../styles/global.css';
+import Nav from '../components/layout/Nav.astro';
+import Footer from '../components/layout/Footer.astro';
+import { SITE, VISUAL_DIRECTION_LOCKED } from '../lib/site.ts';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  /** Open Graph image path relative to /public. */
+  ogImage?: string;
+  /** Use a no-index variant of the layout. */
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = SITE.description,
+  ogImage,
+  noindex = false,
+} = Astro.props;
+
+const fullTitle = title ? `${title} — ${SITE.name}` : `${SITE.name} — ${SITE.title}`;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? `http://localhost`).toString();
+---
+
+<!doctype html>
+<html lang={SITE.locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:locale" content={SITE.locale} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta name="theme-color" content="#0a0a0a" />
+  </head>
+  <body class="min-h-screen bg-bg text-fg font-sans antialiased">
+    {/*
+      Visual scaffolding reminder. Remove this banner once the visual
+      direction is committed and section layouts are styled.
+    */}
+    {VISUAL_DIRECTION_LOCKED === false && (
+      <div
+        data-scaffold-banner
+        class="border-b border-border bg-surface text-fg-muted text-xs px-4 py-1.5 text-center"
+      >
+        Project foundation — visual design has not been chosen yet.
+      </div>
+    )}
+
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-bg focus:px-3 focus:py-2 focus:rounded"
+    >
+      Skip to content
+    </a>
+
+    <Nav />
+
+    <main id="main" class="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
+      <slot />
+    </main>
+
+    <Footer />
+  </body>
+</html>

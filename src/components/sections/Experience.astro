@@ -1,0 +1,54 @@
+---
+/**
+ * Experience — chronological list of roles, rendered from the `experience`
+ * content collection. Source of truth: src/content/experience/*.md.
+ *
+ * Sorted by `order` ascending (most recent / most prominent first).
+ */
+import { getCollection } from 'astro:content';
+import Section from '../ui/Section.astro';
+import Tag from '../ui/Tag.astro';
+
+const entries = (await getCollection('experience')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const formatPeriod = (start: string, end?: string): string => {
+  const endLabel = end ?? 'Present';
+  return `${start} → ${endLabel}`;
+};
+---
+
+<Section id="experience" eyebrow="Experience" title="Where I've been working">
+  <ol class="space-y-12" role="list">
+    {entries.map((entry) => (
+      <li class="grid grid-cols-1 gap-2 sm:grid-cols-[12rem_1fr] sm:gap-8">
+        <div class="text-sm text-fg-muted">
+          <p class="font-mono text-xs uppercase tracking-wider text-fg-subtle">
+            {formatPeriod(entry.data.startDate, entry.data.endDate)}
+          </p>
+          <p class="mt-1">{entry.data.location}</p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-semibold text-fg">
+            {entry.data.role} · {entry.data.company}
+          </h3>
+          <p class="mt-2 text-fg-muted">{entry.data.summary}</p>
+
+          {entry.data.highlights.length > 0 && (
+            <ul class="mt-4 list-disc space-y-2 pl-5 text-fg" role="list">
+              {entry.data.highlights.map((h) => <li>{h}</li>)}
+            </ul>
+          )}
+
+          {entry.data.stack.length > 0 && (
+            <ul class="mt-4 flex flex-wrap gap-2" role="list">
+              {entry.data.stack.map((tech) => <Tag label={tech} />)}
+            </ul>
+          )}
+        </div>
+      </li>
+    ))}
+  </ol>
+</Section>

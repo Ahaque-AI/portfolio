@@ -1,0 +1,43 @@
+---
+/**
+ * Hero — the top-of-page introduction.
+ *
+ * Uses PROFILE + SITE from src/lib/site.ts. Nothing here is decorative
+ * beyond the structural scaffolding; the visual direction will replace
+ * this in a later phase.
+ */
+import { PROFILE, SITE } from '../../lib/site.ts';
+---
+
+<section id="top" class="border-b border-border py-20 sm:py-28">
+  <p class="text-xs uppercase tracking-[0.3em] text-fg-subtle">{SITE.title}</p>
+  <h1 class="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+    {PROFILE.name}
+  </h1>
+  <p class="mt-6 max-w-2xl text-lg text-fg-muted sm:text-xl">
+    {PROFILE.summary}
+  </p>
+
+  <dl class="mt-10 grid grid-cols-1 gap-4 text-sm sm:grid-cols-3">
+    <div>
+      <dt class="text-xs uppercase tracking-wider text-fg-subtle">Based in</dt>
+      <dd class="mt-1 text-fg">{PROFILE.location}</dd>
+    </div>
+    <div>
+      <dt class="text-xs uppercase tracking-wider text-fg-subtle">Email</dt>
+      <dd class="mt-1">
+        <a class="hover:underline" href={`mailto:${PROFILE.email}`}>
+          {PROFILE.email}
+        </a>
+      </dd>
+    </div>
+    <div>
+      <dt class="text-xs uppercase tracking-wider text-fg-subtle">Résumé</dt>
+      <dd class="mt-1">
+        <a class="hover:underline" href={SITE.cvPath} target="_blank" rel="noopener">
+          PDF
+        </a>
+      </dd>
+    </div>
+  </dl>
+</section>

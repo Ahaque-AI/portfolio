@@ -1,0 +1,62 @@
+---
+/**
+ * Site navigation. Single source of truth: NAV in src/lib/site.ts.
+ *
+ * Renders as a horizontal list on >=md, and collapses to a details-based
+ * disclosure on mobile (no JS required, accessible by default).
+ */
+import { NAV, SITE } from '../../lib/site.ts';
+---
+
+<header class="border-b border-border">
+  <nav
+    class="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8"
+    aria-label="Primary"
+  >
+    <a
+      href="/"
+      class="font-semibold tracking-tight text-fg hover:text-fg-muted focus-visible:outline-2 focus-visible:outline-offset-2"
+    >
+      {SITE.name}
+    </a>
+
+    <!-- Desktop nav -->
+    <ul class="hidden gap-6 md:flex" role="list">
+      {NAV.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            class="text-sm text-fg-muted hover:text-fg transition-colors"
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <!-- Mobile disclosure -->
+    <details class="md:hidden relative">
+      <summary
+        class="cursor-pointer list-none rounded border border-border px-3 py-1.5 text-sm text-fg-muted hover:text-fg"
+        aria-label="Toggle navigation"
+      >
+        Menu
+      </summary>
+      <ul
+        class="absolute right-0 top-full z-10 mt-2 min-w-44 rounded border border-border bg-bg p-2 shadow-lg"
+        role="list"
+      >
+        {NAV.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class="block rounded px-3 py-2 text-sm text-fg-muted hover:bg-surface hover:text-fg"
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </details>
+  </nav>
+</header>

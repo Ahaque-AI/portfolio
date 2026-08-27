@@ -1,0 +1,39 @@
+---
+/**
+ * Site footer. Pure presentation, fed by SITE/SOCIAL in src/lib/site.ts.
+ */
+import { SITE, SOCIAL } from '../../lib/site.ts';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-24 border-t border-border">
+  <div
+    class="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-10 sm:flex-row sm:items-start sm:justify-between sm:px-6 lg:px-8"
+  >
+    <div class="space-y-2">
+      <p class="font-semibold tracking-tight">{SITE.name}</p>
+      <p class="text-sm text-fg-muted">{SITE.title}</p>
+    </div>
+
+    <ul class="flex flex-wrap gap-x-6 gap-y-2" role="list">
+      {SOCIAL.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class="text-sm text-fg-muted hover:text-fg"
+            rel="noopener noreferrer"
+            target={link.href.startsWith('http') ? '_blank' : undefined}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <p class="mx-auto w-full max-w-5xl px-4 pb-8 text-xs text-fg-subtle sm:px-6 lg:px-8">
+    © {year} {SITE.name}. Content reflects the source material in the
+    <a class="underline hover:text-fg" href={SITE.cvPath}>résumé</a>.
+  </p>
+</footer>

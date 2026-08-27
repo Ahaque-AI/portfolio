@@ -1,0 +1,228 @@
+---
+/**
+ * Faq — inline editorial Q&A section.
+ *
+ * Replaces the previous floating chat panel. Reads pre-baked answers from
+ * src/data/chatbot.json (same dataset, different presentation).
+ *
+ * Layout:
+ *   - Kicker + heading
+ *   - Search input (filters questions OR surfaces top match answer)
+ *   - Full list of questions as expand/collapse rows
+ *   - Answer rendered below the question when expanded
+ *
+ * Interaction is plain DOM (Astro <script>), no React island. Each
+ * question is a real <button> with aria-expanded for screen readers.
+ *
+ * Honest UX: there's no fake chat history, no bot persona. The visitor
+ * is filtering a structured Q&A dataset — that's it.
+ */
+import Section from '../ui/Section.astro';
+import chatbotData from '../../data/chatbot.json';
+
+interface QA {
+  readonly id: string;
+  readonly category: string;
+  readonly patterns: readonly string[];
+  readonly question: string;
+  readonly answer: string;
+}
+interface Dataset {
+  readonly version: number;
+  readonly intro: string;
+  readonly starterChips: readonly string[];
+  readonly qa: readonly QA[];
+  readonly fallback: { readonly question: string; readonly answer: string };
+}
+const data = chatbotData as Dataset;
+---
+
+<Section id="questions" kicker="Ask anything" title="Questions">
+  <p class="body-text max-w-2xl text-fg-muted">
+    Most of what I'm asked about my work — the therapy microservice,
+    GraphRAG-Causal, availability, the resume link — is here. Search
+    anything; the closest match wins. If nothing fits, the email address
+    at the bottom of the page is the fastest route.
+  </p>
+
+  <!-- Search input -->
+  <div class="mt-10 max-w-2xl">
+    <label for="faq-search" class="sr-only">Search the FAQ</label>
+    <div class="flex items-baseline gap-3 border-b-2 border-fg pb-2 focus-within:border-accent transition-colors">
+      <span aria-hidden="true" class="font-serif text-lg italic text-fg-subtle">⌕</span>
+      <input
+        id="faq-search"
+        type="text"
+        placeholder="Search questions…"
+        autocomplete="off"
+        spellcheck="false"
+        class="flex-1 bg-transparent font-serif text-lg italic text-fg placeholder:text-fg-subtle focus:outline-none"
+      />
+    </div>
+  </div>
+
+  <!-- Top-match preview (hidden until user types) -->
+  <div
+    id="faq-top-match"
+    hidden
+    class="mt-8 max-w-2xl border-l-2 border-accent pl-5"
+  >
+    <p class="kicker">Top match</p>
+    <p id="faq-top-match-q" class="display mt-2 text-xl text-fg"></p>
+    <p id="faq-top-match-a" class="body-text mt-3 text-fg"></p>
+  </div>
+
+  <!-- Question list -->
+  <ol class="mt-12 max-w-2xl" id="faq-list" role="list">
+    {data.qa.map((item, i) => (
+      <li class="faq-item border-t border-border py-5" data-patterns={item.patterns.join(' ')}>
+        <button
+          type="button"
+          class="faq-toggle flex w-full items-baseline justify-between gap-4 text-left"
+          aria-expanded="false"
+          aria-controls={`faq-panel-${item.id}`}
+          id={`faq-trigger-${item.id}`}
+        >
+          <span class="font-serif text-lg sm:text-xl">
+            <span class="text-fg-faint font-mono text-xs mr-3">{String(i + 1).padStart(2, '0')}</span>
+            <span class="faq-q-text">{item.question}</span>
+          </span>
+          <span aria-hidden="true" class="font-serif text-2xl text-fg-subtle transition-transform">+</span>
+        </button>
+        <div
+          id={`faq-panel-${item.id}`}
+          role="region"
+          aria-labelledby={`faq-trigger-${item.id}`}
+          hidden
+          class="faq-panel mt-4 pl-7 body-text text-fg"
+        >
+          {item.answer}
+        </div>
+      </li>
+    ))}
+  </ol>
+</Section>
+
+<script>
+  // Vanilla FAQ interaction — no React, no framework.
+  // - Accordion toggle per row
+  // - Search filter (highlights non-matching rows + shows top match)
+
+  const search = document.getElementById('faq-search') as HTMLInputElement | null;
+  const topMatch = document.getElementById('faq-top-match') as HTMLElement | null;
+  const topMatchQ = document.getElementById('faq-top-match-q') as HTMLElement | null;
+  const topMatchA = document.getElementById('faq-top-match-a') as HTMLElement | null;
+  const list = document.getElementById('faq-list') as HTMLElement | null;
+
+  if (list) {
+    const items = Array.from(list.querySelectorAll<HTMLElement>('.faq-item'));
+
+    // Accordion behaviour — single-open by default
+    items.forEach((item) => {
+      const trigger = item.querySelector<HTMLButtonElement>('.faq-toggle');
+      const panel = item.querySelector<HTMLElement>('.faq-panel');
+      const icon = trigger?.querySelector<HTMLElement>('[aria-hidden="true"]');
+      if (!trigger || !panel) return;
+
+      trigger.addEventListener('click', () => {
+        const expanded = trigger.getAttribute('aria-expanded') === 'true';
+        // Close all
+        items.forEach((other) => {
+          const t = other.querySelector<HTMLButtonElement>('.faq-toggle');
+          const p = other.querySelector<HTMLElement>('.faq-panel');
+          const i = t?.querySelector<HTMLElement>('[aria-hidden="true"]');
+          if (t && p) {
+            t.setAttribute('aria-expanded', 'false');
+            p.hidden = true;
+            if (i) i.style.transform = 'rotate(0deg)';
+          }
+        });
+        if (!expanded) {
+          trigger.setAttribute('aria-expanded', 'true');
+          panel.hidden = false;
+          if (icon) icon.style.transform = 'rotate(45deg)';
+        }
+      });
+    });
+
+    if (search && topMatch && topMatchQ && topMatchA) {
+      const matches = (query: string): { item: HTMLElement; score: number; id: string } | null => {
+        const normalized = query.toLowerCase().trim();
+        if (normalized.length < 2) return null;
+        let best: { item: HTMLElement; score: number; id: string } | null = null;
+        items.forEach((item) => {
+          const patterns = (item.dataset.patterns ?? '').split(' ').filter(Boolean);
+          let hits = 0;
+          for (const p of patterns) if (normalized.includes(p)) hits += 1;
+          if (hits === 0) return;
+          const score = hits / Math.sqrt(patterns.length);
+          if (!best || score > best.score) {
+            best = {
+              item,
+              score,
+              id: item.querySelector<HTMLElement>('.faq-panel')?.id ?? '',
+            };
+          }
+        });
+        return best;
+      };
+
+      let timer: number | null = null;
+      search.addEventListener('input', () => {
+        if (timer) window.clearTimeout(timer);
+        timer = window.setTimeout(() => {
+          const query = search.value;
+          // Reset visibility
+          items.forEach((it) => (it.hidden = false));
+
+          if (query.trim().length === 0) {
+            topMatch.hidden = true;
+            return;
+          }
+
+          // Highlight filter — hide items that share no patterns
+          const normalized = query.toLowerCase().trim();
+          let anyVisible = 0;
+          items.forEach((it) => {
+            const patterns = (it.dataset.patterns ?? '').split(' ');
+            const hit = patterns.some((p) => normalized.includes(p));
+            it.hidden = !hit;
+            if (hit) anyVisible += 1;
+          });
+          if (anyVisible === 0) items.forEach((it) => (it.hidden = false));
+
+          // Top-match preview
+          const top = matches(query);
+          if (top && top.score >= 0.45) {
+            const qText = top.item.querySelector<HTMLElement>('.faq-q-text')?.textContent ?? '';
+            const aText = top.item.querySelector<HTMLElement>('.faq-panel')?.textContent ?? '';
+            topMatchQ!.textContent = qText;
+            topMatchA!.textContent = aText;
+            topMatch!.hidden = false;
+            // Auto-expand the matching row
+            const trigger = top.item.querySelector<HTMLButtonElement>('.faq-toggle');
+            const panel = top.item.querySelector<HTMLElement>('.faq-panel');
+            const icon = trigger?.querySelector<HTMLElement>('[aria-hidden="true"]');
+            items.forEach((other) => {
+              const t = other.querySelector<HTMLButtonElement>('.faq-toggle');
+              const p = other.querySelector<HTMLElement>('.faq-panel');
+              const i = t?.querySelector<HTMLElement>('[aria-hidden="true"]');
+              if (t && p) {
+                t.setAttribute('aria-expanded', 'false');
+                p.hidden = true;
+                if (i) i.style.transform = 'rotate(0deg)';
+              }
+            });
+            if (trigger && panel) {
+              trigger.setAttribute('aria-expanded', 'true');
+              panel.hidden = false;
+              if (icon) icon.style.transform = 'rotate(45deg)';
+            }
+          } else {
+            topMatch!.hidden = true;
+          }
+        }, 120);
+      });
+    }
+  }
+</script>

@@ -1,45 +1,54 @@
 ---
 /**
- * Contact — short closing block that surfaces direct contact channels.
- * Source of truth: PROFILE + SOCIAL in src/lib/site.ts.
+ * Contact — closing section. Editorial layout: prose paragraph + a
+ * small set of well-set contact channels with mono date stamps.
  */
-import { PROFILE, SOCIAL } from '../../lib/site.ts';
+import { PROFILE, SITE } from '../../lib/site.ts';
 import Section from '../ui/Section.astro';
 ---
 
-<Section id="contact" eyebrow="Contact" title="Get in touch">
-  <p class="max-w-2xl text-fg-muted">
-    Open to backend, platform, and applied-AI roles where production reliability
-    and engineering rigor matter. Reach out directly — I read everything.
-  </p>
+<Section id="contact" kicker="Get in touch" title="Contact">
+  <div class="body-text max-w-2xl">
+    <p>
+      Open to backend, platform, and applied-AI roles where production
+      reliability and engineering rigor matter. The fastest way to reach
+      me is email — I read everything.
+    </p>
+  </div>
 
-  <dl class="mt-8 grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
-    <div>
-      <dt class="text-xs uppercase tracking-wider text-fg-subtle">Email</dt>
-      <dd class="mt-1">
-        <a class="hover:underline" href={`mailto:${PROFILE.email}`}>
-          {PROFILE.email}
-        </a>
-      </dd>
-    </div>
-    <div>
-      <dt class="text-xs uppercase tracking-wider text-fg-subtle">Phone</dt>
-      <dd class="mt-1 text-fg">{PROFILE.phone}</dd>
-    </div>
-    {SOCIAL.map((link) => (
-      <div>
-        <dt class="text-xs uppercase tracking-wider text-fg-subtle">{link.label}</dt>
-        <dd class="mt-1">
-          <a
-            class="hover:underline"
-            href={link.href}
-            target={link.href.startsWith('http') ? '_blank' : undefined}
-            rel="noopener noreferrer"
-          >
-            {link.handle ?? link.href}
-          </a>
-        </dd>
-      </div>
-    ))}
+  <dl class="mt-10 grid grid-cols-1 gap-y-5 sm:grid-cols-[8rem_1fr] sm:gap-x-10">
+    <dt class="font-mono text-xs uppercase tracking-wider text-fg-subtle">Email</dt>
+    <dd>
+      <a class="text-accent underline-offset-4 hover:underline" href={`mailto:${PROFILE.email}`}>
+        {PROFILE.email}
+      </a>
+    </dd>
+
+    <dt class="font-mono text-xs uppercase tracking-wider text-fg-subtle">Phone</dt>
+    <dd class="font-mono text-sm">{PROFILE.phone}</dd>
+
+    <dt class="font-mono text-xs uppercase tracking-wider text-fg-subtle">Based</dt>
+    <dd>{PROFILE.location} <span class="text-fg-muted">— open to remote and hybrid.</span></dd>
+
+    <dt class="font-mono text-xs uppercase tracking-wider text-fg-subtle">Résumé</dt>
+    <dd>
+      <a class="text-accent underline-offset-4 hover:underline" href={SITE.cvPath} target="_blank" rel="noopener">
+        PDF <span aria-hidden="true">↗</span>
+      </a>
+    </dd>
+
+    <dt class="font-mono text-xs uppercase tracking-wider text-fg-subtle">LinkedIn</dt>
+    <dd>
+      <a class="text-accent underline-offset-4 hover:underline" href="https://www.linkedin.com/in/abdul-haque-dev/" target="_blank" rel="noopener noreferrer">
+        linkedin.com/in/abdul-haque-dev <span aria-hidden="true">↗</span>
+      </a>
+    </dd>
+
+    <dt class="font-mono text-xs uppercase tracking-wider text-fg-subtle">GitHub</dt>
+    <dd>
+      <a class="text-accent underline-offset-4 hover:underline" href="https://github.com/Ahaque-AI" target="_blank" rel="noopener noreferrer">
+        github.com/Ahaque-AI <span aria-hidden="true">↗</span>
+      </a>
+    </dd>
   </dl>
 </Section>

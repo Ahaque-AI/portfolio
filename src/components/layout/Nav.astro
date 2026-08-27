@@ -1,32 +1,30 @@
 ---
 /**
- * Site navigation. Single source of truth: NAV in src/lib/site.ts.
- *
- * Renders as a horizontal list on >=md, and collapses to a details-based
- * disclosure on mobile (no JS required, accessible by default).
+ * Site navigation. Editorial aesthetic — text-only nav, serif mark,
+ * no SaaS-style buttons or status pills.
  */
 import { NAV, SITE } from '../../lib/site.ts';
 ---
 
 <header class="border-b border-border">
   <nav
-    class="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8"
+    class="mx-auto flex w-full max-w-3xl items-baseline justify-between gap-6 px-6 py-6 sm:px-8 lg:max-w-4xl"
     aria-label="Primary"
   >
     <a
       href="/"
-      class="font-semibold tracking-tight text-fg hover:text-fg-muted focus-visible:outline-2 focus-visible:outline-offset-2"
+      class="display text-xl font-medium tracking-tight text-fg hover:text-accent transition-colors"
     >
       {SITE.name}
     </a>
 
     <!-- Desktop nav -->
-    <ul class="hidden gap-6 md:flex" role="list">
+    <ul class="hidden gap-7 sm:flex" role="list">
       {NAV.map((item) => (
         <li>
           <a
             href={item.href}
-            class="text-sm text-fg-muted hover:text-fg transition-colors"
+            class="font-serif text-base text-fg-muted italic hover:text-accent transition-colors"
           >
             {item.label}
           </a>
@@ -35,22 +33,22 @@ import { NAV, SITE } from '../../lib/site.ts';
     </ul>
 
     <!-- Mobile disclosure -->
-    <details class="md:hidden relative">
+    <details class="sm:hidden relative">
       <summary
-        class="cursor-pointer list-none rounded border border-border px-3 py-1.5 text-sm text-fg-muted hover:text-fg"
+        class="cursor-pointer list-none font-serif italic text-base text-fg-muted"
         aria-label="Toggle navigation"
       >
         Menu
       </summary>
       <ul
-        class="absolute right-0 top-full z-10 mt-2 min-w-44 rounded border border-border bg-bg p-2 shadow-lg"
+        class="absolute right-0 top-full z-10 mt-2 min-w-44 border border-border bg-bg-elevated p-3 shadow-md"
         role="list"
       >
         {NAV.map((item) => (
           <li>
             <a
               href={item.href}
-              class="block rounded px-3 py-2 text-sm text-fg-muted hover:bg-surface hover:text-fg"
+              class="block px-2 py-1.5 font-serif italic text-base text-fg-muted hover:text-accent"
             >
               {item.label}
             </a>

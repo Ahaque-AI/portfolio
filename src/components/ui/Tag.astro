@@ -1,9 +1,7 @@
 ---
 /**
- * Tag — small inline pill used for tech stacks, skill chips, etc.
- *
- * Rendered as a <span> by default (decorative), but can wrap a link when
- * `href` is provided.
+ * Tag — small inline marker used for tech stacks, skill chips.
+ * Editorial: sans-serif, small, subtle, never a button-style pill.
  */
 
 export interface Props {
@@ -17,12 +15,19 @@ const { label, href } = Astro.props;
 {href ? (
   <a
     href={href}
-    class="inline-flex items-center rounded-full border border-border bg-surface px-2.5 py-0.5 text-xs font-medium text-fg-muted hover:border-fg-muted hover:text-fg"
+    class="font-mono text-xs text-fg-muted underline-offset-4 hover:text-accent hover:underline"
   >
     {label}
   </a>
 ) : (
-  <span class="inline-flex items-center rounded-full border border-border bg-surface px-2.5 py-0.5 text-xs font-medium text-fg-muted">
-    {label}
-  </span>
+  <span class="font-mono text-xs text-fg-muted">{label}</span>
 )}
+
+<style>
+  /* small separator when used in a row */
+  :global(.tag-row > *) + :global(.tag-row > *)::before {
+    content: "·";
+    margin: 0 0.5rem;
+    color: var(--color-fg-faint);
+  }
+</style>

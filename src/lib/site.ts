@@ -104,4 +104,4 @@ export const SKILLS: readonly SkillCategory[] = [
 ];
 
 /** True while the visual identity has not been chosen. Pages can use this to opt out of opinionated styling. */
-export const VISUAL_DIRECTION_LOCKED = false;
+export const VISUAL_DIRECTION_LOCKED = true;

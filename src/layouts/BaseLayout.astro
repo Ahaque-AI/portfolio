@@ -1,28 +1,23 @@
 ---
 /**
- * BaseLayout — the single HTML shell every page composes on top of.
+ * BaseLayout — single HTML shell.
  *
- * Responsibilities:
- *   - Set <html lang>, charset, viewport.
- *   - Load global styles exactly once.
- *   - Wire SEO defaults + per-page overrides via props.
- *   - Render Nav, a <main> slot, and Footer.
- *
- * The page-specific content is a single default <slot /> — keep page
- * templates small and let this layout own document-level concerns.
+ * Editorial aesthetic:
+ *   - Warm paper background, no dark theme
+ *   - Serif mark in the document head
+ *   - Generous container width for display type
+ *   - Single accent color (deep brick), no SaaS decoration
  */
 
 import '../styles/global.css';
 import Nav from '../components/layout/Nav.astro';
 import Footer from '../components/layout/Footer.astro';
-import { SITE, VISUAL_DIRECTION_LOCKED } from '../lib/site.ts';
+import { SITE } from '../lib/site.ts';
 
 export interface Props {
   title?: string;
   description?: string;
-  /** Open Graph image path relative to /public. */
   ogImage?: string;
-  /** Use a no-index variant of the layout. */
   noindex?: boolean;
 }
 
@@ -65,32 +60,19 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? `http://localhost`).
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
-    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="theme-color" content="#faf9f6" />
   </head>
-  <body class="min-h-screen bg-bg text-fg font-sans antialiased">
-    {/*
-      Visual scaffolding reminder. Remove this banner once the visual
-      direction is committed and section layouts are styled.
-    */}
-    {VISUAL_DIRECTION_LOCKED === false && (
-      <div
-        data-scaffold-banner
-        class="border-b border-border bg-surface text-fg-muted text-xs px-4 py-1.5 text-center"
-      >
-        Project foundation — visual design has not been chosen yet.
-      </div>
-    )}
-
+  <body class="paper-grain min-h-screen text-fg font-sans antialiased">
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-bg focus:px-3 focus:py-2 focus:rounded"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-bg focus:px-4 focus:py-2 focus:text-fg"
     >
       Skip to content
     </a>
 
     <Nav />
 
-    <main id="main" class="mx-auto w-full max-w-5xl px-4 sm:px-6 lg:px-8">
+    <main id="main" class="mx-auto w-full max-w-3xl px-6 sm:px-8 lg:max-w-4xl">
       <slot />
     </main>
 

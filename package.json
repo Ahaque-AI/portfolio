@@ -1,32 +1,32 @@
 {
   "name": "portfolio",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
-  "description": "Abdul Haque — AI Software Engineer portfolio. Static-first Astro site.",
+  "description": "Abdul Haque — AI Software Engineer portfolio. Vue 3 + Vite + Three.js.",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "check": "astro check",
-    "astro": "astro"
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview",
+    "check": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.9",
-    "@astrojs/react": "^6.0.4",
-    "@astrojs/rss": "^4.0.19",
-    "@astrojs/sitemap": "^3.7.3",
+    "@fontsource-variable/fraunces": "^5.3.0",
+    "@fontsource-variable/geist": "^5.3.0",
     "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.2.8",
-    "react": "^19.2.7",
-    "react-dom": "^19.2.7",
+    "marked": "^18.0.11",
     "tailwindcss": "^4.3.3",
-    "typescript": "^5.9.3"
+    "three": "^0.185.1",
+    "vue": "^3.5.42",
+    "vue-router": "^5.3.0"
   },
   "devDependencies": {
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.5"
+    "@types/node": "^22.10.5",
+    "@types/three": "^0.185.4",
+    "@vitejs/plugin-vue": "^6.0.8",
+    "typescript": "^5.9.3",
+    "vite": "^8.2.2",
+    "vue-tsc": "^2.2.0"
   },
   "engines": {
     "node": ">=20.0.0"

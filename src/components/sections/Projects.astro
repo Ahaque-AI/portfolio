@@ -1,51 +1,78 @@
 ---
 /**
- * Projects — research + side work, rendered from the `projects` content
- * collection. Source of truth: src/content/projects/*.md.
+ * Projects — research + side work.
  *
- * Sorted by `order` ascending. Featured projects render first.
+ * Editorial layout:
+ *   - Each project is a "block": large serif title, italic kicker line
+ *     with date + category, summary paragraph, body excerpt, "Read →" link.
+ *   - No boxed cards. The page is a long-form essay.
  */
 import { getCollection } from 'astro:content';
 import Section from '../ui/Section.astro';
-import Tag from '../ui/Tag.astro';
 
 const entries = (await getCollection('projects')).sort(
   (a, b) => a.data.order - b.data.order,
 );
 ---
 
-<Section id="projects" eyebrow="Projects & Research" title="Selected work">
-  <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-    {entries.map((project) => (
-      <article class="flex h-full flex-col rounded-lg border border-border bg-surface p-6 transition-colors hover:border-fg-muted">
-        <header class="flex items-baseline justify-between gap-2">
-          <h3 class="text-lg font-semibold text-fg">{project.data.title}</h3>
-          <span class="font-mono text-xs text-fg-subtle">{project.data.period}</span>
-        </header>
+<Section id="projects" kicker="Research & selected work" title="Projects">
+  <ol class="space-y-14" role="list">
+    {entries.map((project) => {
+      const slug = project.id.replace('.md', '');
+      const isCaseStudy = project.data.caseStudy;
+      const linkLabel = project.data.links[0]?.label ?? 'arXiv';
+      return (
+        <li class="border-t border-border pt-8 first:border-t-0 first:pt-0">
+          <p class="caption flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <span class="font-mono text-fg">{project.data.period}</span>
+            <span aria-hidden="true" class="text-fg-faint">·</span>
+            <span class="font-serif italic text-fg-muted">
+              {project.data.featured ? 'research, featured' : 'project'}
+            </span>
+            {isCaseStudy && (
+              <>
+                <span aria-hidden="true" class="text-fg-faint">·</span>
+                <span class="font-serif italic text-accent">case study</span>
+              </>
+            )}
+          </p>
 
-        <p class="mt-3 text-sm text-fg-muted">{project.data.summary}</p>
+          <h3 class="display mt-3 text-2xl sm:text-3xl">
+            <a
+              href={`/projects/${slug}`}
+              class="hover:text-accent transition-colors"
+            >
+              {project.data.title}
+            </a>
+          </h3>
 
-        <ul class="mt-4 flex flex-wrap gap-2" role="list">
-          {project.data.stack.map((tech) => <Tag label={tech} />)}
-        </ul>
+          <p class="body-text mt-4 max-w-2xl text-fg-muted">{project.data.summary}</p>
 
-        {project.data.links.length > 0 && (
-          <ul class="mt-auto flex flex-wrap gap-x-4 gap-y-2 pt-6 text-sm" role="list">
-            {project.data.links.map((link) => (
-              <li>
+          <p class="caption mt-4">
+            <span class="font-mono uppercase tracking-wider text-fg-subtle">Stack — </span>
+            <span>{project.data.stack.join(' · ')}</span>
+          </p>
+
+          <p class="mt-6 font-serif text-base italic">
+            <a href={`/projects/${slug}`} class="text-accent hover:underline underline-offset-4">
+              Read the case study <span aria-hidden="true">→</span>
+            </a>
+            {project.data.links.length > 0 && (
+              <>
+                <span class="mx-3 text-fg-faint">·</span>
                 <a
-                  href={link.href}
+                  href={project.data.links[0]?.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="text-fg underline-offset-4 hover:underline"
+                  class="text-fg-muted hover:text-accent"
                 >
-                  {link.label} ↗
+                  {linkLabel} <span aria-hidden="true">↗</span>
                 </a>
-              </li>
-            ))}
-          </ul>
-        )}
-      </article>
-    ))}
-  </div>
+              </>
+            )}
+          </p>
+        </li>
+      );
+    })}
+  </ol>
 </Section>

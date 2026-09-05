@@ -118,8 +118,8 @@ decorative loops.
 
 The owner explicitly requested Three.js for the page transition. On “See the
 route ahead”, a WebGL globe takes over at the source orbit's measured position,
-expands and rotates for 900ms, then dissolves through a flowing shader mask over
-the destination for 800ms. The return route uses the same scene. Astro's
+expands and rotates for 900ms, holds the route during the swap, then contracts
+into the visible destination orbit for 800ms before handing off directly to the page. The return route uses the same scene. Astro's
 ClientRouter keeps the overlay canvas alive across the actual page swap. The
 destination loads before the screen is covered; no introduction values are
 stored. Escape skips the animation. History traversal and reduced motion skip
@@ -160,7 +160,7 @@ Arrows share a 1.5px stroke. The favicon is the same orbital mark as the header.
 | `src/components/StarMap.astro` | Decorative route map for onboarding |
 | `src/styles/global.css` | Canonical tokens, controls, responsive rules, scrollbar |
 | `src/scripts/validation.mjs` | Full/name-only validation shared by both actions |
-| `src/scripts/orbital-three.ts` | Shared Three.js globe geometry, flight renderer and fluid dissolve |
+| `src/scripts/orbital-three.ts` | Shared Three.js globe geometry and flight renderer |
 | `src/scripts/orbit-navigation.ts` | Astro navigation lifecycle, cancellation, reduced motion and focus |
 | `src/scripts/orbital-map.ts` | Map renderer, aligned route, visibility and resource cleanup |
 | `src/pages/index.astro` | Form state, inline errors, status and focus handling |

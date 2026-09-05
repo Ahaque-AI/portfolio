@@ -31,6 +31,9 @@ so none will be invented.
 
 ### Step 01: CV page and persistent control
 
+Status: built 2026-09-05, awaiting owner review. Resume text was extracted
+from the owner-supplied PDF with pypdf under uv and reviewed before writing.
+
 - What: `/cv/` page using Shell. Sections: short profile, selected work
   (the five stories with reported metrics), tools the evidence actually shows
   (AKS/Kubernetes, Kafka, Neo4j, pgvector, RAG, CrewAI), and the next action

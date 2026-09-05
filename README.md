@@ -1,8 +1,8 @@
 # Abdul Haque portfolio
 
-Four-page Astro design preview: introduction (`/`), onboarding (`/onboarding/`),
-terms (`/terms/`), and privacy (`/privacy/`). No backend, tracking, data
-collection, or deployment.
+Five-page Astro design preview: introduction (`/`), onboarding (`/onboarding/`),
+curriculum vitae (`/cv/`), terms (`/terms/`), and privacy (`/privacy/`). No
+backend, tracking, data collection, or deployment.
 
 Start with [AGENTS.md](AGENTS.md), then the
 [knowledge map](zensical%20docs/docs/index.md).

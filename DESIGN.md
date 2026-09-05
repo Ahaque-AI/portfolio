@@ -135,6 +135,9 @@ use. Browser shader compilation and visual smoothness require owner testing.
 
 Legal pages pair a 250px navigation
 rail with a reading column up to 660px; mobile removes the decorative rail.
+The CV page shares that rail layout and adds a persistent header CV control
+on every page; it never carries phone, email, or address, and its figures are
+labeled as reported results.
 Document scroll owns all pages. No scroll lock or custom cursor.
 
 ## Elevation & Depth
@@ -168,6 +171,7 @@ Arrows share a 1.5px stroke. The favicon is the same orbital mark as the header.
 | `src/scripts/orbital-map.ts` | Map renderer, aligned route, visibility and resource cleanup |
 | `src/pages/index.astro` | Form state, inline errors, status and focus handling |
 | `src/pages/onboarding.astro` | Route map, direct destination, and guided flight |
+| `src/pages/cv.astro` | Resume reading surface, reported figures only, no direct contact details |
 
 Full name is required on both paths. Full preview additionally validates email
 and agreement; name-only continuation does not validate email, comment, or

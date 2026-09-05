@@ -33,7 +33,10 @@ const { title, description, page = 'intro' } = Astro.props;
         <img src="/favicon.svg" width="38" height="38" alt="" />
         <span>Abdul Haque<span class="identity-role">AI software engineer</span></span>
       </a>
-      <div class="header-note"><span class="location-dot"></span> Based on Earth <span class="header-location">/ Islamabad, PK</span></div>
+      <div class="header-side">
+        <div class="header-note"><span class="location-dot"></span> Based on Earth <span class="header-location">/ Islamabad, PK</span></div>
+        <a class="header-cv" href="/cv/" target={page === 'intro' ? '_blank' : undefined} rel="noopener" aria-current={page === 'cv' ? 'page' : undefined}>CV{page === 'intro' && <span class="sr-only"> (opens in a new tab)</span>}</a>
+      </div>
     </header>
     <slot />
     <footer class="site-footer">

@@ -50,6 +50,9 @@ body[data-page=intro] .site-footer { margin-top: 24px; }
 .identity { display: flex; align-items: center; gap: 13px; text-decoration: none; font-weight: 600; font-size: 16px; line-height: 1.4; }
 .identity-role { display: block; font-size: 12px; font-weight: 400; color: var(--color-muted); margin-top: 3px; }
 .header-note { display: flex; gap: 9px; align-items: center; color: var(--color-muted); font-size: 12px; }
+.header-side { display: flex; align-items: center; gap: 18px; }
+.header-cv { display: inline-flex; align-items: center; min-height: 38px; padding: 7px 16px; border: 1px solid var(--color-border); border-radius: 999px; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-decoration: none; transition: border-color 180ms, color 180ms; }
+.header-cv:hover, .header-cv[aria-current=page] { border-color: var(--color-accent); color: var(--color-accent); }
 .header-location { opacity: .85; }
 .location-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--color-accent); }
 .intro-layout { max-width: 1440px; margin-inline: auto; min-height: calc(100svh - 80px); display: grid; grid-template-columns: 1.15fr 1fr; padding: 16px clamp(24px, 5.7vw, 88px) 24px; gap: clamp(48px, 7vw, 110px); align-items: center; }
@@ -145,6 +148,16 @@ input[aria-invalid=true], textarea[aria-invalid=true] { border-color: var(--colo
 .legal-section p { color: var(--color-muted); font-size: 14px; line-height: 1.9; overflow-wrap: anywhere; }
 .legal-section a { color: var(--color-text); }
 .legal-return { border-top: 1px solid var(--color-line); margin-top: 42px; padding-top: 24px; }
+.cv-start { margin-top: 26px; }
+.cv-workplace { color: var(--color-muted); font-size: 13px; }
+.cv-entry { margin-top: 26px; }
+.cv-entry h3 { font-family: var(--font-display); font-weight: 500; font-size: 19px; line-height: 1.3; letter-spacing: .02em; }
+.cv-stack { margin-top: 5px; color: var(--color-muted); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; }
+.cv-list { margin: 10px 0 0; padding-left: 18px; color: var(--color-muted); font-size: 14px; line-height: 1.85; }
+.cv-list li::marker { color: var(--color-border); }
+.cv-list strong, .cv-tools strong { color: var(--color-text); font-weight: 600; }
+.cv-tools { margin: 10px 0 0; padding: 0; list-style: none; color: var(--color-muted); font-size: 14px; line-height: 1.85; }
+.cv-tools li + li { margin-top: 8px; }
 .onboarding-layout { max-width: 1600px; min-height: calc(100svh - 116px); margin-inline: auto; padding: 8px clamp(24px, 5vw, 88px) 18px; display: grid; grid-template-columns: minmax(240px, .55fr) minmax(0, 1.45fr); gap: clamp(28px, 4vw, 80px); align-items: start; }
 .onboarding-copy { max-width: 430px; padding-top: 12px; }
 .onboarding-copy .back-link { margin-bottom: clamp(20px, 3vh, 32px); }

@@ -119,7 +119,10 @@ decorative loops.
 The owner explicitly requested Three.js for the page transition. On “See the
 route ahead”, a WebGL globe takes over at the source orbit's measured position,
 expands and rotates for 900ms, holds the route during the swap, then contracts
-into the visible destination orbit for 800ms before handing off directly to the page. The return route uses the same scene. Astro's
+into the destination orbit for 950ms and crossfades over about 450ms into the
+identical live page scene before the overlay is removed. The destination map
+freezes its own animation clock during the landing, so its motion resumes from
+the exact landing frame with no snap. The return route uses the same scene. Astro's
 ClientRouter keeps the overlay canvas alive across the actual page swap. The
 destination loads before the screen is covered; no introduction values are
 stored. Escape skips the animation. History traversal and reduced motion skip

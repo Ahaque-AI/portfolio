@@ -25,8 +25,10 @@ export function mountIntroOrbit(sceneHost: HTMLElement) {
     renderer.setSize(width, height);
     camera.left = -width / 2; camera.right = width / 2; camera.top = height / 2; camera.bottom = -height / 2;
     camera.updateProjectionMatrix();
-    orbit.group.scale.setScalar(height / 550 * 124);
-    orbit.group.position.y = height * 5 / 550;
+    // Match the SVG's meet letterboxing so the flight starts exactly on this globe.
+    const unit = Math.min(width / 700, height / 550);
+    orbit.group.scale.setScalar(unit * 124);
+    orbit.group.position.y = unit * 5;
     renderer.render(scene, camera);
     sceneHost.classList.add('has-three');
   }

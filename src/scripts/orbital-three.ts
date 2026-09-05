@@ -65,6 +65,7 @@ export function createFlight(host: HTMLElement, source: SVGSVGElement) {
       }`,
   })));
   host.replaceChildren(renderer.domElement);
+  host.classList.remove('is-fading');
   host.classList.add('is-active');
   let width = innerWidth, height = innerHeight;
   const measure = (art: SVGSVGElement) => {
@@ -131,7 +132,7 @@ export function createFlight(host: HTMLElement, source: SVGSVGElement) {
     removeEventListener('resize', resize);
     renderer.domElement.removeEventListener('webglcontextlost', dispose);
     disposeScene(scene); disposeScene(composite); target.dispose(); renderer.dispose();
-    host.replaceChildren(); host.classList.remove('is-active');
+    host.replaceChildren(); host.classList.remove('is-active', 'is-fading');
   }
   renderer.domElement.addEventListener('webglcontextlost', dispose, { once: true });
   addEventListener('resize', resize);
@@ -148,6 +149,9 @@ export function createFlight(host: HTMLElement, source: SVGSVGElement) {
         landing = progress;
       });
       target?.closest<HTMLElement>('.star-map')?.removeAttribute('data-flight-landing');
+      // Crossfade into the identical live destination instead of cutting the canvas.
+      host.classList.add('is-fading');
+      await new Promise(resolve => setTimeout(resolve, 460));
       dispose();
     },
     dispose,

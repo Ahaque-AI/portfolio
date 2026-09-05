@@ -41,17 +41,22 @@ export function mountMap(map: HTMLElement) {
   host.append(renderer.domElement);
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let frame = 0, visible = false, disposed = false;
+  // Own clock so the flight landing freeze and the resumed motion stay continuous.
+  let clock = 0, last = 0;
   const aim = new THREE.Vector2();
   const drift = new THREE.Vector2();
   function render(now: number) {
     frame = 0;
     if (disposed) return;
-    const time = reduced.matches || map.hasAttribute('data-flight-landing') ? 0 : now;
+    const frozen = map.hasAttribute('data-flight-landing') || reduced.matches;
+    if (!frozen && last) clock += Math.min(now - last, 100);
+    last = now;
+    const time = clock;
     const phase = time * .00018;
     drift.lerp(aim, .055);
     camera.position.set(drift.x * 12, drift.y * 9, 1000);
     camera.lookAt(drift.x * 3, drift.y * 2, 0);
-    orbit.group.rotation.set(Math.sin(phase) * .025, Math.cos(phase * .7) * .04, 0);
+    orbit.group.rotation.set(Math.sin(phase) * .025, Math.sin(phase * .7) * .04, 0);
     orbit.globe.rotation.y = -.3 + time * .000025;
     orbit.globe.rotation.z = .48 + Math.sin(phase * .6) * .05;
     signal.position.copy(route.getPoint((time % 14000) / 14000));

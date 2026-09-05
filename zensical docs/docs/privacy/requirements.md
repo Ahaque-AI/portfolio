@@ -1,7 +1,10 @@
 # Collection and legal-page requirements
 
-Status: product requirements and unresolved inputs, not publishable legal text.
-No collection or analytics is active in this repository.
+Status: preview policy pages implemented; future live-service legal inputs remain
+unresolved. No collection or analytics is active in this repository.
+Current flow: full name is mandatory on both paths. Email and agreement are
+required only for a full introduction; comments are optional. Name-only
+continuation ignores other fields. All checks are local and nothing is sent.
 
 ## Separate the two events
 
@@ -11,7 +14,7 @@ No collection or analytics is active in this repository.
 | Voluntary introduction | Full name, email, submission time, applicable notice/consent version | Purpose, provider, retention, deletion process, notification channel |
 
 The owner requests a notification on a visit and optional visitor details.
-Skipping must grant the same portfolio access without collecting form details.
+The current preview requires a name before showing the next-phase message.
 Visit notifications are a separate feature, not implicit permission to identify
 visitors. A managed endpoint may process IP addresses or retain access logs even
 if the form does not request them; assess and disclose actual provider behavior.
@@ -20,14 +23,18 @@ Proposed notification content: an anonymous visit notice or a new-submission
 notice linking to private storage. Decide whether full contact details are
 needed in the notification channel before implementing that transfer.
 
-## Future privacy page: `/privacy/`
+## Privacy page: `/privacy/`
+
+Implemented with copy limited to current preview behavior. Future service requirements:
 
 Cover the owner/contact, actual data collected (including service logs), purpose
 for each event, applicable processing basis, recipients/providers, storage
 location and transfers where relevant, retention period, deletion/contact
 process, analytics/storage behavior, choices, and effective date.
 
-## Future terms page: `/terms/`
+## Terms page: `/terms/`
+
+Implemented with copy limited to current preview behavior. Future launch requirements:
 
 Cover site owner, portfolio purpose, content ownership and third-party credits,
 permitted use, external project/demo links, contact, effective date, and any
@@ -43,5 +50,5 @@ Keep any collection permission distinct from marketing permission.
 - Public contact for privacy requests and the deletion workflow.
 - Intended audience/jurisdictions and corresponding legal requirements.
 
-These questions do not block the docs foundation. They must be resolved before
+These questions do not block the local design preview. They must be resolved before
 activating collection or claiming the legal pages describe a working service.

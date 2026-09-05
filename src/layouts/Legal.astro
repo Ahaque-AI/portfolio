@@ -1,0 +1,25 @@
+---
+import Shell from './Shell.astro';
+import Arrow from '../components/Arrow.astro';
+interface Props { title: string; summary: string; page: string; sections: { id: string; title: string; text: string }[]; }
+const { title, summary, page, sections } = Astro.props;
+---
+<Shell title={title} description={summary} page={page}>
+  <main id="main" class="legal-layout">
+    <aside class="legal-aside">
+      <a class="back-link" href="/"><Arrow back /> Back to introduction</a>
+      <div class="legal-orbit" aria-hidden="true"><svg viewBox="0 0 260 240" fill="none"><circle cx="130" cy="120" r="69" stroke="currentColor"/><ellipse cx="130" cy="120" rx="124" ry="42" transform="rotate(-35 130 120)" stroke="currentColor"/><ellipse cx="130" cy="120" rx="33" ry="69" stroke="currentColor"/><circle cx="224" cy="55" r="5" fill="var(--color-accent)" stroke="none"/></svg></div>
+      <nav class="contents" aria-label="On this page"><span>On this page</span>{sections.map(section => <a href={`#${section.id}`}>{section.title}</a>)}</nav>
+      <a class="other-policy" href={page === 'terms' ? '/privacy/' : '/terms/'}>{page === 'terms' ? 'Read the privacy policy' : 'Read the terms & conditions'}<Arrow /></a>
+    </aside>
+    <article class="legal-article">
+      <h1>{title}</h1>
+      <p class="legal-summary">{summary}</p>
+      <div class="document-meta"><span>Last updated <time datetime="2026-09-05">5 September 2026</time></span><span>Design preview</span></div>
+      <p class="legal-notice">These pages describe this local design preview. The introduction form does not send or save your details.</p>
+      {sections.map(section => <section class="legal-section" id={section.id}><h2>{section.title}</h2><p>{section.text}</p></section>)}
+      <section class="legal-section" id="contact"><h2>A question for me?</h2><p>You can reach Abdul Haque at <a href="mailto:abdulhaque.dev@gmail.com">abdulhaque.dev@gmail.com</a>.</p></section>
+      <a class="legal-return" href="/"><Arrow back /> Back to introduction</a>
+    </article>
+  </main>
+</Shell>

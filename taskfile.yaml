@@ -1,0 +1,21 @@
+version: '3'
+
+tasks:
+  default:
+    desc: List available commands
+    cmds: ['task --list']
+  install:
+    desc: Install locked dependencies with pnpm
+    cmds: ['pnpm install --frozen-lockfile']
+  build:
+    desc: Build the static site into dist
+    cmds: ['pnpm build']
+  run-dev:
+    desc: Start the development server
+    cmds: ['pnpm dev']
+  run-prod:
+    desc: Build and preview the production site locally
+    cmds: ['pnpm build', 'pnpm preview']
+  check:
+    desc: Check types and run form validation tests
+    cmds: ['pnpm check', 'pnpm test']

@@ -45,6 +45,9 @@ and update the docs. Source describes actual behavior; docs describe intent.
   session. Stage only this task's changes, propose the message, and let the
   user run the commit by default.
 - Never add the AI or agent as co-author.
+- Use pnpm only; see `zensical docs/docs/invariants/tooling.md`.
+- Do not use browser controls. The owner handles manual browser testing;
+  see `zensical docs/docs/invariants/frontend.md` for verification boundaries.
 
 ## Git
 

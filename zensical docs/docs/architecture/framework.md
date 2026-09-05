@@ -1,6 +1,7 @@
 # Framework recommendation
 
-Status: proposed, 2026-09-05; not installed or accepted yet.
+Status: implemented for the requested three-page preview, 2026-09-05.
+Astro 7.3.1, TypeScript 6.0.3, pnpm 11.19.0. No React or backend is installed.
 
 Recommend **Astro + TypeScript**, static output, native CSS, and small browser
 scripts. Add React islands only where a complex interactive demonstration
@@ -47,4 +48,4 @@ will not run an Astro server endpoint or a FastAPI application.
 
 Future agents should keep static content in Astro, interactive state local,
 and service secrets outside the browser. Confirm versions at implementation
-time; no speculative dependency pins or project scaffolding are created now.
+time. Dependencies are locked in the root `pnpm-lock.yaml`.

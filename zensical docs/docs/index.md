@@ -1,6 +1,7 @@
 # Knowledge domain map
 
-Status: documentation foundation, 2026-09-05. No source application exists.
+Status: three-page Astro design preview, 2026-09-05. See the root
+[README](../../README.md) for commands and [DESIGN.md](../../DESIGN.md) for shared UI.
 This directory uses the requested Zensical layout; no documentation engine
 or build configuration is installed yet. Markdown is directly readable.
 

@@ -5,7 +5,9 @@
 Requested: a distinctive static portfolio for Abdul Haque, hosted on Surge,
 with optional name/email introduction, privacy and terms pages, visitor
 notifications, and an optional guided introduction. This phase creates docs
-and recommends a framework. Detailed plans, designs, code, and CI/CD follow later.
+and recommends a framework. That initial phase is complete. The owner has now
+authorized only the three-page design preview and pnpm/Task tooling; the rest
+of the portfolio, tour, services, and deployment remain deferred.
 
 Working audience assumption: recruiters, engineering leads, and prospective
 clients evaluating production AI and backend engineering experience.
@@ -34,20 +36,23 @@ publish the resume's phone number or copy the PDF into public assets.
 ## Visitor journey requirements
 
 1. The entry screen briefly explains whose portfolio this is and why details
-   are requested. Full name/email submission is optional; visible skip leads
-   immediately to the complete portfolio. Privacy and terms are accessible here.
+   are requested. Full name is now required on both paths (owner correction).
+   Full preview also requires email/agreement; name-only continuation does not.
+   Both stay in this preview and show a next-phase message. Privacy and terms
+   are accessible without completing the form.
 2. Visitors who submit get an explicit, unselected acknowledgement appropriate
    to the eventual notice and terms. Marketing permission, if ever wanted,
    is a separate decision. See the privacy domain for unresolved details.
 3. Offer a short guided introduction explaining who Abdul is, the selected
    work, and navigation. Proposed length: three steps; final content is undecided.
-4. Keep tour skip/exit and back available. Direct project links must work without
+4. For the future tour, keep skip/exit and back available. Direct project links must work without
    replaying onboarding. A visitor can browse freely or follow the suggested order.
 5. Present a clear next action within each section and a final contact route.
 
 Reducing decision overload means emphasizing the next useful action; it does
 not require removing navigation or forcing every visitor through every section.
-The intended experience is guided and skippable, including for return visitors.
+The future tour is optional. The current introduction requires a full name.
+The owner handles browser testing; agents do not use browser controls.
 
 ## Existing references
 

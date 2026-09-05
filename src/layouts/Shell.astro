@@ -1,0 +1,42 @@
+---
+import '@fontsource-variable/manrope';
+import '@fontsource/chakra-petch/400.css';
+import '@fontsource/chakra-petch/500.css';
+import '../styles/global.css';
+interface Props { title: string; description: string; page?: string; }
+const { title, description, page = 'intro' } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0c151c" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} · Abdul Haque</title>
+  </head>
+  <body data-page={page}>
+    <!-- THESIS: An observatory guestbook; orbital geometry meets an honest optional introduction.
+    OWN-WORLD: Blue-black field, mineral-white lettering, pale citron controls, precise elliptical linework.
+    STORY: Meet Abdul, leave an optional introduction, or continue without sharing anything.
+    FIRST VIEWPORT: Broad orbital drawing and large type at left, exposed form at right, quiet shared navigation.
+    FORM: Observatory guestbook, candidate 4, seed 162cd372; code-led implementation.
+    FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance -->
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a href="/" class="identity" aria-label="Abdul Haque — introduction">
+        <img src="/favicon.svg" width="38" height="38" alt="" />
+        <span>Abdul Haque<span class="identity-role">AI software engineer</span></span>
+      </a>
+      <div class="header-note"><span class="location-dot"></span> Based on Earth <span class="header-location">/ Islamabad, PK</span></div>
+    </header>
+    <slot />
+    <footer class="site-footer">
+      <span>Curiosity is a good place to start.</span>
+      <nav aria-label="Legal"><a href="/terms/" target={page === 'intro' ? '_blank' : undefined} rel="noopener" aria-current={page === 'terms' ? 'page' : undefined}>Terms & conditions{page === 'intro' && <span class="sr-only"> (opens in a new tab)</span>}</a><a href="/privacy/" target={page === 'intro' ? '_blank' : undefined} rel="noopener" aria-current={page === 'privacy' ? 'page' : undefined}>Privacy policy{page === 'intro' && <span class="sr-only"> (opens in a new tab)</span>}</a></nav>
+      <span class="footer-signature">AH <span aria-hidden="true">/</span> 2026</span>
+    </footer>
+  </body>
+</html>

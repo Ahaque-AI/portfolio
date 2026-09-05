@@ -1,7 +1,8 @@
 # Abdul Haque portfolio
 
-Three-page Astro design preview: introduction (`/`), terms (`/terms/`), and
-privacy (`/privacy/`). No backend, tracking, data collection, or deployment.
+Four-page Astro design preview: introduction (`/`), onboarding (`/onboarding/`),
+terms (`/terms/`), and privacy (`/privacy/`). No backend, tracking, data
+collection, or deployment.
 
 Start with [AGENTS.md](AGENTS.md), then the
 [knowledge map](zensical%20docs/docs/index.md).
@@ -31,4 +32,5 @@ The owner handles manual browser tests; agents must not use browser controls.
 
 Read the [framework recommendation](zensical%20docs/docs/architecture/framework.md)
 and [portfolio brief](zensical%20docs/docs/product/brief.md).
-Portfolio content, the guided tour, services, and CI/CD remain outside this phase.
+Portfolio content, services, and CI/CD remain outside this phase. The onboarding
+map and short tutorial are now included as a route preview.

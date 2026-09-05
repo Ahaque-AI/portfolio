@@ -13,8 +13,8 @@ the owner's requested initial build. pnpm only. Surge remains the future host.
 
 ## Product Purpose
 
-Abdul Haque's personal AI engineering portfolio. Current scope is exactly three
-pages: introduction form, terms and conditions, and privacy policy.
+Abdul Haque's personal AI engineering portfolio. Current scope is four pages:
+introduction form, onboarding route map, terms and conditions, and privacy policy.
 
 ## Users
 
@@ -28,7 +28,9 @@ unchecked-by-default agreement. Name-only continuation ignores email/comment
 and does not require agreement. Comment is optional for a full introduction.
 No backend, data storage, visitor tracking, notifications, or deployment in this
 design phase. Submission previews validation and explicitly says nothing was sent.
-The future portfolio and guided tour are outside this implementation.
+The full portfolio is outside this implementation. The onboarding route map and
+short optional tour preview the future structure without inventing unavailable
+sections.
 Both paths stay in this preview and show a next-phase message, as chosen by the owner.
 The form guides visitors through name first, then optional contact details.
 Comments expand on request. A name-only action remains available at each step.
@@ -37,7 +39,7 @@ The owner performs manual browser testing; agents must not use browser controls.
 
 ## Brand Commitments
 
-Space-inspired, distinctive, interactive, consistent across all three pages.
+Space-inspired, distinctive, interactive, consistent across all four pages.
 Clear form UX with a visible way to continue with a name only.
 
 ## Evidence on Hand

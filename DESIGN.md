@@ -86,6 +86,12 @@ document scrolling stays available for expanded comments, zoom, validation
 messages, unusually small windows, and software keyboards. Do not promise zero
 scrolling under every browser/text-size combination.
 
+The onboarding page pairs a concise route explanation with a large star map. The
+map marks the available introduction and muted future sections, then offers an
+optional three-step dialog tour. The map is decorative; the route meaning is
+also available in text, legend, and actions. Star drift and shooting stars are
+ambient only and stop under reduced motion.
+
 Legal pages pair a 250px navigation
 rail with a reading column up to 660px; mobile removes the decorative rail.
 Document scroll owns all pages. No scroll lock or custom cursor.
@@ -113,9 +119,11 @@ Arrows share a 1.5px stroke. The favicon is the same orbital mark as the header.
 | `src/layouts/Legal.astro` | Both policy pages, article measure, shared return links |
 | `src/components/Orbit.astro` | Decorative diagram, excluded from accessibility tree |
 | `src/components/Arrow.astro` | Shared directional icon |
+| `src/components/StarMap.astro` | Decorative route map for onboarding |
 | `src/styles/global.css` | Canonical tokens, controls, responsive rules, scrollbar |
 | `src/scripts/validation.mjs` | Full/name-only validation shared by both actions |
 | `src/pages/index.astro` | Form state, inline errors, status and focus handling |
+| `src/pages/onboarding.astro` | Route map, available section action, optional tutorial |
 
 Full name is required on both paths. Full preview additionally validates email
 and agreement; name-only continuation does not validate email, comment, or

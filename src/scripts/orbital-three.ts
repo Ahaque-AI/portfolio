@@ -1,48 +1,10 @@
 import * as THREE from 'three';
+import { makeFlightOrbit } from './flight-orbit';
 
-const ink = 0xeff0de;
-const accent = 0xe7ecac;
+export { makeFlightOrbit as makeOrbit };
 
-function line(points: THREE.Vector3[], color = ink, opacity = .25) {
-  return new THREE.Line(
-    new THREE.BufferGeometry().setFromPoints(points),
-    new THREE.LineBasicMaterial({ color, transparent: true, opacity }),
-  );
-}
-
-export function makeOrbit() {
-  const group = new THREE.Group();
-  const globe = new THREE.Group();
-  globe.rotation.set(.2, -.3, .48);
-  globe.add(new THREE.Mesh(
-    new THREE.SphereGeometry(1, 64, 48),
-    new THREE.MeshStandardMaterial({ color: 0x35434b, roughness: .72, metalness: .25 }),
-  ));
-  for (let longitude = 0; longitude < 12; longitude++) {
-    const phi = longitude * Math.PI / 6;
-    globe.add(line(Array.from({ length: 97 }, (_, i) => {
-      const theta = i / 96 * Math.PI;
-      return new THREE.Vector3(Math.sin(theta) * Math.cos(phi), Math.cos(theta), Math.sin(theta) * Math.sin(phi)).multiplyScalar(1.003);
-    }), 0xbcc8c5, .22));
-  }
-  for (let latitude = 1; latitude < 8; latitude++) {
-    const theta = latitude * Math.PI / 8;
-    globe.add(line(Array.from({ length: 129 }, (_, i) => {
-      const phi = i / 128 * Math.PI * 2;
-      return new THREE.Vector3(Math.sin(theta) * Math.cos(phi), Math.cos(theta), Math.sin(theta) * Math.sin(phi)).multiplyScalar(1.003);
-    }), 0xbcc8c5, .18));
-  }
-  group.add(globe);
-  const orbitPoint = (t: number) => new THREE.Vector3(2.49 * Math.cos(t), 1.065 * Math.sin(t), .7 * Math.sin(t)).applyAxisAngle(new THREE.Vector3(0, 0, 1), .489);
-  group.add(line(Array.from({ length: 193 }, (_, i) => orbitPoint(i / 192 * Math.PI * 2)), ink, .48));
-  const outer = line(Array.from({ length: 193 }, (_, i) => {
-    const t = i / 192 * Math.PI * 2;
-    return new THREE.Vector3(2.25 * Math.cos(t), 1.46 * Math.sin(t), -.5 * Math.sin(t)).applyAxisAngle(new THREE.Vector3(0, 0, 1), -.56);
-  }), 0xa5b4bb, .23);
-  group.add(outer);
-  const marker = new THREE.Mesh(new THREE.SphereGeometry(.07, 16, 12), new THREE.MeshBasicMaterial({ color: accent }));
-  group.add(marker);
-  return { group, globe, marker, orbitPoint };
+function orbitEase(progress: number) {
+  return progress * progress * progress * (progress * (progress * 6 - 15) + 10);
 }
 
 export function lightScene(scene: THREE.Scene) {
@@ -72,7 +34,7 @@ export function createFlight(host: HTMLElement, source: SVGSVGElement) {
   renderer.debug.onShaderError = () => { throw new Error('Orbit shader could not compile'); };
   const scene = new THREE.Scene();
   lightScene(scene);
-  const orbit = makeOrbit();
+  const orbit = makeFlightOrbit();
   scene.add(orbit.group);
   const camera = new THREE.PerspectiveCamera(35, 1, .1, 100_000);
   const target = new THREE.WebGLRenderTarget(1, 1);
@@ -104,8 +66,6 @@ export function createFlight(host: HTMLElement, source: SVGSVGElement) {
   })));
   host.replaceChildren(renderer.domElement);
   host.classList.add('is-active');
-  const artwork = source.closest<HTMLElement>('.orbit-scene, .star-map') ?? source;
-  const previousOpacity = artwork.style.opacity;
   let width = innerWidth, height = innerHeight;
   const measure = (art: SVGSVGElement) => {
     const core = art.querySelector<SVGCircleElement>('[data-orbit-core]');
@@ -131,8 +91,8 @@ export function createFlight(host: HTMLElement, source: SVGSVGElement) {
     draw(performance.now());
   }
   function draw(now: number) {
-    const ease = expansion * expansion * (3 - 2 * expansion);
-    const settle = landing * landing * (3 - 2 * landing);
+    const ease = orbitEase(expansion);
+    const settle = orbitEase(landing);
     const fullRadius = Math.hypot(width, height) * .8;
     const x = landing ? THREE.MathUtils.lerp(width / 2, destination.x, settle) : THREE.MathUtils.lerp(start.x, width / 2, ease);
     const y = landing ? THREE.MathUtils.lerp(height / 2, destination.y, settle) : THREE.MathUtils.lerp(start.y, height / 2, ease);
@@ -168,7 +128,6 @@ export function createFlight(host: HTMLElement, source: SVGSVGElement) {
     stopped = true;
     cancelAnimationFrame(frame);
     settle?.();
-    artwork.style.opacity = previousOpacity;
     removeEventListener('resize', resize);
     renderer.domElement.removeEventListener('webglcontextlost', dispose);
     disposeScene(scene); disposeScene(composite); target.dispose(); renderer.dispose();
@@ -176,17 +135,19 @@ export function createFlight(host: HTMLElement, source: SVGSVGElement) {
   }
   renderer.domElement.addEventListener('webglcontextlost', dispose, { once: true });
   addEventListener('resize', resize);
-  try { resize(); artwork.style.opacity = '0'; } catch (error) { dispose(); throw error; }
+  try { resize(); } catch (error) { dispose(); throw error; }
   return {
     cover: () => animate(900, progress => { expansion = progress; }),
     reveal: async () => {
       const target = document.querySelector<SVGSVGElement>('.orbit-art, .map-art');
       if (target) {
         destination = measure(target);
+        target.closest<HTMLElement>('.star-map')?.setAttribute('data-flight-landing', '');
       }
-      await animate(800, progress => {
+      await animate(950, progress => {
         landing = progress;
       });
+      target?.closest<HTMLElement>('.star-map')?.removeAttribute('data-flight-landing');
       dispose();
     },
     dispose,

@@ -6,15 +6,21 @@ import ts from 'typescript';
 
 const require = createRequire(import.meta.url);
 const THREE = require('three');
+const flightOrbit = ts.transpileModule(readFileSync(new URL('../src/scripts/flight-orbit.ts', import.meta.url), 'utf8'), {
+  compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS },
+}).outputText;
+const flightExports = {};
+new Function('require', 'exports', flightOrbit)(require, flightExports);
+const { makeFlightOrbit } = flightExports;
 const compiled = ts.transpileModule(readFileSync(new URL('../src/scripts/orbital-three.ts', import.meta.url), 'utf8'), {
   compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS },
 }).outputText;
 const exports = {};
-new Function('require', 'exports', compiled)(require, exports);
-const { makeOrbit, disposeScene, pixelRatio } = exports;
+new Function('require', 'exports', compiled)(name => name === './flight-orbit' ? flightExports : require(name), exports);
+const { disposeScene, pixelRatio } = exports;
 
 test('Three.js orbit contains finite spherical geometry and a closed visitor path', () => {
-  const orbit = makeOrbit();
+  const orbit = makeFlightOrbit();
   assert.ok(orbit.globe.children.length > 12);
   assert.ok(orbit.orbitPoint(0).distanceTo(orbit.orbitPoint(Math.PI * 2)) < 1e-10);
   orbit.group.traverse(object => {
@@ -53,6 +59,9 @@ test('flight code measures and settles into the incoming page orbit', () => {
   assert.match(source, /const target = document\.querySelector<SVGSVGElement>\('\.orbit-art, \.map-art'\)/);
   assert.match(source, /destination = measure\(target\)/);
   assert.match(source, /THREE\.MathUtils\.lerp\(fullRadius, destination\.radius, settle\)/);
+  assert.match(source, /function orbitEase\(progress: number\)/);
+  assert.match(source, /await animate\(950,/);
   assert.doesNotMatch(source, /reveal:\s*\{\s*value/);
-  assert.doesNotMatch(source, /targetArtwork\.style\.opacity = '0'/);
+  assert.match(source, /import \{ makeFlightOrbit \} from '\.\/flight-orbit'/);
+  assert.doesNotMatch(source, /style\.opacity = '0'/);
 });

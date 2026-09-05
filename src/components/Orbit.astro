@@ -1,11 +1,12 @@
 <div class="orbit-scene" aria-hidden="true">
+  <div class="orbit-three"></div>
   <svg class="orbit-art" viewBox="0 0 700 550" fill="none">
     <defs>
       <radialGradient id="sphere-light" cx="30%" cy="25%" r="75%"><stop stop-color="#58636a"/><stop offset=".55" stop-color="#253139"/><stop offset="1" stop-color="#0c151c"/></radialGradient>
       <linearGradient id="orbit-ink" x1="80" y1="80" x2="550" y2="480" gradientUnits="userSpaceOnUse"><stop stop-color="#eff0de" stop-opacity=".15"/><stop offset=".5" stop-color="#eff0de" stop-opacity=".7"/><stop offset="1" stop-color="#eff0de" stop-opacity=".1"/></linearGradient>
       <clipPath id="sphere-clip"><circle cx="350" cy="270" r="124"/></clipPath>
     </defs>
-    <g class="orbit-assembly">
+    <g class="orbit-geometry">
       <ellipse id="visitor-path" cx="350" cy="270" rx="309" ry="132" transform="rotate(-28 350 270)" stroke="url(#orbit-ink)"/>
       <ellipse cx="350" cy="270" rx="278" ry="181" transform="rotate(32 350 270)" stroke="url(#orbit-ink)" stroke-dasharray="2 7"/>
       <circle data-orbit-core cx="350" cy="270" r="124" fill="url(#sphere-light)" stroke="#89979a" stroke-opacity=".45"/>
@@ -17,6 +18,7 @@
         <path d="M230 335L469 205"/>
       </g>
       <path d="M77 415C160 489 426 388 591 230" stroke="url(#orbit-ink)"/>
+    </g>
       <g class="orbit-static-visitor">
         <circle class="orbit-visitor" cx="591" cy="230" r="9" fill="#e7ecac"/>
         <circle cx="591" cy="230" r="19" stroke="#e7ecac" stroke-opacity=".4"/>
@@ -32,7 +34,6 @@
       <circle cx="124" cy="179" r="3" fill="#a5b4bb"/>
       <path d="M115 169l-27-29H30" stroke="#a5b4bb" stroke-opacity=".35"/>
       <path d="M345 270h10m-5-5v10" stroke="#e7ecac"/>
-    </g>
     <g stroke="#a5b4bb" stroke-opacity=".4"><path d="M49 80h8m-4-4v8M610 415h8m-4-4v8M235 485h8m-4-4v8"/></g>
   </svg>
 </div>
@@ -69,5 +70,12 @@
     document.removeEventListener('visibilitychange', resume);
     reducedMotion.removeEventListener('change', resume);
   }, { once: true });
+  });
+</script>
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const scene = document.querySelector<HTMLElement>('.orbit-scene');
+    if (!scene) return;
+    void import('../scripts/orbital-intro').then(({ mountIntroOrbit }) => mountIntroOrbit(scene));
   });
 </script>

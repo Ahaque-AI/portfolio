@@ -46,7 +46,7 @@ export function mountMap(map: HTMLElement) {
   function render(now: number) {
     frame = 0;
     if (disposed) return;
-    const time = reduced.matches ? 0 : now;
+    const time = reduced.matches || map.hasAttribute('data-flight-landing') ? 0 : now;
     const phase = time * .00018;
     drift.lerp(aim, .055);
     camera.position.set(drift.x * 12, drift.y * 9, 1000);

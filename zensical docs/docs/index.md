@@ -13,6 +13,7 @@ or build configuration is installed yet. Markdown is directly readable.
 | Delivery | [Delivery](delivery/index.md) | Deferred planning and Surge CI/CD requirements |
 | Working rules | [Invariants](invariants/index.md) | Core and task-specific rules |
 | Incidents | [Known issues](known-issues/index.md) | Non-trivial fix records |
+| Plans | [Plans](plans/guided-flight-solar-system.md) | Owner-approved feature build plans |
 
 Follow the chosen domain to the invariants index. Load core and only relevant
 task rules before editing. Proposed features are not implemented behavior.

@@ -54,7 +54,7 @@ export function lightScene(scene: THREE.Scene) {
 
 export function disposeScene(scene: THREE.Scene) {
   scene.traverse(object => {
-    if (object instanceof THREE.Mesh || object instanceof THREE.Line) {
+    if (object instanceof THREE.Mesh || object instanceof THREE.Line || object instanceof THREE.Points) {
       object.geometry.dispose();
       const materials = Array.isArray(object.material) ? object.material : [object.material];
       materials.forEach(material => material.dispose());

@@ -16,7 +16,7 @@ const { title, summary, page, sections } = Astro.props;
       <h1>{title}</h1>
       <p class="legal-summary">{summary}</p>
       <div class="document-meta"><span>Last updated <time datetime="2026-09-05">5 September 2026</time></span><span>Design preview</span></div>
-      <p class="legal-notice">These pages describe this local design preview. The introduction form does not send or save your details.</p>
+      <p class="legal-notice">These pages describe this local design preview. The introduction form does not send details. A submitted name stays only in this browser.</p>
       {sections.map(section => <section class="legal-section" id={section.id}><h2>{section.title}</h2><p>{section.text}</p></section>)}
       <section class="legal-section" id="contact"><h2>A question for me?</h2><p>You can reach Abdul Haque at <a href="mailto:abdulhaque.dev@gmail.com">abdulhaque.dev@gmail.com</a>.</p></section>
       <a class="legal-return" href="/"><Arrow back /> Back to introduction</a>

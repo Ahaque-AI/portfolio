@@ -84,7 +84,9 @@ field is a native disclosure, closed initially. A name-only action is available
 on either step. The name is validated before moving forward; Back preserves
 all values. Completion replaces the fields instead of extending the page.
 Focus moves to the first field after a step change without opening the mobile
-keyboard on initial load. No details are persisted or sent.
+keyboard on initial load. A successfully submitted name is retained in browser
+local storage only to send return visits to the route map. Back and Arrival
+explicitly clear it so the visitor can replace it. It is never sent.
 
 The 760px breakpoint stacks a shortened introduction above the form. On the
 contact step, mobile reduces the headline and orbit further to prioritize the
@@ -104,6 +106,15 @@ longitude lines, two orbital tracks, and a signal along the destination curve.
 The original SVG remains the fallback when WebGL is unavailable. The canvas and
 SVG share an 820 × 520 aspect ratio so destination targets stay aligned. Map
 motion stops offscreen, in hidden tabs and under reduced motion.
+
+The map labels are route annotations rather than floating captions: each carries
+an index, destination and concise state. Arrival remains a native link and has
+the brightest label at the lower-left launch point. About and Work stay muted,
+non-interactive labels with the same alignment system. Their touch-sized layout
+does not rely on hover. On capable devices, the Three.js map adds a slow star
+field drift, an orbital shimmer, a breathing signal halo and a small mouse-only
+camera parallax. The effects are part of one spatial instrument, not separate
+decorative loops.
 
 The owner explicitly requested Three.js for the page transition. On “See the
 route ahead”, a WebGL globe takes over at the source orbit's measured position,
@@ -157,7 +168,8 @@ Arrows share a 1.5px stroke. The favicon is the same orbital mark as the header.
 
 Full name is required on both paths. Full preview additionally validates email
 and agreement; name-only continuation does not validate email, comment, or
-agreement. Neither sends or saves anything. Both show the next-phase boundary.
+agreement. The submitted name alone is retained locally, never sent. Both show
+the next-phase boundary.
 Legal links from the form open new tabs to preserve fields. No form drafts are
 written to storage. Native semantic controls, labelled fields, visible focus,
 and inline error descriptions are required. Global scrollbars use tokenized

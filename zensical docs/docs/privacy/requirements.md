@@ -4,7 +4,9 @@ Status: preview policy pages implemented; future live-service legal inputs remai
 unresolved. No collection or analytics is active in this repository.
 Current flow: full name is mandatory on both paths. Email and agreement are
 required only for a full introduction; comments are optional. Name-only
-continuation ignores other fields. All checks are local and nothing is sent.
+continuation ignores other fields. A successfully submitted full name is saved in
+browser local storage to bypass the introduction on return. Back to introduction
+and Arrival clear it so the visitor can replace it. It is not sent.
 
 ## Separate the two events
 

@@ -18,16 +18,23 @@
       <circle cx="110" cy="108" r="2"/><circle cx="195" cy="385" r="2"/><circle cx="604" cy="355" r="2"/><circle cx="735" cy="264" r="2"/><circle cx="671" cy="55" r="1.5"/>
     </g>
     </g>
-    <a class="map-hotspot map-hotspot-arrival" href="/" aria-label="Open the introduction section"><circle cx="100" cy="412" r="28" fill="transparent"/><circle cx="100" cy="412" r="18" stroke="#e7ecac" stroke-opacity=".35"/><circle cx="100" cy="412" r="7" fill="#e7ecac"/></a>
-    <g class="map-node node-work" tabindex="0" role="img" aria-label="Work section, coming next"><circle cx="710" cy="106" r="24" fill="transparent"/><circle cx="710" cy="106" r="18" stroke="#53616a"/><circle cx="710" cy="106" r="5" fill="#53616a"/></g>
-    <g class="map-node node-about" tabindex="0" role="img" aria-label="About section, coming next"><circle cx="230" cy="366" r="21" fill="transparent"/><circle cx="230" cy="366" r="14" stroke="#53616a" stroke-dasharray="2 4"/><circle cx="230" cy="366" r="4" fill="#53616a"/></g>
+    <a class="map-arrival-node" href="/?edit=1" aria-label="Open the introduction and edit your name">
+      <circle cx="100" cy="412" r="30" fill="transparent"/><circle cx="100" cy="412" r="18" stroke="#e7ecac" stroke-opacity=".35"/><circle cx="100" cy="412" r="7" fill="#e7ecac"/>
+    </a>
+    <g aria-hidden="true">
+      <circle cx="710" cy="106" r="18" stroke="#53616a"/><circle cx="710" cy="106" r="5" fill="#53616a"/>
+      <circle cx="230" cy="366" r="14" stroke="#53616a" stroke-dasharray="2 4"/><circle cx="230" cy="366" r="4" fill="#53616a"/>
+    </g>
   </svg>
-  <span class="map-label map-label-arrival">ARRIVAL <small>open introduction</small></span>
-  <span class="map-label map-label-work">WORK <small>coming next</small></span>
-  <span class="map-label map-label-about">ABOUT <small>coming next</small></span>
-  <span class="map-tooltip map-tooltip-arrival" role="status">Introduction<br /><small>Your first stop. Click to enter.</small></span>
-  <span class="map-tooltip map-tooltip-work" role="status">Work<br /><small>Case studies will land here next.</small></span>
-  <span class="map-tooltip map-tooltip-about" role="status">About<br /><small>A short route into who I am.</small></span>
+  <div class="route-stop route-stop-arrival">
+    <span class="route-stop-index">01</span><span><strong>Arrival</strong><small>Edit introduction</small></span>
+  </div>
+  <div class="route-stop route-stop-about" aria-label="About section, coming next">
+    <span class="route-stop-index">02</span><span><strong>About</strong><small>Coming next</small></span>
+  </div>
+  <div class="route-stop route-stop-work" aria-label="Work section, coming next">
+    <span class="route-stop-index">03</span><span><strong>Work</strong><small>Coming next</small></span>
+  </div>
 </div>
 <script>
   document.addEventListener('astro:page-load', () => {

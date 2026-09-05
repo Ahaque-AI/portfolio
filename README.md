@@ -26,7 +26,8 @@ The taskfile is provided for environments with Task installed.
 
 Both continuation paths require a full name. Full introduction also requires
 email and agreement; the name-only path needs neither. Both stay in the preview
-and show a next-phase message. Nothing is sent or saved. Policy copy describes
+and show a next-phase message. Nothing is sent. A submitted full name is kept
+only in the visitor’s browser to skip the introduction on return. Policy copy describes
 this preview and must be reviewed before enabling a real submission service.
 
 The shared identity and component ownership live in [DESIGN.md](DESIGN.md).

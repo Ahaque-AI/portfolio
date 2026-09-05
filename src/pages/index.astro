@@ -27,9 +27,9 @@ import Arrow from '../components/Arrow.astro';
           <button class="button-primary" type="submit"><span id="submit-label">Continue</span><Arrow /></button>
           <button class="skip-intro" id="skip-intro" type="button"><span>Continue with name only <span class="skip-context">No email or agreement needed</span></span><Arrow /></button>
         </fieldset>
-        <p class="preview-note" id="preview-note">Design preview. Your details aren’t sent or saved.</p>
+        <p class="preview-note" id="preview-note">Design preview. Details are not sent. Your submitted name stays in this browser.</p>
         <noscript><p class="notice">Enable JavaScript to enter your name and continue. You can read the terms and privacy policy without it.</p><style>#skip-intro { display: none; }</style></noscript>
-        <div id="form-status" class="form-status" role="status" tabindex="-1" hidden><strong>You’re ready to continue.</strong><p>Nothing has been sent or saved. Start with the route map, then return whenever you want.</p><a class="button-primary status-link" href="/onboarding/"><span>See the route ahead</span><Arrow /></a></div>
+        <div id="form-status" class="form-status" role="status" tabindex="-1" hidden><strong>You’re ready to continue.</strong><p>Your name stays only in this browser so you can return to the route map. Nothing is sent.</p><a class="button-primary status-link" href="/onboarding/"><span>See the route ahead</span><Arrow /></a></div>
         <button id="edit-introduction" class="text-button" type="button" hidden><Arrow back /> Back to form</button>
       </form>
     </section>
@@ -37,8 +37,17 @@ import Arrow from '../components/Arrow.astro';
 </Shell>
 <script>
   import { validateIntroduction } from '../scripts/validation.mjs';
+  import { clearVisitorName, readVisitorName, saveVisitorName } from '../scripts/visitor-name.mjs';
   document.addEventListener('astro:page-load', () => {
   if (document.body.dataset.page !== 'intro') return;
+  const editMode = new URLSearchParams(location.search).has('edit');
+  if (editMode) {
+    clearVisitorName();
+    history.replaceState(null, '', '/');
+  } else if (readVisitorName()) {
+    location.replace('/onboarding/');
+    return;
+  }
   const form = document.querySelector<HTMLFormElement>('#introduction-form')!;
   const fields = document.querySelector<HTMLFieldSetElement>('#form-fields')!;
   const name = document.querySelector<HTMLInputElement>('#full-name')!;
@@ -85,6 +94,7 @@ import Arrow from '../components/Arrow.astro';
     return Object.keys(errors).length === 0;
   }
   function finish() {
+    saveVisitorName(name.value);
     fields.hidden = true;
     document.getElementById('preview-note')!.hidden = true;
     status.hidden = false;

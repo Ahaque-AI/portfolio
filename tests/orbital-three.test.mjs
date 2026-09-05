@@ -23,6 +23,10 @@ test('Three.js orbit contains finite spherical geometry and a closed visitor pat
   });
   const scene = new THREE.Scene();
   scene.add(orbit.group);
+  scene.add(new THREE.Points(
+    new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3(1, 1, 1)]),
+    new THREE.PointsMaterial(),
+  ));
   let allocated = 0, released = 0;
   scene.traverse(object => {
     if (!object.geometry) return;
@@ -31,7 +35,7 @@ test('Three.js orbit contains finite spherical geometry and a closed visitor pat
     object.material.addEventListener('dispose', () => released++);
   });
   disposeScene(scene);
-  assert.equal(released, allocated, 'all mesh/line geometries and materials must be released');
+  assert.equal(released, allocated, 'all mesh, line and point geometries and materials must be released');
 });
 
 test('render resolution stays within the GPU pixel budget at high device density', () => {

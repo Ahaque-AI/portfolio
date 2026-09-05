@@ -6,10 +6,9 @@ import StarMap from '../components/StarMap.astro';
 <Shell title="The route ahead" description="A guided map of Abdul Haque's portfolio sections." page="onboarding">
   <main id="main" class="onboarding-layout">
     <section class="onboarding-copy" aria-labelledby="onboarding-title">
-      <a class="back-link" href="/"><Arrow back /> Back to introduction</a>
-      <p class="route-kicker">PORTFOLIO MAP / 01</p>
+      <a class="back-link" href="/?edit=1"><Arrow back /> Back to introduction</a>
       <h1 id="onboarding-title">Follow the<br /><span>signal.</span></h1>
-      <p class="onboarding-lede">Select Arrival to return to the introduction. Follow the orbit to see where Work and About will appear next.</p>
+      <p class="onboarding-lede">Arrival is open now. The orbit marks the work and the person behind it as they come online.</p>
       <button class="tutorial-trigger" id="tutorial-trigger" type="button"><span>Take the guided flight</span><Arrow /></button>
       <p class="route-note"><span class="location-dot"></span> One destination is open now. More will appear as the portfolio grows.</p>
     </section>
@@ -40,7 +39,7 @@ import StarMap from '../components/StarMap.astro';
   const title = document.querySelector<HTMLElement>('#tutorial-title')!;
   const progress = [...document.querySelectorAll<HTMLElement>('.tutorial-progress span')];
   const steps = [
-    ['Start with the signal.', 'The Arrival point opens the introduction. It is the first stop in the route and the doorway to the work ahead.'],
+    ['Start with the signal.', 'The Arrival point opens the introduction, where you can update your name. It is the first stop in the route and the doorway to the work ahead.'],
     ['Read the quiet points.', 'Work and About are marked on the map. They will open when those sections are ready.'],
     ['Choose your landing.', 'Select Arrival to enter the available section, or come back when the route grows.']
   ];

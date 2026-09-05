@@ -26,8 +26,9 @@ Recruiters and prospective collaborators are a working audience assumption.
 Full name is required for both paths. Full preview also requires email and an
 unchecked-by-default agreement. Name-only continuation ignores email/comment
 and does not require agreement. Comment is optional for a full introduction.
-No backend, data storage, visitor tracking, notifications, or deployment in this
-design phase. Submission previews validation and explicitly says nothing was sent.
+No backend, external data storage, visitor tracking, notifications, or deployment
+in this design phase. A submitted full name is saved in browser local storage only
+to send a returning visitor directly to the route map. Back and Arrival clear it so the visitor can submit a replacement. Submission previews validation and explicitly says nothing was sent.
 The full portfolio is outside this implementation. The onboarding route map and
 short optional tour preview the future structure without inventing unavailable
 sections.

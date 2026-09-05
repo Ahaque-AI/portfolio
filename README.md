@@ -33,4 +33,4 @@ The owner handles manual browser tests; agents must not use browser controls.
 Read the [framework recommendation](zensical%20docs/docs/architecture/framework.md)
 and [portfolio brief](zensical%20docs/docs/product/brief.md).
 Portfolio content, services, and CI/CD remain outside this phase. The onboarding
-map and short tutorial are now included as a route preview.
+map is included as a direct route preview with hover destinations.

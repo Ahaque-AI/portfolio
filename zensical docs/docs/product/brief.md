@@ -8,7 +8,7 @@ notifications, and an optional guided introduction. This phase creates docs
 and recommends a framework. That initial phase is complete. The owner has now
 authorized the four-page design preview and pnpm/Task tooling. The full
 portfolio, services, and deployment remain deferred. The onboarding route map
-and optional three-step tour are part of the preview.
+and direct map destinations are part of the preview.
 
 Working audience assumption: recruiters, engineering leads, and prospective
 clients evaluating production AI and backend engineering experience.
@@ -45,7 +45,8 @@ publish the resume's phone number or copy the PDF into public assets.
    to the eventual notice and terms. Marketing permission, if ever wanted,
    is a separate decision. See the privacy domain for unresolved details.
 3. Offer a short guided introduction explaining the available route and future
-   navigation. The preview uses three steps and keeps the tour optional.
+   navigation. The preview keeps the map itself as the guide, with one available
+   destination and future sections shown as muted points.
 4. For the future tour, keep skip/exit and back available. Direct project links must work without
    replaying onboarding. A visitor can browse freely or follow the suggested order.
 5. Present a clear next action within each section and a final contact route.

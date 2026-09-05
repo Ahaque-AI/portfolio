@@ -14,7 +14,7 @@ import Arrow from '../components/Arrow.astro';
     <section class="introduction" aria-labelledby="form-title">
       <div class="form-heading"><h2 id="form-title">Before you explore.</h2><p id="step-description">Start with your name. The rest is optional.</p></div>
       <form id="introduction-form" novalidate aria-describedby="preview-note" data-step="name">
-        <fieldset id="form-fields" disabled>
+        <fieldset id="form-fields">
           <div class="step-navigation"><span id="step-progress" role="status">1 of 2 · Your name</span><button type="button" id="back-step" class="text-button" hidden><Arrow back /> Edit name</button></div>
           <div id="name-step">
           <div class="field"><label for="full-name">Full name</label><input id="full-name" name="fullName" autocomplete="name" enterkeyhint="next" placeholder="What should I call you?" maxlength="120" required aria-describedby="name-error" /><span class="field-error" id="name-error"></span></div>
@@ -50,7 +50,6 @@ import Arrow from '../components/Arrow.astro';
   const back = document.querySelector<HTMLButtonElement>('#back-step')!;
   const edit = document.querySelector<HTMLButtonElement>('#edit-introduction')!;
   const note = document.querySelector<HTMLDetailsElement>('#note-details')!;
-  fields.disabled = false;
   let attempted = false;
   let mode: 'full' | 'name-only' = 'full';
   let step: 'name' | 'contact' = 'name';

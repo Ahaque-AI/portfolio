@@ -65,6 +65,13 @@ Utility copy is smaller and never carries the only critical instruction.
 
 ## Layout
 
+Minimum effort is a hard rule. Every page keeps its primary next action in the
+first viewport, guides the visitor through visible cues, and avoids extra steps
+that do not help the current decision. Scrolling remains available for content,
+but it must not be required to discover the next action. The footer begins below
+the first viewport so it is available through scrolling without competing with
+the page task.
+
 Shared shell: identity, location, legal navigation, footer. Desktop entry uses
 two unequal columns: orbit/identity left, form right (maximum 460px). The orbit
 is deliberately oversized, with a 320 to 560px height budget, so it reads as
@@ -86,11 +93,13 @@ document scrolling stays available for expanded comments, zoom, validation
 messages, unusually small windows, and software keyboards. Do not promise zero
 scrolling under every browser/text-size combination.
 
-The onboarding page pairs a concise route explanation with a large star map. The
-map marks the available introduction and muted future sections, then offers an
-optional three-step dialog tour. The map is decorative; the route meaning is
-also available in text, legend, and actions. Star drift and shooting stars are
-ambient only and stop under reduced motion.
+The onboarding page is a viewport-first route map. The copy gives one clear
+instruction, then the visitor hovers over a destination and selects the one
+available point directly on the map. Back and one optional guided-flight button
+are the only separate controls. Future points remain visibly muted and are not
+presented as fake choices. Route motion is sparse: a slow signal along the path
+and restrained star twinkle. No floating particle wash or repeated shooting-star
+loop.
 
 Legal pages pair a 250px navigation
 rail with a reading column up to 660px; mobile removes the decorative rail.
@@ -123,7 +132,7 @@ Arrows share a 1.5px stroke. The favicon is the same orbital mark as the header.
 | `src/styles/global.css` | Canonical tokens, controls, responsive rules, scrollbar |
 | `src/scripts/validation.mjs` | Full/name-only validation shared by both actions |
 | `src/pages/index.astro` | Form state, inline errors, status and focus handling |
-| `src/pages/onboarding.astro` | Route map, available section action, optional tutorial |
+| `src/pages/onboarding.astro` | Route map, direct destination, and guided flight |
 
 Full name is required on both paths. Full preview additionally validates email
 and agreement; name-only continuation does not validate email, comment, or
@@ -136,6 +145,9 @@ thumb/track/hover/active colors with system behavior in forced-colors mode.
 ## Do's and Don'ts
 
 - Reuse the shell, legal layout, tokens, and arrow before creating new variants.
+- Minimize effort across every flow. Give the visitor one clear next action,
+  keep the useful content in the first viewport, and let the interface guide
+  the sequence instead of presenting a menu of competing buttons.
 - Keep agreement unchecked, name-only continuation visible, and copy honest.
 - Keep policies accessible without form completion or JavaScript.
 - Do not add unrelated portfolio sections, tracking, or fabricated live status.

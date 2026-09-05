@@ -48,6 +48,9 @@ and update the docs. Source describes actual behavior; docs describe intent.
 - Use pnpm only; see `zensical docs/docs/invariants/tooling.md`.
 - Portfolio writing rules: no em dashes or generic AI-style copy. See
   `zensical docs/docs/invariants/frontend.md`.
+- Minimum effort is a hard UX rule for every page. Keep the primary next action
+  in the first viewport, guide the visitor visually, and remove avoidable steps
+  before adding more content or controls.
 - Do not use browser controls. The owner handles manual browser testing;
   see `zensical docs/docs/invariants/frontend.md` for verification boundaries.
 

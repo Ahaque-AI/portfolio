@@ -8,13 +8,10 @@ import StarMap from '../components/StarMap.astro';
     <section class="onboarding-copy" aria-labelledby="onboarding-title">
       <a class="back-link" href="/"><Arrow back /> Back to introduction</a>
       <p class="route-kicker">PORTFOLIO MAP / 01</p>
-      <h1 id="onboarding-title">You are heading<br /><span>somewhere useful.</span></h1>
-      <p class="onboarding-lede">This is the route through my work. One section is open now. The rest will join the map as I build them.</p>
-      <div class="route-actions">
-        <a class="button-primary route-primary" href="/"><span>Open available section</span><Arrow /></a>
-        <button class="tutorial-trigger" id="tutorial-trigger" type="button"><span>Give me a quick tour</span><Arrow /></button>
-      </div>
-      <p class="route-note"><span class="location-dot"></span> You can explore freely. Nothing here is locked behind a tutorial.</p>
+      <h1 id="onboarding-title">Follow the<br /><span>signal.</span></h1>
+      <p class="onboarding-lede">The path is the interface. Hover over a destination to see where it leads, then select the point that is ready.</p>
+      <button class="tutorial-trigger" id="tutorial-trigger" type="button"><span>Take the guided flight</span><Arrow /></button>
+      <p class="route-note"><span class="location-dot"></span> One destination is open now. More will appear as the portfolio grows.</p>
     </section>
     <section class="onboarding-map" aria-labelledby="map-title">
       <h2 id="map-title" class="sr-only">Portfolio section map</h2>
@@ -23,12 +20,12 @@ import StarMap from '../components/StarMap.astro';
     </section>
   </main>
   <dialog class="tutorial-dialog" id="tutorial-dialog" aria-labelledby="tutorial-title">
-    <div class="tutorial-topline"><span>QUICK TOUR / 01</span><button class="dialog-close" id="tutorial-close" type="button" aria-label="Close quick tour">Close</button></div>
+    <div class="tutorial-topline"><span>GUIDED FLIGHT / 01</span><button class="dialog-close" id="tutorial-close" type="button" aria-label="Close guided flight">Close</button></div>
     <div class="tutorial-orbit" aria-hidden="true"><span class="tutorial-pulse"></span><span class="tutorial-dot"></span></div>
     <h2 id="tutorial-title">Start with the signal.</h2>
-    <p id="tutorial-copy">The available section is the introduction you just completed. It is the first point on the map and the doorway to the work that follows.</p>
-    <div class="tutorial-progress" aria-label="Tour step 1 of 3"><span class="is-current"></span><span></span><span></span></div>
-    <div class="tutorial-actions"><button class="tutorial-next" id="tutorial-next" type="button">Next <Arrow /></button><button class="tutorial-skip" id="tutorial-skip" type="button">Skip tour</button></div>
+    <p id="tutorial-copy">The Arrival point opens the introduction. It is the first stop in the route and the doorway to the work ahead.</p>
+    <div class="tutorial-progress" aria-label="Guided flight step 1 of 3"><span class="is-current"></span><span></span><span></span></div>
+    <div class="tutorial-actions"><button class="tutorial-next" id="tutorial-next" type="button">Next <Arrow /></button><button class="tutorial-skip" id="tutorial-skip" type="button">Finish later</button></div>
   </dialog>
 </Shell>
 <script>
@@ -41,19 +38,16 @@ import StarMap from '../components/StarMap.astro';
   const title = document.querySelector<HTMLElement>('#tutorial-title')!;
   const progress = [...document.querySelectorAll<HTMLElement>('.tutorial-progress span')];
   const steps = [
-    ['Start with the signal.', 'The available section is the introduction you just completed. It is the first point on the map and the doorway to the work that follows.'],
-    ['Follow the useful path.', 'Future points will open into case studies, engineering notes, and the decisions behind the systems I build.'],
-    ['Take your own route.', 'You can follow the suggested order or jump between sections whenever the map grows.']
+    ['Start with the signal.', 'The Arrival point opens the introduction. It is the first stop in the route and the doorway to the work ahead.'],
+    ['Read the quiet points.', 'Work and About are marked on the map. They will open when those sections are ready.'],
+    ['Choose your landing.', 'Select Arrival to enter the available section, or come back when the route grows.']
   ];
   let step = 0;
   function renderStep() {
     title.textContent = steps[step][0];
     copy.textContent = steps[step][1];
     progress.forEach((item, index) => item.classList.toggle('is-current', index === step));
-    next.textContent = step === steps.length - 1 ? 'Finish' : 'Next';
-    const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    icon.setAttribute('viewBox', '0 0 24 24'); icon.setAttribute('width', '20'); icon.setAttribute('height', '20'); icon.setAttribute('aria-hidden', 'true'); icon.innerHTML = '<path d="M4 12h15M13 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.5" />';
-    next.append(icon);
+    next.firstChild!.textContent = step === steps.length - 1 ? 'Finish ' : 'Next ';
   }
   function endTour() { dialog.close(); step = 0; renderStep(); }
   trigger.addEventListener('click', () => { step = 0; renderStep(); dialog.showModal(); });

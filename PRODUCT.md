@@ -41,6 +41,7 @@ The owner performs manual browser testing; agents must not use browser controls.
 
 Space-inspired, distinctive, interactive, consistent across all four pages.
 Clear form UX with a visible way to continue with a name only.
+Every flow should minimize user effort and guide one clear next action at a time.
 
 ## Evidence on Hand
 

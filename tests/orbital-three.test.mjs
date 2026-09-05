@@ -56,7 +56,7 @@ test('render resolution stays within the GPU pixel budget at high device density
 
 test('flight code measures and settles into the incoming page orbit', () => {
   const source = readFileSync(new URL('../src/scripts/orbital-three.ts', import.meta.url), 'utf8');
-  assert.match(source, /const target = document\.querySelector<SVGSVGElement>\('\.orbit-art, \.map-art'\)/);
+  assert.match(source, /const target = document\.querySelector<SVGSVGElement>\('\.orbit-art, \.map-art, \.legal-orbit svg'\)/);
   assert.match(source, /destination = measure\(target\)/);
   assert.match(source, /THREE\.MathUtils\.lerp\(fullRadius, destination\.radius, settle\)/);
   assert.match(source, /function orbitEase\(progress: number\)/);

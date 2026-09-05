@@ -35,7 +35,7 @@ const { title, description, page = 'intro' } = Astro.props;
       </a>
       <div class="header-side">
         <div class="header-note"><span class="location-dot"></span> Based on Earth <span class="header-location">/ Islamabad, PK</span></div>
-        <a class="header-cv" href="/cv/" target={page === 'intro' ? '_blank' : undefined} rel="noopener" aria-current={page === 'cv' ? 'page' : undefined}>CV{page === 'intro' && <span class="sr-only"> (opens in a new tab)</span>}</a>
+        <a class="header-cv" href="/cv/" aria-current={page === 'cv' ? 'page' : undefined}>CV</a>
       </div>
     </header>
     <slot />

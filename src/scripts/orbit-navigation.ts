@@ -1,6 +1,7 @@
 import type { TransitionBeforePreparationEvent, TransitionBeforeSwapEvent } from 'astro:transitions/client';
 
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
+const orbitPages = new Set(['/', '/onboarding/', '/cv/']);
 let modulePromise: Promise<typeof import('./orbital-three')> | undefined;
 const load = () => modulePromise ??= import('./orbital-three');
 let active: ReturnType<typeof import('./orbital-three').createFlight> | undefined;
@@ -24,7 +25,7 @@ function pausePage() {
 
 // Warm the chunk on intent, without running a renderer on the introduction page.
 function warm(event: Event) {
-  if (!motion.matches && (event.target as Element)?.closest?.('a[href="/onboarding/"]')) void load().catch(() => { modulePromise = undefined; });
+  if (!motion.matches && (event.target as Element)?.closest?.('a[href="/onboarding/"], a[href="/cv/"]')) void load().catch(() => { modulePromise = undefined; });
 }
 document.addEventListener('pointerover', warm, { passive: true });
 document.addEventListener('focusin', warm);
@@ -33,10 +34,9 @@ document.addEventListener('astro:before-preparation', (event: TransitionBeforePr
   const id = ++navigation;
   clear();
   if (motion.matches || event.navigationType === 'traverse') return;
-  const betweenOrbitPages = (event.from.pathname === '/' && event.to.pathname === '/onboarding/') ||
-    (event.from.pathname === '/onboarding/' && event.to.pathname === '/');
+  const betweenOrbitPages = orbitPages.has(event.from.pathname) && orbitPages.has(event.to.pathname);
   if (!betweenOrbitPages) return;
-  const source = document.querySelector<SVGSVGElement>('.orbit-art, .map-art');
+  const source = document.querySelector<SVGSVGElement>('.orbit-art, .map-art, .legal-orbit svg');
   const host = document.querySelector<HTMLElement>('#orbit-flight');
   if (!source || !host) return;
   const loader = event.loader;

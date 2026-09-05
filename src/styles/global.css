@@ -151,13 +151,24 @@ input[aria-invalid=true], textarea[aria-invalid=true] { border-color: var(--colo
 .cv-start { margin-top: 26px; }
 .cv-workplace { color: var(--color-muted); font-size: 13px; }
 .cv-entry { margin-top: 26px; }
-.cv-entry h3 { font-family: var(--font-display); font-weight: 500; font-size: 19px; line-height: 1.3; letter-spacing: .02em; }
+.cv-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 16px; }
+.cv-row h3, .cv-row h4 { margin: 0; font-family: var(--font-display); font-weight: 500; letter-spacing: .02em; }
+.cv-row h3 { font-size: 20px; line-height: 1.3; }
+.cv-row h4 { font-size: 16px; line-height: 1.35; }
+.cv-dates { flex-shrink: 0; color: var(--color-muted); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; }
 .cv-stack { margin-top: 5px; color: var(--color-muted); font-size: 11px; letter-spacing: .05em; text-transform: uppercase; }
+.cv-stack a { text-transform: none; letter-spacing: 0; }
 .cv-list { margin: 10px 0 0; padding-left: 18px; color: var(--color-muted); font-size: 14px; line-height: 1.85; }
 .cv-list li::marker { color: var(--color-border); }
 .cv-list strong, .cv-tools strong { color: var(--color-text); font-weight: 600; }
 .cv-tools { margin: 10px 0 0; padding: 0; list-style: none; color: var(--color-muted); font-size: 14px; line-height: 1.85; }
 .cv-tools li + li { margin-top: 8px; }
+.cv-headline { margin-top: 18px; font-family: var(--font-display); font-weight: 400; font-size: 18px; line-height: 1.45; letter-spacing: .02em; }
+.cv-contact { margin-top: 10px; max-width: 560px; color: var(--color-muted); font-size: 13px; line-height: 2; overflow-wrap: anywhere; }
+.cv-contact a { color: var(--color-muted); }
+.cv-contact span, .cv-workplace span, .cv-stack span, .cv-meta span { color: var(--color-border); padding-inline: 7px; }
+.cv-meta { margin-top: 8px; color: var(--color-muted); font-size: 13px; }
+.cv-subhead { margin: 38px 0 0; font-family: var(--font-display); font-weight: 500; font-size: 16px; letter-spacing: .02em; }
 .onboarding-layout { max-width: 1600px; min-height: calc(100svh - 116px); margin-inline: auto; padding: 8px clamp(24px, 5vw, 88px) 18px; display: grid; grid-template-columns: minmax(240px, .55fr) minmax(0, 1.45fr); gap: clamp(28px, 4vw, 80px); align-items: start; }
 .onboarding-copy { max-width: 430px; padding-top: 12px; }
 .onboarding-copy .back-link { margin-bottom: clamp(20px, 3vh, 32px); }

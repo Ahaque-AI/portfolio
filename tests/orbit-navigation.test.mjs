@@ -62,6 +62,14 @@ test('reduced motion and history traversal never construct a renderer', async ()
   }
 });
 
+test('the flight also covers the CV page in both directions', async () => {
+  const { prepare, calls } = setup();
+  await prepare({ to: new URL('https://portfolio.test/cv/') }).event.loader();
+  assert.deepEqual(calls, ['load', 'create', 'cover']);
+  await prepare({ from: new URL('https://portfolio.test/cv/'), to: new URL('https://portfolio.test/onboarding/') }).event.loader();
+  assert.deepEqual(calls.slice(-3), ['load', 'create', 'cover']);
+});
+
 test('WebGL failure requests native navigation instead of trapping the link', async () => {
   const { prepare } = setup({ gpuFails: true });
   const { event } = prepare();

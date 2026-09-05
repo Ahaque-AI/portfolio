@@ -31,8 +31,10 @@ constraints. Prefer a small number of substantial case studies over a wall
 of skill badges. Each can show problem, constraints, personal contribution,
 architecture, evidence, and lessons. Choose the lead stories during planning.
 Confirm what client material can be published and verify metrics and links
-before turning resume statements into public case studies. Do not automatically
-publish the resume's phone number or copy the PDF into public assets.
+before turning resume statements into public case studies. The CV page publishes
+the resume's contact line and plain figures: the owner approved both explicitly
+on 2026-09-05, replacing the earlier do-not-publish default. Do not copy the
+PDF into public assets; the CV is authored content.
 
 ## Visitor journey requirements
 

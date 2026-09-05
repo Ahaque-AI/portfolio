@@ -71,6 +71,8 @@ export function createFlight(host: HTMLElement, source: SVGSVGElement) {
   const measure = (art: SVGSVGElement) => {
     const core = art.querySelector<SVGCircleElement>('[data-orbit-core]');
     const rect = core?.getBoundingClientRect() ?? art.getBoundingClientRect();
+    // ponytail: hidden landing art (mobile CV hides .legal-orbit) lands centered; add a mobile landing target if that matters
+    if (!rect.width) return { x: innerWidth / 2, y: innerHeight / 2, radius: 32 };
     return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2, radius: Math.max(12, rect.width / (core ? 2 : 6)) };
   };
   const start = measure(source);
@@ -140,7 +142,7 @@ export function createFlight(host: HTMLElement, source: SVGSVGElement) {
   return {
     cover: () => animate(900, progress => { expansion = progress; }),
     reveal: async () => {
-      const target = document.querySelector<SVGSVGElement>('.orbit-art, .map-art');
+      const target = document.querySelector<SVGSVGElement>('.orbit-art, .map-art, .legal-orbit svg');
       if (target) {
         destination = measure(target);
         target.closest<HTMLElement>('.star-map')?.setAttribute('data-flight-landing', '');

@@ -37,7 +37,7 @@ components:
 
 ## Overview
 
-Initial implemented direction, awaiting the owner's visual review. Space is
+Visual identity approved by the owner. Space is
 expressed through a large orbital diagram and instrument-like lettering.
 The form remains a familiar, readable task surface. Terms and privacy are
 reading surfaces within the same identity. All assets are authored vector
@@ -66,8 +66,27 @@ Utility copy is smaller and never carries the only critical instruction.
 ## Layout
 
 Shared shell: identity, location, legal navigation, footer. Desktop entry uses
-two unequal columns: orbit/identity left, form right (maximum 460px).
-The 760px breakpoint stacks these regions. Legal pages pair a 250px navigation
+two unequal columns: orbit/identity left, form right (maximum 460px). The orbit
+is deliberately oversized, with a 320 to 560px height budget, so it reads as
+the main visual anchor rather than a small illustration. It sits slightly toward
+the form and center gap, leaving breathing room at the far left. The visitor annotation
+uses larger type and a stronger citron marker so “YOU ARE HERE” survives the
+orbit's scale.
+The entry form uses two compact steps: name, then contact details. The comment
+field is a native disclosure, closed initially. A name-only action is available
+on either step. The name is validated before moving forward; Back preserves
+all values. Completion replaces the fields instead of extending the page.
+Focus moves to the first field after a step change without opening the mobile
+keyboard on initial load. No details are persisted or sent.
+
+The 760px breakpoint stacks a shortened introduction above the form. On the
+contact step, mobile reduces the headline and orbit further to prioritize the
+controls. Short desktop viewports also reduce header/diagram space. Normal
+document scrolling stays available for expanded comments, zoom, validation
+messages, unusually small windows, and software keyboards. Do not promise zero
+scrolling under every browser/text-size combination.
+
+Legal pages pair a 250px navigation
 rail with a reading column up to 660px; mobile removes the decorative rail.
 Document scroll owns all pages. No scroll lock or custom cursor.
 
@@ -75,8 +94,10 @@ Document scroll owns all pages. No scroll lock or custom cursor.
 
 The orbital sphere alone uses physical light shading. Form controls are flat
 with a single border; no glass cards or luminous panel shadows. The authored
-orbit enters once and tilts gently with a mouse pointer. Reduced motion removes
-animation, tilt, and transitions; no continuous ambient animation is needed.
+orbit enters once, tilts gently with a mouse pointer, and carries the visitor
+marker continuously around the orbital path. The label stays upright while it
+travels. Reduced motion removes the traveler and leaves a static marker,
+tilt, and transitions.
 
 ## Shapes
 
@@ -111,5 +132,7 @@ thumb/track/hover/active colors with system behavior in forced-colors mode.
 - Keep policies accessible without form completion or JavaScript.
 - Do not add unrelated portfolio sections, tracking, or fabricated live status.
 - Do not use browser controls; the owner handles visual/interaction testing.
+- Portfolio copy uses no em dashes or generic AI-style filler. Follow the
+  writing rules in `zensical docs/docs/invariants/frontend.md`.
 - Current review status: build/type/unit verification only; manual responsive,
-  keyboard, reduced-motion, and final visual approval remain with the owner.
+  keyboard and reduced-motion checks for this form refinement remain with the owner.

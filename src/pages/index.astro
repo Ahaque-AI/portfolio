@@ -7,26 +7,31 @@ import Arrow from '../components/Arrow.astro';
   <main id="main" class="intro-layout">
     <section class="arrival" aria-labelledby="arrival-title">
       <h1 id="arrival-title">A small hello.<br /><span>A new orbit.</span></h1>
-      <p class="arrival-copy">I’m Abdul. I build AI systems.<br />But everything starts with a human connection.</p>
+      <p class="arrival-copy">I’m Abdul. I build AI systems.<br />Tell me who’s visiting.</p>
       <Orbit />
       <div class="orbit-caption"><span class="caption-line"></span><p>Different paths.<br /><span>An interesting place to cross.</span></p></div>
     </section>
     <section class="introduction" aria-labelledby="form-title">
-      <div class="form-heading"><h2 id="form-title">Before you explore.</h2><p>Start with your full name.<br />Add your email and a note, or continue with just your name.</p></div>
-      <form id="introduction-form" novalidate aria-describedby="preview-note">
+      <div class="form-heading"><h2 id="form-title">Before you explore.</h2><p id="step-description">Start with your name. The rest is optional.</p></div>
+      <form id="introduction-form" novalidate aria-describedby="preview-note" data-step="name">
         <fieldset id="form-fields" disabled>
-          <div class="field"><label for="full-name">Full name</label><input id="full-name" name="fullName" autocomplete="name" placeholder="What should I call you?" maxlength="120" required aria-describedby="name-error" /><span class="field-error" id="name-error"></span></div>
+          <div class="step-navigation"><span id="step-progress" role="status">1 of 2 · Your name</span><button type="button" id="back-step" class="text-button" hidden><Arrow back /> Edit name</button></div>
+          <div id="name-step">
+          <div class="field"><label for="full-name">Full name</label><input id="full-name" name="fullName" autocomplete="name" enterkeyhint="next" placeholder="What should I call you?" maxlength="120" required aria-describedby="name-error" /><span class="field-error" id="name-error"></span></div>
+          </div>
+          <div id="contact-step" hidden>
           <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" maxlength="254" required aria-describedby="email-error" /><span class="field-error" id="email-error"></span></div>
-          <div class="field comment-field"><label for="comment">A note for me <span>Optional</span></label><textarea id="comment" name="comment" rows="3" maxlength="1000" placeholder="An idea, a question, or just a hello…" style="resize: none" aria-describedby="comment-help comment-error"></textarea><div class="comment-meta"><span id="comment-help">A little context goes a long way.</span><span id="comment-count">0 / 1,000</span></div><span class="field-error" id="comment-error"></span></div>
+          <details id="note-details" class="note-details"><summary>Add a note <span>Optional</span></summary><div class="field comment-field"><label for="comment">Your note</label><textarea id="comment" name="comment" rows="2" maxlength="1000" placeholder="An idea, a question, or a hello" style="resize: none" aria-describedby="comment-help comment-error"></textarea><div class="comment-meta"><span id="comment-help">Up to 1,000 characters.</span><span id="comment-count">0 / 1,000</span></div><span class="field-error" id="comment-error"></span></div></details>
           <div class="consent"><div class="consent-line"><input type="checkbox" id="agreement" name="agreement" required aria-describedby="agreement-error" /><label for="agreement">I agree to the <a href="/terms/" target="_blank" rel="noopener">terms & conditions<span class="sr-only"> (opens in a new tab)</span></a> and have read the <a href="/privacy/" target="_blank" rel="noopener">privacy policy<span class="sr-only"> (opens in a new tab)</span></a>.</label></div><span class="field-error" id="agreement-error"></span></div>
-          <button class="button-primary" type="submit"><span>Preview introduction</span><Arrow /></button>
+          </div>
+          <button class="button-primary" type="submit"><span id="submit-label">Continue</span><Arrow /></button>
+          <button class="skip-intro" id="skip-intro" type="button"><span>Continue with name only <span class="skip-context">No email or agreement needed</span></span><Arrow /></button>
         </fieldset>
         <p class="preview-note" id="preview-note">Design preview. Your details aren’t sent or saved.</p>
         <noscript><p class="notice">Enable JavaScript to enter your name and continue. You can read the terms and privacy policy without it.</p><style>#skip-intro { display: none; }</style></noscript>
-        <div id="form-status" class="form-status" role="status" tabindex="-1" hidden><strong>That’s your introduction, ready.</strong><p>Nothing has been sent or saved. The interactive portfolio is the next chapter — this preview ends here for now.</p></div>
+        <div id="form-status" class="form-status" role="status" tabindex="-1" hidden><strong>You’re ready to continue.</strong><p>Nothing has been sent or saved. This preview ends here. The portfolio will be added next.</p></div>
+        <button id="edit-introduction" class="text-button" type="button" hidden><Arrow back /> Back to form</button>
       </form>
-      <button class="skip-intro" id="skip-intro" type="button"><span>Continue with name only <span class="skip-context">No email or agreement needed</span></span><Arrow /></button>
-      <div id="skip-status" class="form-status" role="status" tabindex="-1" hidden><strong>You’re ready to continue.</strong><p>Nothing has been sent or saved. The interactive portfolio comes next; you’ve reached the end of this three-page preview.</p></div>
     </section>
   </main>
 </Shell>
@@ -40,12 +45,36 @@ import Arrow from '../components/Arrow.astro';
   const agreement = document.querySelector<HTMLInputElement>('#agreement')!;
   const status = document.querySelector<HTMLElement>('#form-status')!;
   const controls = { name, email, comment, agreement };
-  const skipStatus = document.querySelector<HTMLElement>('#skip-status')!;
+  const nameStep = document.querySelector<HTMLElement>('#name-step')!;
+  const contactStep = document.querySelector<HTMLElement>('#contact-step')!;
+  const back = document.querySelector<HTMLButtonElement>('#back-step')!;
+  const edit = document.querySelector<HTMLButtonElement>('#edit-introduction')!;
+  const note = document.querySelector<HTMLDetailsElement>('#note-details')!;
   fields.disabled = false;
   let attempted = false;
   let mode: 'full' | 'name-only' = 'full';
+  let step: 'name' | 'contact' = 'name';
+  function setStep(next: 'name' | 'contact') {
+    step = next;
+    form.dataset.step = next;
+    nameStep.hidden = next !== 'name';
+    contactStep.hidden = next !== 'contact';
+    back.hidden = next === 'name';
+    document.getElementById('step-progress')!.textContent = next === 'name' ? '1 of 2 · Your name' : '2 of 2 · Contact details';
+    document.getElementById('step-description')!.textContent = next === 'name' ? 'Start with your name. The rest is optional.' : 'Add your email, or continue with your name only.';
+    document.getElementById('submit-label')!.textContent = next === 'name' ? 'Continue' : 'Preview introduction';
+    attempted = false;
+    for (const [key, input] of Object.entries(controls)) {
+      document.getElementById(`${key}-error`)!.textContent = '';
+      input.removeAttribute('aria-invalid');
+    }
+    (next === 'name' ? name : email).focus({ preventScroll: true });
+  }
   function showErrors(focus = false) {
     const errors = validateIntroduction({ name: name.value, email: email.value, comment: comment.value, agreement: agreement.checked }, mode);
+    // Reveal an invalid hidden field before moving focus to it.
+    if (focus && errors.name && step !== 'name') setStep('name');
+    if (focus && errors.comment) note.open = true;
     for (const [key, input] of Object.entries(controls)) {
       const message = errors[key] || '';
       document.getElementById(`${key}-error`)!.textContent = message;
@@ -54,24 +83,34 @@ import Arrow from '../components/Arrow.astro';
     if (focus) Object.entries(controls).find(([key]) => errors[key])?.[1].focus();
     return Object.keys(errors).length === 0;
   }
+  function finish() {
+    fields.hidden = true;
+    document.getElementById('preview-note')!.hidden = true;
+    status.hidden = false;
+    edit.hidden = false;
+    status.focus({ preventScroll: true });
+  }
   form.addEventListener('submit', (event) => {
     event.preventDefault();
     attempted = true;
-    mode = 'full';
-    skipStatus.hidden = true;
-    status.hidden = true;
+    mode = step === 'name' ? 'name-only' : 'full';
     if (!showErrors(true)) return;
-    status.hidden = false;
-    status.focus();
+    if (step === 'name') setStep('contact');
+    else finish();
   });
   document.getElementById('skip-intro')!.addEventListener('click', () => {
     attempted = true;
     mode = 'name-only';
-    status.hidden = true;
-    skipStatus.hidden = true;
     if (!showErrors(true)) return;
-    skipStatus.hidden = false;
-    skipStatus.focus();
+    finish();
+  });
+  back.addEventListener('click', () => setStep('name'));
+  edit.addEventListener('click', () => {
+    fields.hidden = false;
+    document.getElementById('preview-note')!.hidden = false;
+    status.hidden = true;
+    edit.hidden = true;
+    setStep(step);
   });
   const arrival = document.querySelector<HTMLElement>('.arrival')!;
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -85,12 +124,11 @@ import Arrow from '../components/Arrow.astro';
     arrival.style.setProperty('--orbit-x', '0deg');
     arrival.style.setProperty('--orbit-y', '0deg');
   });
-  form.addEventListener('input', () => {
-    status.hidden = true;
-    skipStatus.hidden = true;
+  form.addEventListener('input', (event) => {
     if (attempted) showErrors();
+    if (event.target !== comment) return;
     document.getElementById('comment-count')!.textContent = `${comment.value.length.toLocaleString('en-US')} / 1,000`;
     comment.style.height = 'auto';
-    comment.style.height = `${Math.min(240, comment.scrollHeight)}px`;
+    comment.style.height = `${Math.min(120, comment.scrollHeight)}px`;
   });
 </script>

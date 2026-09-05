@@ -13,3 +13,19 @@
   tests; report manual checks as unverified rather than claiming they passed.
 - Apply the environment's relevant design skills during UI work; keep visual
   decisions in a shared design document when that work begins.
+
+## Portfolio writing
+
+- Do not use em dashes, en dashes as sentence punctuation, or double hyphens
+  as substitutes in visible copy, metadata, or accessible labels. Use a period,
+  comma, colon, or a more direct sentence.
+- Write specific, natural copy in Abdul's voice. Avoid generic AI-style filler,
+  inflated claims, buzzword strings, and canned contrasts. Examples to avoid:
+  "delve", "leverage", "unlock potential", "seamless experience", "next chapter",
+  "cutting-edge", and "this isn't X, it's Y". Describe actual actions and work.
+- Keep accurate AI engineering terminology. The rule prohibits generic writing,
+  not references to the owner's real profession or projects.
+- Preserve the approved visual identity and orbit animation during UX fixes.
+- Introductions use two compact steps, with a name-only exit on both. Never
+  hide content with viewport scroll locks to make a form appear to fit. Preserve
+  scrolling for small viewports, enlarged text, and the mobile keyboard.

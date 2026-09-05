@@ -30,6 +30,9 @@ No backend, data storage, visitor tracking, notifications, or deployment in this
 design phase. Submission previews validation and explicitly says nothing was sent.
 The future portfolio and guided tour are outside this implementation.
 Both paths stay in this preview and show a next-phase message, as chosen by the owner.
+The form guides visitors through name first, then optional contact details.
+Comments expand on request. A name-only action remains available at each step.
+Back preserves typed values in the page; completion replaces the form.
 The owner performs manual browser testing; agents must not use browser controls.
 
 ## Brand Commitments

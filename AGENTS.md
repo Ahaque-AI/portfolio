@@ -46,6 +46,8 @@ and update the docs. Source describes actual behavior; docs describe intent.
   user run the commit by default.
 - Never add the AI or agent as co-author.
 - Use pnpm only; see `zensical docs/docs/invariants/tooling.md`.
+- Portfolio writing rules: no em dashes or generic AI-style copy. See
+  `zensical docs/docs/invariants/frontend.md`.
 - Do not use browser controls. The owner handles manual browser testing;
   see `zensical docs/docs/invariants/frontend.md` for verification boundaries.
 

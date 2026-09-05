@@ -8,7 +8,7 @@
     <g class="orbit-assembly">
       <ellipse id="visitor-path" cx="350" cy="270" rx="309" ry="132" transform="rotate(-28 350 270)" stroke="url(#orbit-ink)"/>
       <ellipse cx="350" cy="270" rx="278" ry="181" transform="rotate(32 350 270)" stroke="url(#orbit-ink)" stroke-dasharray="2 7"/>
-      <circle cx="350" cy="270" r="124" fill="url(#sphere-light)" stroke="#89979a" stroke-opacity=".45"/>
+      <circle data-orbit-core cx="350" cy="270" r="124" fill="url(#sphere-light)" stroke="#89979a" stroke-opacity=".45"/>
       <g clip-path="url(#sphere-clip)" stroke="#bcc8c5" stroke-opacity=".18">
         <ellipse cx="350" cy="270" rx="42" ry="124" transform="rotate(-28 350 270)"/>
         <ellipse cx="350" cy="270" rx="88" ry="124" transform="rotate(-28 350 270)"/>
@@ -37,23 +37,37 @@
   </svg>
 </div>
 <script>
+  document.addEventListener('astro:page-load', () => {
   const traveler = document.querySelector<SVGGElement>('.orbit-traveler');
+  if (!traveler) return;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const orbit = { cx: 350, cy: 270, rx: 309, ry: 132, angle: -28 * Math.PI / 180 };
   const speed = 0.00048;
+  let frame = 0;
+  let visible = true;
   function moveVisitor(now: number) {
-    if (traveler && !reducedMotion.matches) {
+    frame = 0;
+    if (!reducedMotion.matches && !document.hidden && visible && traveler?.isConnected) {
       const t = now * speed;
       const x = orbit.cx + orbit.rx * Math.cos(t) * Math.cos(orbit.angle) - orbit.ry * Math.sin(t) * Math.sin(orbit.angle);
       const y = orbit.cy + orbit.rx * Math.cos(t) * Math.sin(orbit.angle) + orbit.ry * Math.sin(t) * Math.cos(orbit.angle);
       traveler.setAttribute('transform', `translate(${x} ${y})`);
+      frame = requestAnimationFrame(moveVisitor);
     }
-    requestAnimationFrame(moveVisitor);
   }
-  // Autonomous motion starts as soon as the component is mounted.
-  if (!reducedMotion.matches) requestAnimationFrame(moveVisitor);
-  reducedMotion.addEventListener('change', () => {
-    if (reducedMotion.matches) traveler?.removeAttribute('transform');
-    else requestAnimationFrame(moveVisitor);
+  function resume() {
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(moveVisitor);
+  }
+  const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; resume(); });
+  observer.observe(traveler.ownerSVGElement!);
+  document.addEventListener('visibilitychange', resume);
+  reducedMotion.addEventListener('change', resume);
+  document.addEventListener('astro:before-swap', () => {
+    cancelAnimationFrame(frame);
+    observer.disconnect();
+    document.removeEventListener('visibilitychange', resume);
+    reducedMotion.removeEventListener('change', resume);
+  }, { once: true });
   });
 </script>

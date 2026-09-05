@@ -1,4 +1,4 @@
-<div class="star-map">
+<div class="star-map"><div class="map-three" aria-hidden="true"></div>
   <div class="star-field star-field-one"></div>
   <div class="star-field star-field-two"></div>
   <svg class="map-art" viewBox="0 0 820 520" fill="none">
@@ -7,23 +7,34 @@
       <linearGradient id="map-route" x1="92" y1="430" x2="718" y2="84" gradientUnits="userSpaceOnUse"><stop stop-color="#e7ecac" stop-opacity=".1"/><stop offset=".5" stop-color="#e7ecac" stop-opacity=".75"/><stop offset="1" stop-color="#e7ecac" stop-opacity=".15"/></linearGradient>
       <filter id="map-glow"><feGaussianBlur stdDeviation="4"/></filter>
     </defs>
+    <g class="map-geometry" aria-hidden="true">
     <path class="map-route-glow" d="M100 412C202 436 257 337 355 318S527 301 710 106" stroke="#e7ecac" stroke-opacity=".28" stroke-width="7" filter="url(#map-glow)"/>
     <path class="map-route" d="M100 412C202 436 257 337 355 318S527 301 710 106" stroke="url(#map-route)" stroke-width="1.5"/>
     <circle class="route-signal" r="4" fill="#e7ecac"><animateMotion dur="12s" repeatCount="indefinite" rotate="auto" path="M100 412C202 436 257 337 355 318S527 301 710 106"/></circle>
     <ellipse cx="394" cy="260" rx="274" ry="113" transform="rotate(-18 394 260)" stroke="#a5b4bb" stroke-opacity=".2" stroke-dasharray="1 8"/>
-    <circle cx="394" cy="260" r="93" fill="url(#map-core)" stroke="#89979a" stroke-opacity=".42"/>
+    <circle data-orbit-core cx="394" cy="260" r="93" fill="url(#map-core)" stroke="#89979a" stroke-opacity=".42"/>
     <path d="M315 260h158M394 167v186M330 207c40 31 88 31 128 0M330 313c40-31 88-31 128 0" stroke="#bcc8c5" stroke-opacity=".2"/>
     <g class="map-stars" fill="#eff0de">
       <circle cx="110" cy="108" r="2"/><circle cx="195" cy="385" r="2"/><circle cx="604" cy="355" r="2"/><circle cx="735" cy="264" r="2"/><circle cx="671" cy="55" r="1.5"/>
+    </g>
     </g>
     <a class="map-hotspot map-hotspot-arrival" href="/" aria-label="Open the introduction section"><circle cx="100" cy="412" r="28" fill="transparent"/><circle cx="100" cy="412" r="18" stroke="#e7ecac" stroke-opacity=".35"/><circle cx="100" cy="412" r="7" fill="#e7ecac"/></a>
     <g class="map-node node-work" tabindex="0" role="img" aria-label="Work section, coming next"><circle cx="710" cy="106" r="24" fill="transparent"/><circle cx="710" cy="106" r="18" stroke="#53616a"/><circle cx="710" cy="106" r="5" fill="#53616a"/></g>
     <g class="map-node node-about" tabindex="0" role="img" aria-label="About section, coming next"><circle cx="230" cy="366" r="21" fill="transparent"/><circle cx="230" cy="366" r="14" stroke="#53616a" stroke-dasharray="2 4"/><circle cx="230" cy="366" r="4" fill="#53616a"/></g>
   </svg>
-  <span class="map-label map-label-arrival">ARRIVAL <small>hover, then click</small></span>
+  <span class="map-label map-label-arrival">ARRIVAL <small>open introduction</small></span>
   <span class="map-label map-label-work">WORK <small>coming next</small></span>
   <span class="map-label map-label-about">ABOUT <small>coming next</small></span>
   <span class="map-tooltip map-tooltip-arrival" role="status">Introduction<br /><small>Your first stop. Click to enter.</small></span>
   <span class="map-tooltip map-tooltip-work" role="status">Work<br /><small>Case studies will land here next.</small></span>
   <span class="map-tooltip map-tooltip-about" role="status">About<br /><small>A short route into who I am.</small></span>
 </div>
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const map = document.querySelector<HTMLElement>('.star-map');
+    if (!map) return;
+    void import('../scripts/orbital-map').then(({ mountMap }) => {
+      if (map.isConnected) mountMap(map);
+    }).catch(() => { /* The authored SVG stays available without WebGL. */ });
+  });
+</script>

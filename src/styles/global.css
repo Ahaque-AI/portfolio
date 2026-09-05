@@ -141,7 +141,7 @@ input[aria-invalid=true], textarea[aria-invalid=true] { border-color: var(--colo
 .legal-section p { color: var(--color-muted); font-size: 14px; line-height: 1.9; overflow-wrap: anywhere; }
 .legal-section a { color: var(--color-text); }
 .legal-return { border-top: 1px solid var(--color-line); margin-top: 42px; padding-top: 24px; }
-.onboarding-layout { max-width: 1600px; min-height: calc(100svh - 116px); margin-inline: auto; padding: 8px clamp(24px, 5vw, 88px) 18px; display: grid; grid-template-columns: minmax(260px, .55fr) minmax(600px, 1.45fr); gap: clamp(28px, 4vw, 80px); align-items: start; }
+.onboarding-layout { max-width: 1600px; min-height: calc(100svh - 116px); margin-inline: auto; padding: 8px clamp(24px, 5vw, 88px) 18px; display: grid; grid-template-columns: minmax(240px, .55fr) minmax(0, 1.45fr); gap: clamp(28px, 4vw, 80px); align-items: start; }
 .onboarding-copy { max-width: 430px; padding-top: 12px; }
 .onboarding-copy .back-link { margin-bottom: clamp(20px, 3vh, 32px); }
 .route-kicker { color: var(--color-accent); font: 500 11px/1.4 var(--font-body); letter-spacing: .12em; }
@@ -153,8 +153,16 @@ input[aria-invalid=true], textarea[aria-invalid=true] { border-color: var(--colo
 .tutorial-trigger:hover .arrow, .tutorial-trigger:focus-visible .arrow { transform: translateX(4px); }
 .route-note { display: flex; align-items: center; gap: 9px; margin-top: 16px; color: var(--color-muted); font-size: 11px; }
 .onboarding-map { position: relative; min-width: 0; width: 100%; }
-.star-map { position: relative; width: 100%; max-width: 1060px; max-height: calc(100svh - 260px); margin-inline: auto; }
-.map-art { position: relative; z-index: 1; display: block; width: 100%; max-height: calc(100svh - 260px); height: auto; overflow: visible; }
+.star-map { position: relative; width: 100%; max-width: 1060px; aspect-ratio: 820 / 520; margin-inline: auto; }
+.map-art { position: relative; z-index: 1; display: block; width: 100%; height: auto; overflow: visible; }
+.map-three { position: absolute; inset: 0; pointer-events: none; }
+.map-three canvas { display: block; width: 100%; height: 100%; }
+.has-three .map-geometry { opacity: 0; }
+.has-three .star-field { opacity: .12; }
+.orbit-flight { position: fixed; inset: 0; z-index: 50; display: none; pointer-events: none; }
+.orbit-flight.is-active { display: block; pointer-events: auto; }
+.orbit-flight canvas { display: block; width: 100%; height: 100%; }
+a[data-flight-busy] { cursor: progress; }
 .star-field { position: absolute; inset: 7% 5%; background-image: radial-gradient(circle, rgb(239 240 222 / .8) 0 1px, transparent 1.5px); background-size: 97px 83px; opacity: .3; }
 .star-field-two { inset: 15% 14% 10% 22%; background-size: 137px 119px; background-position: 37px 22px; opacity: .18; }
 .map-route-glow { opacity: .5; }
@@ -274,8 +282,8 @@ input[aria-invalid=true], textarea[aria-invalid=true] { border-color: var(--colo
   .onboarding-lede { font-size: 13px; margin-top: 17px; }
   .tutorial-trigger { margin-top: 20px; }
   .onboarding-map { order: -1; }
-  .map-label { font-size: 9px; }
-  .map-label small { font-size: 8px; margin-top: 2px; }
+  .map-label { font-size: 12px; letter-spacing: .06em; }
+  .map-label small { font-size: 10px; margin-top: 2px; }
   .map-legend { justify-content: flex-start; font-size: 10px; }
 }
 @media (prefers-reduced-motion: reduce) {

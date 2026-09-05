@@ -3,11 +3,12 @@ import '@fontsource-variable/manrope';
 import '@fontsource/chakra-petch/400.css';
 import '@fontsource/chakra-petch/500.css';
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 interface Props { title: string; description: string; page?: string; }
 const { title, description, page = 'intro' } = Astro.props;
 ---
 <!doctype html>
-<html lang="en">
+<html lang="en" transition:animate="none">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -16,8 +17,10 @@ const { title, description, page = 'intro' } = Astro.props;
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title} · Abdul Haque</title>
+    <ClientRouter fallback="swap" />
   </head>
   <body data-page={page}>
+    <div id="orbit-flight" class="orbit-flight" transition:persist="orbit-flight" aria-hidden="true"></div>
     <!-- THESIS: An observatory guestbook; orbital geometry meets an honest optional introduction.
     OWN-WORLD: Blue-black field, mineral-white lettering, pale citron controls, precise elliptical linework.
     STORY: Meet Abdul, leave an optional introduction, or continue without sharing anything.
@@ -40,3 +43,6 @@ const { title, description, page = 'intro' } = Astro.props;
     </footer>
   </body>
 </html>
+<script>
+  import '../scripts/orbit-navigation';
+</script>

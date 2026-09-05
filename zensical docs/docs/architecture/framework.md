@@ -3,6 +3,14 @@
 Status: implemented for the requested three-page preview, 2026-09-05.
 Astro 7.3.1, TypeScript 6.0.3, pnpm 11.19.0. No React or backend is installed.
 
+Owner-requested addition, 2026-09-05: Three.js 0.185.1 renders the orbital page
+transition and enhances the onboarding map. Astro ClientRouter persists the
+WebGL overlay across page swaps; page scripts initialize on `astro:page-load`
+and release animations before swaps. Output remains four static pages. The
+Three.js chunk is dynamically loaded on navigation intent or map entry. The
+SVG map and real links remain fallback paths. See [DESIGN.md](../../../DESIGN.md)
+for timing, accessibility and GPU limits.
+
 Recommend **Astro + TypeScript**, static output, native CSS, and small browser
 scripts. Add React islands only where a complex interactive demonstration
 benefits from them. Use Markdown for case studies initially; a CMS is unnecessary.

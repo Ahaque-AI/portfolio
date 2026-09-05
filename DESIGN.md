@@ -40,7 +40,7 @@ components:
 Visual identity approved by the owner. Space is
 expressed through a large orbital diagram and instrument-like lettering.
 The form remains a familiar, readable task surface. Terms and privacy are
-reading surfaces within the same identity. All assets are authored vector
+reading surfaces within the same identity. Assets use authored SVG and Three.js
 geometry; no stock or generated raster images are used.
 
 Reference: [NASA Eyes](https://science.nasa.gov/eyes/) for spatial subject matter
@@ -99,7 +99,25 @@ available point directly on the map. Back and one optional guided-flight button
 are the only separate controls. Future points remain visibly muted and are not
 presented as fake choices. Route motion is sparse: a slow signal along the path
 and restrained star twinkle. No floating particle wash or repeated shooting-star
-loop.
+loop. The map now renders a lit Three.js sphere, depth-tested latitude and
+longitude lines, two orbital tracks, and a signal along the destination curve.
+The original SVG remains the fallback when WebGL is unavailable. The canvas and
+SVG share an 820 × 520 aspect ratio so destination targets stay aligned. Map
+motion stops offscreen, in hidden tabs and under reduced motion.
+
+The owner explicitly requested Three.js for the page transition. On “See the
+route ahead”, a WebGL globe takes over at the source orbit's measured position,
+expands and rotates for 900ms, then dissolves through a flowing shader mask over
+the destination for 800ms. The return route uses the same scene. Astro's
+ClientRouter keeps the overlay canvas alive across the actual page swap. The
+destination loads before the screen is covered; no introduction values are
+stored. Escape skips the animation. History traversal and reduced motion skip
+the flight, and unavailable WebGL falls back to native navigation.
+
+Three.js loads on navigation intent or on the map page. Rendering is capped at
+1.5 device pixels per CSS pixel and two million framebuffer pixels. Geometry,
+materials, render targets, observers and animation frames are released after
+use. Browser shader compilation and visual smoothness require owner testing.
 
 Legal pages pair a 250px navigation
 rail with a reading column up to 660px; mobile removes the decorative rail.
@@ -131,6 +149,9 @@ Arrows share a 1.5px stroke. The favicon is the same orbital mark as the header.
 | `src/components/StarMap.astro` | Decorative route map for onboarding |
 | `src/styles/global.css` | Canonical tokens, controls, responsive rules, scrollbar |
 | `src/scripts/validation.mjs` | Full/name-only validation shared by both actions |
+| `src/scripts/orbital-three.ts` | Shared Three.js globe geometry, flight renderer and fluid dissolve |
+| `src/scripts/orbit-navigation.ts` | Astro navigation lifecycle, cancellation, reduced motion and focus |
+| `src/scripts/orbital-map.ts` | Map renderer, aligned route, visibility and resource cleanup |
 | `src/pages/index.astro` | Form state, inline errors, status and focus handling |
 | `src/pages/onboarding.astro` | Route map, direct destination, and guided flight |
 

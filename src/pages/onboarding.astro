@@ -9,7 +9,7 @@ import StarMap from '../components/StarMap.astro';
       <a class="back-link" href="/"><Arrow back /> Back to introduction</a>
       <p class="route-kicker">PORTFOLIO MAP / 01</p>
       <h1 id="onboarding-title">Follow the<br /><span>signal.</span></h1>
-      <p class="onboarding-lede">The path is the interface. Hover over a destination to see where it leads, then select the point that is ready.</p>
+      <p class="onboarding-lede">Select Arrival to return to the introduction. Follow the orbit to see where Work and About will appear next.</p>
       <button class="tutorial-trigger" id="tutorial-trigger" type="button"><span>Take the guided flight</span><Arrow /></button>
       <p class="route-note"><span class="location-dot"></span> One destination is open now. More will appear as the portfolio grows.</p>
     </section>
@@ -29,6 +29,8 @@ import StarMap from '../components/StarMap.astro';
   </dialog>
 </Shell>
 <script>
+  document.addEventListener('astro:page-load', () => {
+  if (document.body.dataset.page !== 'onboarding') return;
   const dialog = document.querySelector<HTMLDialogElement>('#tutorial-dialog')!;
   const trigger = document.querySelector<HTMLButtonElement>('#tutorial-trigger')!;
   const close = document.querySelector<HTMLButtonElement>('#tutorial-close')!;
@@ -55,4 +57,5 @@ import StarMap from '../components/StarMap.astro';
   skip.addEventListener('click', endTour);
   next.addEventListener('click', () => { if (step === steps.length - 1) endTour(); else { step += 1; renderStep(); } });
   dialog.addEventListener('click', (event) => { if (event.target === dialog) endTour(); });
+  });
 </script>

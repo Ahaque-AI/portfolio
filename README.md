@@ -7,7 +7,9 @@ collection, or deployment.
 Start with [AGENTS.md](AGENTS.md), then the
 [knowledge map](zensical%20docs/docs/index.md).
 
-Astro + TypeScript, static output for Surge, native CSS and small scripts.
+Astro + TypeScript, static output for Surge, with Three.js orbital transitions
+and a WebGL-enhanced route map. Astro ClientRouter preserves the transition
+canvas across navigation; the original SVG remains the map fallback.
 Use pnpm only. Node 22.12+ (tested on Node 24), pnpm 11.19, and optional
 [Task v3](https://taskfile.dev/docs/installation) are prerequisites.
 

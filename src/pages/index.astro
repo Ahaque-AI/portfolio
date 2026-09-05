@@ -37,6 +37,8 @@ import Arrow from '../components/Arrow.astro';
 </Shell>
 <script>
   import { validateIntroduction } from '../scripts/validation.mjs';
+  document.addEventListener('astro:page-load', () => {
+  if (document.body.dataset.page !== 'intro') return;
   const form = document.querySelector<HTMLFormElement>('#introduction-form')!;
   const fields = document.querySelector<HTMLFieldSetElement>('#form-fields')!;
   const name = document.querySelector<HTMLInputElement>('#full-name')!;
@@ -129,5 +131,6 @@ import Arrow from '../components/Arrow.astro';
     document.getElementById('comment-count')!.textContent = `${comment.value.length.toLocaleString('en-US')} / 1,000`;
     comment.style.height = 'auto';
     comment.style.height = `${Math.min(120, comment.scrollHeight)}px`;
+  });
   });
 </script>

@@ -199,9 +199,8 @@ input[aria-invalid=true], textarea[aria-invalid=true] { border-color: var(--colo
 .tutorial-trigger { display: flex; align-items: center; justify-content: space-between; width: min(100%, 360px); min-height: 52px; margin-top: 18px; padding: 14px 18px; border: 1px solid var(--color-accent); border-radius: var(--radius-control); background: var(--color-accent); color: var(--color-background); font-size: 13px; font-weight: 750; text-align: left; transition: background 180ms, color 180ms, box-shadow 180ms; }
 .tutorial-trigger:hover, .tutorial-trigger:focus-visible { background: var(--color-accent-hover); color: var(--color-background); box-shadow: 0 0 0 3px rgb(231 236 172 / .2); }
 .tutorial-trigger:hover .arrow, .tutorial-trigger:focus-visible .arrow { transform: translateX(4px); }
-.section-choices { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 14px; margin-top: 16px; color: var(--color-muted); font-size: 11px; }
-.section-choices a { color: var(--color-text); text-decoration: underline; text-decoration-color: var(--color-border); text-underline-offset: 4px; }
-.section-choices a:hover, .section-choices a:focus-visible { color: var(--color-accent); text-decoration-color: var(--color-accent); }
+.free-roam { position: fixed; z-index: 32; top: max(22px, env(safe-area-inset-top)); right: max(24px, env(safe-area-inset-right)); min-height: 40px; padding: 8px 14px; border: 1px solid var(--color-accent); border-radius: 999px; background: rgb(12 21 28 / .82); color: var(--color-accent); font-size: 11px; letter-spacing: .04em; }
+.free-roam:hover, .free-roam:focus-visible { background: var(--color-accent); color: var(--color-background); }
 .route-note { display: flex; align-items: center; gap: 9px; margin-top: 16px; color: var(--color-muted); font-size: 11px; }
 .onboarding-map { position: relative; min-width: 0; width: 100%; }
 .star-map { position: relative; width: 100%; max-width: 1060px; aspect-ratio: 820 / 520; margin-inline: auto; }
@@ -361,9 +360,8 @@ a[data-flight-busy] { cursor: progress; }
 .guided-flight [hidden] { display: none !important; }
 .guided-first-note { position: fixed; z-index: 32; left: 50%; bottom: 7vh; width: min(360px, calc(100% - 48px)); transform: translateX(-50%); color: var(--color-text); font-size: 13px; text-align: center; pointer-events: none; }
 body.is-guided-focus::before { content: ''; position: fixed; inset: 0; z-index: 30; background: rgb(12 21 28 / .54); backdrop-filter: blur(1.8px); pointer-events: none; animation: first-guidance 650ms var(--ease) both; }
-body.is-guided-focus .site-header, body.is-guided-focus .site-footer, body.is-guided-focus .onboarding-layout > :not(.onboarding-copy), body.is-guided-focus .onboarding-copy > :not(#tutorial-trigger):not(.section-choices) { pointer-events: none; }
+body.is-guided-focus .site-header, body.is-guided-focus .site-footer, body.is-guided-focus .onboarding-layout > :not(.onboarding-copy), body.is-guided-focus .onboarding-copy > :not(#tutorial-trigger) { pointer-events: none; }
 body.is-guided-focus #tutorial-trigger { z-index: 31; box-shadow: 0 0 0 8px rgb(231 236 172 / .12), 0 0 42px rgb(231 236 172 / .35); animation: flight-beacon 1.8s ease-in-out infinite; }
-body.is-guided-focus .section-choices { position: relative; z-index: 31; pointer-events: auto; }
 .tutorial-trigger.is-launching { animation: launch-commit 420ms var(--ease) both; }
 .flight-scene { display: none; }
 .guided-flight.has-spaceship { width: 100%; max-width: none; height: 100dvh; max-height: none; margin: 0; border: 0; border-radius: 0; padding: 0; background: var(--color-background); overflow: hidden; overscroll-behavior: none; }
@@ -407,7 +405,7 @@ html.is-flight-open { overflow: hidden; }
 .resume-sheet a { color: var(--color-text); text-decoration-color: var(--color-accent); text-underline-offset: 3px; }
 .resume-sheet section { margin-top: 20px; }
 .cv-ready .resume-sheet > section { opacity: 0; transform: translateY(18px); transition: opacity 560ms var(--ease), transform 560ms var(--ease); }
-.cv-ready .resume-sheet > section.is-visible { opacity: 1; transform: none; animation: cv-section-focus 900ms var(--ease) both; }
+.cv-ready .resume-sheet > section.is-visible { opacity: 1; transform: none; animation: cv-section-focus 1100ms var(--ease) both; }
 .resume-sheet section > h2 { margin: 0 0 8px; padding-bottom: 5px; border-bottom: 1px solid var(--color-border); color: var(--color-accent); font-size: clamp(20px, 2vw, 24px); line-height: 1.05; }
 .resume-sheet p { margin: 0; }
 .resume-role, .resume-project > div { display: flex; justify-content: space-between; gap: 18px; align-items: baseline; margin-top: 10px; }
@@ -423,7 +421,7 @@ html.is-flight-open { overflow: hidden; }
 @keyframes first-guidance { from { opacity: 0; } to { opacity: 1; } }
 @keyframes flight-beacon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
 @keyframes launch-commit { to { opacity: .2; transform: scale(.96); } }
-@keyframes cv-section-focus { 0% { box-shadow: inset 2px 0 0 var(--color-accent), 0 0 28px rgb(231 236 172 / .12); } 100% { box-shadow: inset 0 0 0 transparent, 0 0 0 transparent; } }
+@keyframes cv-section-focus { 0% { box-shadow: inset 3px 0 0 var(--color-accent), 0 0 34px rgb(231 236 172 / .18); background: linear-gradient(90deg, rgb(231 236 172 / .08), transparent 48%); } 100% { box-shadow: inset 1px 0 0 rgb(231 236 172 / .22), 0 0 0 transparent; background: transparent; } }
 @media (max-width: 760px) {
   .about-layout { padding-top: 12px; }
   .about-layout .legal-aside { margin-bottom: 8px; }

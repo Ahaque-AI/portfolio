@@ -20,6 +20,7 @@ export function initGuidedFlight() {
   const status = modal.querySelector<HTMLElement>('#flight-status')!;
   const next = modal.querySelector<HTMLButtonElement>('#flight-next')!;
   const previous = modal.querySelector<HTMLButtonElement>('#flight-previous')!;
+  const freeRoam = document.querySelector<HTMLButtonElement>('#free-roam');
   const events = new AbortController();
   let scene: ReturnType<typeof mountSolarSystem>;
   let visit = 0, stop = 0;
@@ -55,6 +56,7 @@ export function initGuidedFlight() {
     if (modal.open) return;
     document.body.classList.remove('is-guided-focus');
     document.querySelector('#guided-first-note')?.setAttribute('hidden', '');
+    if (freeRoam) freeRoam.hidden = true;
     button.classList.add('is-launching');
     stop = 0; caption();
     modal.classList.add('has-spaceship');
@@ -83,6 +85,11 @@ export function initGuidedFlight() {
   const moveBack = () => move(-1);
   next.addEventListener('click', moveForward, { signal: events.signal });
   previous.addEventListener('click', moveBack, { signal: events.signal });
+  freeRoam?.addEventListener('click', () => {
+    document.body.classList.remove('is-guided-focus');
+    document.querySelector('#guided-first-note')?.setAttribute('hidden', '');
+    freeRoam.hidden = true;
+  }, { signal: events.signal });
   next.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); moveForward(); } }, { signal: events.signal });
   previous.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); moveBack(); } }, { signal: events.signal });
   modal.addEventListener('keydown', event => {
@@ -90,7 +97,7 @@ export function initGuidedFlight() {
     if (event.key === 'ArrowDown') { event.preventDefault(); moveBack(); }
   }, { signal: events.signal });
   modal.querySelector('#tutorial-close')!.addEventListener('click', () => modal.close(), { signal: events.signal });
-  modal.addEventListener('close', () => { release(); if (button.isConnected) button.focus({ preventScroll: true }); }, { signal: events.signal });
+  modal.addEventListener('close', () => { release(); if (freeRoam) freeRoam.hidden = false; if (button.isConnected) button.focus({ preventScroll: true }); }, { signal: events.signal });
   document.addEventListener('astro:before-swap', () => {
     events.abort(); release(); modal.close();
   }, { once: true });

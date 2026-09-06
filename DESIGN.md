@@ -146,7 +146,10 @@ background and Escape; closing restores trigger focus. The game locks its own
 viewport to avoid a dialog scrollbar. Failed WebGL retains readable captions.
 Reduced motion changes stops instantly.
 
-Sector controls sit above the scene for direct pointer, touch and keyboard use.
+Onboarding keeps the launch focus state intentionally simple: the only map exit
+is a top-right Explore freely action that clears the veil. Once clear, the map
+destinations are available for the visitor to choose. Sector controls sit above
+the flight scene for direct pointer, touch and keyboard use.
 ArrowUp and ArrowDown work even when focus remains on the Back to map control.
 Only the selected planet is visible during flight. A deterministic star volume
 covers the complete route depth so the background remains spatial at every

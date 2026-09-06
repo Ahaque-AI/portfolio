@@ -46,7 +46,7 @@ export function makeSolarSystem() {
   );
   scene.add(comet);
   const rocket = makeRocket();
-  rocket.group.scale.setScalar(1.45);
+  rocket.group.scale.setScalar(1.85);
   rocket.group.position.set(0, -3.2, 3.6);
   scene.add(rocket.group);
   const stream = new THREE.Points(new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(Array(36).fill(0), 3)), new THREE.PointsMaterial({ color: 0xe7ecac, size: 2.5, sizeAttenuation: false, transparent: true, opacity: 0, depthWrite: false }));
@@ -97,8 +97,8 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
   try { renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'low-power' }); }
   catch { return; }
   const system = makeSolarSystem();
-  system.rocket.group.scale.setScalar(2.2);
-  const camera = new THREE.PerspectiveCamera(40, 1, .1, 100);
+  system.rocket.group.scale.setScalar(3.4);
+  const camera = new THREE.PerspectiveCamera(40, 1, .1, 360);
   const aim = new THREE.Vector2(), drift = new THREE.Vector2();
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const canvas = renderer.domElement;
@@ -107,7 +107,7 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
   host.append(canvas);
   let frame = 0, last = 0, clock = 0, distance = 11;
   let visible = false, sized = false, disposed = false;
-  let travel = 1, targetIndex = 0, hit = true;
+  let travel = 1, targetIndex = 0, activeIndex = 0, travelDuration = 2400, hit = true;
   let path = makeFlightPath(system.rocket.group.position, system.rocket.group.position);
   const heading = new THREE.Vector3(0, 1, 0);
   const tangent = new THREE.Vector3();
@@ -118,8 +118,9 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
   function flyTo(index: number) {
     const stop = system.stops[index];
     if (!stop || disposed) return;
-    system.stops.forEach((candidate, candidateIndex) => { candidate.group.visible = candidateIndex === index; });
+    system.stops.forEach((candidate, candidateIndex) => { candidate.group.visible = candidateIndex === index || candidateIndex === activeIndex; });
     path = makeFlightPath(system.rocket.group.position, stop.group.position.clone().add(new THREE.Vector3(0, -2.2, 7)));
+    travelDuration = THREE.MathUtils.clamp(path.getLength() * 58, 1800, 4200);
     travel = reduced.matches ? 1 : 0;
     targetIndex = index;
     hit = reduced.matches;
@@ -140,10 +141,15 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
     system.update(clock, reduced.matches);
     for (const stop of system.stops) stop.group.position.copy(stop.point(stop.phase));
     if (reduced.matches) travel = 1;
-    else travel = Math.min(1, travel + delta / 2400);
+    else travel = Math.min(1, travel + delta / travelDuration);
     const eased = travel * travel * travel * (travel * (travel * 6 - 15) + 10);
     system.approachStop(targetIndex, eased);
-    if (!hit && travel === 1) { system.strike(targetIndex); hit = true; }
+    if (!hit && travel === 1) {
+      system.strike(targetIndex);
+      system.stops.forEach((stop, index) => { stop.group.visible = index === targetIndex; });
+      activeIndex = targetIndex;
+      hit = true;
+    }
     system.rocket.group.position.copy(path.getPointAt(eased));
     tangent.copy(path.getTangentAt(Math.min(.999, eased))).normalize();
     system.rocket.group.quaternion.setFromUnitVectors(heading, tangent);

@@ -131,7 +131,10 @@ The guided scene uses a third-person shooter framing with no orbital route-map
 marks. Four full-scale spherical section planets sit at distinct lateral and
 depth coordinates, each with its own red, teal, violet or blue color. The
 swept-wing four-engine fighter and following camera travel between them, so
-asteroid fields pass the player during each control-led approach.
+asteroid fields pass the player during each control-led approach. Travel paths
+arc around each destination so a return never cuts through a planet.
+Planets have layered atmosphere and ring highlights. The ship holds a
+lower-center rear-flight composition with its exhausts facing the visitor.
 A non-interactive targeting reticle sits over the scene.
 The ship's engines pulse and its cyan bolt stream fires toward the active field
 after an advance. Captions occupy one side at a time,

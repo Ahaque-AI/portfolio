@@ -16,6 +16,11 @@ export function makeSolarSystem() {
     const group = new THREE.Group();
     const planet = new THREE.Mesh(new THREE.SphereGeometry(size, 32, 20), new THREE.MeshStandardMaterial({ color, roughness: .95, flatShading: true, emissive: color, emissiveIntensity: .08 }));
     group.add(planet);
+    const atmosphere = new THREE.Mesh(new THREE.SphereGeometry(size * 1.08, 32, 20), new THREE.MeshBasicMaterial({ color, transparent: true, opacity: .16, blending: THREE.AdditiveBlending, side: THREE.BackSide, depthWrite: false }));
+    group.add(atmosphere);
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(size * 1.18, Math.max(.035, size * .018), 8, 64), new THREE.MeshBasicMaterial({ color: 0xffc77d, transparent: true, opacity: .22 }));
+    ring.rotation.x = Math.PI * .38;
+    group.add(ring);
     const rocks = Array.from({ length: 12 }, (_, index) => {
       const angle = index * 2.4;
       const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(.22 + (index % 3) * .11, 1), new THREE.MeshStandardMaterial({ color: 0x53616a, roughness: 1, flatShading: true }));
@@ -154,7 +159,7 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
     tangent.copy(path.getTangentAt(Math.min(.999, eased))).normalize();
     system.rocket.group.quaternion.setFromUnitVectors(heading, tangent);
     look.copy(system.stops[targetIndex].group.position).add(new THREE.Vector3(drift.x * .45, drift.y * .3, 0));
-    const desiredCamera = system.rocket.group.position.clone().add(new THREE.Vector3(drift.x * .25, -4.2 + drift.y * .15, distance));
+    const desiredCamera = system.rocket.group.position.clone().add(new THREE.Vector3(drift.x * .25, 2.8 + drift.y * .15, distance));
     if (!cameraReady) { smoothCamera.copy(desiredCamera); smoothLook.copy(look); cameraReady = true; }
     const settle = 1 - Math.exp(-delta / 150);
     smoothCamera.lerp(desiredCamera, settle);
@@ -221,6 +226,8 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
 
 export function makeFlightPath(start: THREE.Vector3, end: THREE.Vector3) {
   const middle = start.clone().lerp(end, .5);
-  middle.z += 1.4;
+  middle.z += 10;
+  middle.y += 4;
+  middle.x += end.x >= start.x ? -7 : 7;
   return new THREE.CatmullRomCurve3([start.clone(), middle, end.clone()]);
 }

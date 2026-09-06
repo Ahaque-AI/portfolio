@@ -39,3 +39,10 @@ test('map return controls explicitly request the editable introduction', () => {
   assert.match(onboarding, /href="\/\?edit=1"/);
   assert.match(map, /href="\/\?edit=1"/);
 });
+
+test('home onboarding action validates and explains a missing name', () => {
+  const intro = readFileSync(new URL('../src/pages/index.astro', import.meta.url), 'utf8');
+  assert.match(intro, /onboarding\?\.addEventListener\('click'/);
+  assert.match(intro, /mode = 'name-only';\s*if \(!showErrors\(true\)\) return;/);
+  assert.match(intro, /saveVisitorName\(name\.value\);\s*location\.assign\(onboarding\.href\)/);
+});

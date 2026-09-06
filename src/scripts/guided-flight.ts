@@ -23,18 +23,24 @@ export function initGuidedFlight() {
   const freeRoam = document.querySelector<HTMLButtonElement>('#free-roam');
   const events = new AbortController();
   let scene: ReturnType<typeof mountSolarSystem>;
-  let visit = 0, stop = 0;
+  let visit = 0, stop = 0, moving = false;
+  function setMoving(value: boolean) {
+    moving = value;
+    modal.toggleAttribute('data-moving', value);
+    next.disabled = value || stop === flightStops.length - 1;
+    previous.disabled = value || stop === 0;
+  }
   function caption() {
     const current = flightStops[stop];
     title.textContent = current.title;
     copy.textContent = current.copy;
     status.textContent = `${current.name} · USE UP OR DOWN TO CHANGE SECTOR`;
     modal.dataset.captionSide = stop % 2 ? 'right' : 'left';
-    next.disabled = stop === flightStops.length - 1;
-    previous.disabled = stop === 0;
+    setMoving(moving);
     scene?.flyTo(current.planet);
   }
   function move(direction: number) {
+    if (moving) return;
     const next = Math.max(0, Math.min(flightStops.length - 1, stop + direction));
     if (next === stop) return;
     stop = next;
@@ -42,6 +48,7 @@ export function initGuidedFlight() {
   }
   function fallback() {
     scene?.dispose(); scene = undefined;
+    setMoving(false);
     modal.classList.remove('has-spaceship');
     status.textContent = `${flightStops[stop].name}. Text tour available.`;
   }
@@ -62,13 +69,14 @@ export function initGuidedFlight() {
     modal.classList.add('has-spaceship');
     modal.showModal();
     document.documentElement.classList.add('is-flight-open');
+    setMoving(true);
     const request = ++visit;
     button.setAttribute('aria-busy', 'true');
     status.textContent = 'Preparing spaceship…';
     try {
       const { mountSolarSystem } = await import('./solar-system');
       if (request !== visit || !modal.open || !modal.isConnected) return;
-      scene = mountSolarSystem(host, fallback);
+      scene = mountSolarSystem(host, fallback, setMoving);
       if (!scene) fallback();
       else caption();
     } catch { if (request === visit) fallback(); }

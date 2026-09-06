@@ -15,7 +15,7 @@ function setup({ failure = false, delayed = false } = {}) {
   function element(id) {
     return elements[id] ??= {
       dataset: {}, handlers: {}, isConnected: true, hidden: false,
-      classList: { add() {}, remove() {} }, setAttribute() {}, removeAttribute() {},
+      classList: { add() {}, remove() {} }, setAttribute() {}, removeAttribute() {}, toggleAttribute() {},
       addEventListener(name, handler) { this.handlers[name] = handler; },
       querySelector: element,
       focus() { calls.push(`focus:${id}`); },
@@ -24,10 +24,10 @@ function setup({ failure = false, delayed = false } = {}) {
     };
   }
   let resolve;
-  const module = { mountSolarSystem() {
+  const module = { mountSolarSystem(_host, _failure, onTravel) {
     calls.push('mount');
     if (failure) return;
-    return { flyTo: index => calls.push(index), dispose: () => calls.push('dispose') };
+    return { flyTo: index => { onTravel(true); calls.push(index); onTravel(false); }, dispose: () => calls.push('dispose') };
   } };
   runInNewContext(`${script}\ninitGuidedFlight();`, {
     AbortController,

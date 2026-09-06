@@ -84,6 +84,9 @@ The entry form uses two compact steps: name, then contact details. The comment
 field is a native disclosure, closed initially. A name-only action is available
 on either step. The name is validated before moving forward; Back preserves
 all values. Completion replaces the fields instead of extending the page.
+The shared Enter onboarding action uses that same name-only validation on the
+introduction page. An empty value shows the inline full-name error and moves
+focus to the field; a valid value is saved before the route opens.
 Focus moves to the first field after a step change without opening the mobile
 keyboard on initial load. A successfully submitted name is retained in browser
 local storage only to send return visits to the route map. Back and Arrival
@@ -143,6 +146,11 @@ depth coordinates, each with its own red, teal, violet or blue color. The
 swept-wing twin-engine fighter and following camera travel between them, so
 asteroid fields pass the player during each control-led approach. Travel paths
 arc around each destination so a return never cuts through a planet.
+The flight canvas exists only while its full-screen dialog is open, so it pauses
+for hidden tabs but does not use viewport intersection as a stop condition. This
+keeps an active route running through arrival and guarantees the controls unlock.
+Resize observations update the renderer without cancelling or zeroing the active
+frame clock, including repeated mobile browser-chrome viewport changes.
 Planets have layered atmosphere and ring highlights. The ship holds a
 lower-center rear-flight composition with its exhausts facing the visitor.
 A non-interactive targeting reticle sits over the scene.
@@ -180,9 +188,12 @@ covers the complete route depth so the background remains spatial at every
 section. The camera targets that world
 continuously with damped camera and look-at settling, keeping the planet, reticle
 and returning ship centered at arrival. The camera depth range covers all four
-worlds, and travel duration scales with the distance between them. Interrupted
-travel begins from the ship's current position while the existing camera state
-continues smoothly. The fighter
+worlds, and travel duration scales with the distance between them. Sector input
+locks during travel and restores on arrival, preventing overlapping spline state.
+Each route leaves through a clear outer corridor and approaches from in front of
+the destination, keeping the complete ship outside every planet in both travel
+directions. Two deterministic star depths drift at different rates for restrained
+parallax on desktop and mobile. The fighter
 uses a larger reference-matched silhouette with a pointed pale fuselage, blue
 canopy, broad swept wings, dark engine pods, four bright exhausts and forward
 cannons.

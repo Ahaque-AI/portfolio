@@ -68,14 +68,19 @@ test('solar scene has deterministic stars, closed tracks and complete disposal',
 test('spaceship spline reaches each stop with finite positions and headings', () => {
   const system = solarExports.makeSolarSystem();
   let start = system.rocket.group.position.clone();
-  for (const index of [0, 2, 1, 2, 0]) {
-    const end = system.stops[index].group.position.clone();
+  for (const index of [0, 1, 2, 3, 2, 1, 0]) {
+    const end = system.stops[index].group.position.clone().add(new THREE.Vector3(0, -2.6, 12));
     const path = solarExports.makeFlightPath(start, end);
     assert.ok(path.getPointAt(0).distanceTo(start) < 1e-9);
     assert.ok(path.getPointAt(1).distanceTo(end) < 1e-9);
     for (let i = 0; i <= 60; i++) {
-      assert.ok(path.getPointAt(i / 60).toArray().every(Number.isFinite));
+      const point = path.getPointAt(i / 60);
+      assert.ok(point.toArray().every(Number.isFinite));
       assert.ok(path.getTangentAt(i / 60).toArray().every(Number.isFinite));
+      for (const stop of system.stops) {
+        const radius = stop.planet.geometry.parameters.radius;
+        assert.ok(point.distanceTo(stop.group.position) > radius + .5, `path ${index} clears ${stop.id}`);
+      }
     }
     start = end;
   }
@@ -115,6 +120,15 @@ test('render resolution stays within the GPU pixel budget at high device density
     assert.ok(width * height * ratio ** 2 <= 2_000_001);
   }
   delete globalThis.devicePixelRatio;
+});
+
+test('full-screen flight cannot pause before it unlocks sector controls', () => {
+  const source = readFileSync(new URL('../src/scripts/solar-system.ts', import.meta.url), 'utf8');
+  assert.doesNotMatch(source, /new IntersectionObserver/);
+  assert.match(source, /if \(!document\.hidden && !reduced\.matches\) frame = requestAnimationFrame\(render\)/);
+  assert.match(source, /if \(!frame\) frame = requestAnimationFrame\(render\)/);
+  assert.doesNotMatch(source, /function resume\(\) \{\s*cancelAnimationFrame\(frame\);\s*last = 0/);
+  assert.match(source, /onTravel\(false\)/);
 });
 
 test('flight code measures and settles into the incoming page orbit', () => {

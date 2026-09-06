@@ -44,7 +44,16 @@ export function makeSolarSystem() {
       ]).flat(), 3)),
     new THREE.PointsMaterial({ color: 0xa5b4bb, size: 1.35, sizeAttenuation: false, transparent: true, opacity: .48, depthWrite: false }),
   );
-  scene.add(stars);
+  const nearStars = new THREE.Points(
+    new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(
+      Array.from({ length: 110 }, (_, i) => [
+        (fraction((i + 1) * 73.31) - .5) * 94,
+        (fraction((i + 1) * 29.47) - .5) * 64,
+        18 - fraction((i + 1) * 13.91) * 245,
+      ]).flat(), 3)),
+    new THREE.PointsMaterial({ color: 0xd0ddff, size: 1.9, sizeAttenuation: false, transparent: true, opacity: .5, depthWrite: false }),
+  );
+  scene.add(stars, nearStars);
   const comet = new THREE.Line(
     new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3(-.55, .15, 0)]),
     new THREE.LineBasicMaterial({ color: 0xe7ecac, transparent: true, opacity: 0 }),
@@ -62,6 +71,13 @@ export function makeSolarSystem() {
   function approachStop(index: number, progress: number) { approach[index] = progress; }
   function strike(index: number) { struck = index + 1; approach[index] = 1; stops[index] && (stops[index].impact = 1); }
   function update(seconds: number, reduced = false) {
+    if (!reduced) {
+      stars.rotation.z = Math.sin(seconds * .035) * .006;
+      nearStars.rotation.z = Math.sin(seconds * .05) * -.01;
+      nearStars.position.y = Math.sin(seconds * .18) * .3;
+      (stars.material as THREE.PointsMaterial).opacity = .42 + Math.sin(seconds * .42) * .05;
+      (nearStars.material as THREE.PointsMaterial).opacity = .48 + Math.sin(seconds * .68) * .08;
+    }
     for (const stop of stops) {
       stop.group.position.copy(stop.point(stop.phase));
       stop.planet.rotation.y = seconds * .025 / stop.radius;
@@ -90,12 +106,12 @@ export function makeSolarSystem() {
     comet.material.opacity = comet.visible ? Math.sin((pass - 18) / 2 * Math.PI) * .5 : 0;
   }
   update(0);
-  return { scene, stops, rocket, stars, comet, stream, arm, approachStop, strike, update };
+  return { scene, stops, rocket, stars, nearStars, comet, stream, arm, approachStop, strike, update };
 }
 
 // The caller dynamically imports this module on intent and supplies an empty host.
 // Undefined means WebGL failed: the caller keeps its HTML fallback visible.
-export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () => {}) {
+export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () => {}, onTravel: (moving: boolean) => void = () => {}) {
   let renderer: THREE.WebGLRenderer;
   try { renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'low-power' }); }
   catch { return; }
@@ -109,7 +125,7 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
   canvas.style.cssText = 'display:block;width:100%;height:100%;pointer-events:none';
   host.append(canvas);
   let frame = 0, last = 0, clock = 0, distance = 11;
-  let visible = false, sized = false, disposed = false;
+  let sized = false, disposed = false;
   let travel = 1, targetIndex = 0, activeIndex = 0, travelDuration = 2400, hit = true;
   let path = makeFlightPath(system.rocket.group.position, system.rocket.group.position);
   const heading = new THREE.Vector3(0, 1, 0);
@@ -126,7 +142,7 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
     const stop = system.stops[index];
     if (!stop || disposed) return;
     system.stops.forEach((candidate, candidateIndex) => { candidate.group.visible = candidateIndex === index || candidateIndex === activeIndex; });
-    path = makeFlightPath(system.rocket.group.position, stop.group.position.clone().add(new THREE.Vector3(0, -2.2, 7)));
+    path = makeFlightPath(system.rocket.group.position, stop.group.position.clone().add(new THREE.Vector3(0, -2.6, 12)));
     travelDuration = THREE.MathUtils.clamp(path.getLength() * 48, 1600, 3400);
     travel = reduced.matches ? 1 : 0;
     targetIndex = index;
@@ -136,7 +152,8 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
     // does not bank from "rest" to the new heading.
     previousTangent.copy(path.getTangentAt(0)).normalize();
     system.arm(index);
-    if (reduced.matches) system.strike(index);
+    onTravel(!reduced.matches);
+    if (reduced.matches) { system.strike(index); onTravel(false); }
     resume();
   }
   function render(now: number) {
@@ -160,6 +177,7 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
       system.stops.forEach((stop, index) => { stop.group.visible = index === targetIndex; });
       activeIndex = targetIndex;
       hit = true;
+      onTravel(false);
     }
     system.rocket.group.position.copy(path.getPointAt(eased));
     tangent.copy(path.getTangentAt(Math.min(.999, eased))).normalize();
@@ -186,12 +204,16 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
     camera.lookAt(smoothLook);
     try { renderer.render(system.scene, camera); }
     catch { dispose(); onFailure(); return; }
-    if (visible && !document.hidden && !reduced.matches) frame = requestAnimationFrame(render);
+    if (!document.hidden && !reduced.matches) frame = requestAnimationFrame(render);
   }
   function resume() {
-    cancelAnimationFrame(frame);
-    last = 0;
-    if (visible && !document.hidden) render(performance.now());
+    if (document.hidden) {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      last = 0;
+      return;
+    }
+    if (!frame) frame = requestAnimationFrame(render);
   }
   function resizeScene() {
     const { width, height } = host.getBoundingClientRect();
@@ -212,12 +234,11 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
   function reset() { aim.set(0, 0); }
   function contextLost() { dispose(); onFailure(); }
   const resize = new ResizeObserver(resizeScene);
-  const visibility = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; resume(); });
   function dispose() {
     if (disposed) return;
     disposed = true;
     cancelAnimationFrame(frame);
-    resize.disconnect(); visibility.disconnect();
+    resize.disconnect();
     reduced.removeEventListener('change', resume);
     document.removeEventListener('visibilitychange', resume);
     document.removeEventListener('astro:before-swap', dispose);
@@ -228,10 +249,9 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
   }
   renderer.debug.onShaderError = () => { throw new Error('Solar system shader could not compile'); };
   try {
-    visible = true;
     resizeScene();
     if (disposed) return;
-    resize.observe(host); visibility.observe(host);
+    resize.observe(host);
     reduced.addEventListener('change', resume);
     document.addEventListener('visibilitychange', resume);
     document.addEventListener('astro:before-swap', dispose, { once: true });
@@ -243,9 +263,9 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
 }
 
 export function makeFlightPath(start: THREE.Vector3, end: THREE.Vector3) {
-  const middle = start.clone().lerp(end, .5);
-  middle.z += 10;
-  middle.y += 4;
-  middle.x += end.x >= start.x ? -7 : 7;
-  return new THREE.CatmullRomCurve3([start.clone(), middle, end.clone()]);
+  const corridorX = end.x >= start.x ? -26 : 26;
+  const departure = new THREE.Vector3(corridorX, start.y + 5, start.z + 5);
+  const middle = new THREE.Vector3(corridorX, (start.y + end.y) * .5 + 7, (start.z + end.z) * .5 + 10);
+  const approach = new THREE.Vector3(corridorX, end.y + 5, end.z + 5);
+  return new THREE.CatmullRomCurve3([start.clone(), departure, middle, approach, end.clone()], false, 'centripetal');
 }

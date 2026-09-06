@@ -61,6 +61,7 @@ import Arrow from '../components/Arrow.astro';
   const back = document.querySelector<HTMLButtonElement>('#back-step')!;
   const edit = document.querySelector<HTMLButtonElement>('#edit-introduction')!;
   const note = document.querySelector<HTMLDetailsElement>('#note-details')!;
+  const onboarding = document.querySelector<HTMLAnchorElement>('.header-onboarding');
   let attempted = false;
   let mode: 'full' | 'name-only' = 'full';
   let step: 'name' | 'contact' = 'name';
@@ -114,6 +115,15 @@ import Arrow from '../components/Arrow.astro';
     mode = 'name-only';
     if (!showErrors(true)) return;
     finish();
+  });
+  onboarding?.addEventListener('click', (event) => {
+    if (readVisitorName()) return;
+    event.preventDefault();
+    attempted = true;
+    mode = 'name-only';
+    if (!showErrors(true)) return;
+    saveVisitorName(name.value);
+    location.assign(onboarding.href);
   });
   back.addEventListener('click', () => setStep('name'));
   edit.addEventListener('click', () => {

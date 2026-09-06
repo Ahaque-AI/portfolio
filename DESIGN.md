@@ -147,7 +147,9 @@ Reduced motion changes stops instantly.
 
 Sector controls sit above the scene for direct pointer, touch and keyboard use.
 ArrowUp and ArrowDown work even when focus remains on the Back to map control.
-Only the selected planet is visible during flight. The camera targets that world
+Only the selected planet is visible during flight. A deterministic star volume
+covers the complete route depth so the background remains spatial at every
+section. The camera targets that world
 continuously with damped camera and look-at settling, keeping the planet, reticle
 and returning ship centered at arrival. The camera depth range covers all four
 worlds, and travel duration scales with the distance between them. The fighter
@@ -177,7 +179,8 @@ An introduction action appears beneath the opening profile, followed by five
 resume-based work summaries with figures explicitly labeled reported results.
 Arrival and About are open map destinations; Work remains unavailable.
 
-The CV is a dedicated resume surface, not a portfolio article. It removes the
+The CV is a dedicated resume surface, not a portfolio article. It includes a
+persistent Back to map action, then removes the
 site chrome and reading rail, then presents the complete supplied resume in the
 portfolio's Chakra Petch and Manrope type system. Its compact 980px reading sheet
 preserves the PDF hierarchy without clipping or enlarging the document to fill a

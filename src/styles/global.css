@@ -388,6 +388,8 @@ html.is-flight-open { overflow: hidden; }
 .about-story h3 { font-family: var(--font-display); font-size: 22px; font-weight: 500; }
 .about-story .about-result { color: var(--color-accent); }
 .resume-page { min-height: 100dvh; padding: clamp(24px, 4vw, 56px) clamp(16px, 4vw, 48px); background: var(--color-background); color: var(--color-text); }
+.resume-back { position: fixed; top: max(20px, env(safe-area-inset-top)); left: max(20px, env(safe-area-inset-left)); z-index: 2; display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 12px; border: 1px solid var(--color-border); background: rgb(12 21 28 / .9); color: var(--color-text); text-decoration: none; font-size: 12px; }
+.resume-back:hover { color: var(--color-accent); border-color: var(--color-accent); }
 .resume-sheet { box-sizing: border-box; width: min(100%, 980px); margin: 0 auto; padding: clamp(24px, 3vw, 42px); border: 1px solid var(--color-line); background: var(--color-background); font-family: var(--font-body); font-size: clamp(12.5px, .92vw, 14px); line-height: 1.46; color: var(--color-text); }
 .resume-sheet h1, .resume-sheet h2 { font-family: var(--font-display); font-weight: 500; }
 .resume-head { padding-bottom: 20px; border-bottom: 1px solid var(--color-border); }

@@ -37,12 +37,12 @@ export function makeSolarSystem() {
   const fraction = (seed: number) => { const value = Math.sin(seed) * 43758.5453; return value - Math.floor(value); };
   const stars = new THREE.Points(
     new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(
-      Array.from({ length: 140 }, (_, i) => [
-        (fraction((i + 1) * 91.19) - .5) * 16,
-        (fraction((i + 1) * 41.83) - .5) * 12,
-        -3 - fraction((i + 1) * 17.7) * 4,
+      Array.from({ length: 420 }, (_, i) => [
+        (fraction((i + 1) * 91.19) - .5) * 120,
+        (fraction((i + 1) * 41.83) - .5) * 80,
+        24 - fraction((i + 1) * 17.7) * 270,
       ]).flat(), 3)),
-    new THREE.PointsMaterial({ color: 0xa5b4bb, size: 1.5, sizeAttenuation: false, transparent: true, opacity: .4, depthWrite: false }),
+    new THREE.PointsMaterial({ color: 0xa5b4bb, size: 1.35, sizeAttenuation: false, transparent: true, opacity: .48, depthWrite: false }),
   );
   scene.add(stars);
   const comet = new THREE.Line(

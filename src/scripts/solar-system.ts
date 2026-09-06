@@ -115,6 +115,7 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
   function flyTo(index: number) {
     const stop = system.stops[index];
     if (!stop || disposed) return;
+    system.stops.forEach((candidate, candidateIndex) => { candidate.group.visible = candidateIndex === index; });
     path = makeFlightPath(system.rocket.group.position, stop.group.position.clone().add(new THREE.Vector3(0, -2.2, 7)));
     travel = reduced.matches ? 1 : 0;
     targetIndex = index;
@@ -143,7 +144,7 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
     system.rocket.group.position.copy(path.getPointAt(eased));
     tangent.copy(path.getTangentAt(Math.min(.999, eased))).normalize();
     system.rocket.group.quaternion.setFromUnitVectors(heading, tangent);
-    look.copy(system.rocket.group.position).addScaledVector(tangent, 18).add(new THREE.Vector3(drift.x * .45, drift.y * .3, 0));
+    look.copy(system.stops[targetIndex].group.position).add(new THREE.Vector3(drift.x * .45, drift.y * .3, 0));
     camera.position.copy(system.rocket.group.position).add(new THREE.Vector3(drift.x * .25, -4.2 + drift.y * .15, distance));
     camera.lookAt(look);
     try { renderer.render(system.scene, camera); }

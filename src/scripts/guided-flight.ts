@@ -79,8 +79,12 @@ export function initGuidedFlight() {
   document.querySelector('#guided-first-note')?.removeAttribute('hidden');
   requestAnimationFrame(() => button.focus({ preventScroll: true }));
   button.addEventListener('click', open, { signal: events.signal });
-  next.addEventListener('click', () => move(1), { signal: events.signal });
-  previous.addEventListener('click', () => move(-1), { signal: events.signal });
+  const moveForward = () => move(1);
+  const moveBack = () => move(-1);
+  next.addEventListener('click', moveForward, { signal: events.signal });
+  previous.addEventListener('click', moveBack, { signal: events.signal });
+  next.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); moveForward(); } }, { signal: events.signal });
+  previous.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); moveBack(); } }, { signal: events.signal });
   modal.querySelector('#tutorial-close')!.addEventListener('click', () => modal.close(), { signal: events.signal });
   modal.addEventListener('close', () => { release(); if (button.isConnected) button.focus({ preventScroll: true }); }, { signal: events.signal });
   document.addEventListener('astro:before-swap', () => {

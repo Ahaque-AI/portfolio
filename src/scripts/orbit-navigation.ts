@@ -1,7 +1,7 @@
 import type { TransitionBeforePreparationEvent, TransitionBeforeSwapEvent } from 'astro:transitions/client';
 
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
-const orbitPages = new Set(['/', '/onboarding/', '/cv/']);
+const orbitPages = new Set(['/', '/onboarding/', '/about/', '/cv/', '/terms/', '/privacy/']);
 let modulePromise: Promise<typeof import('./orbital-three')> | undefined;
 const load = () => modulePromise ??= import('./orbital-three');
 let active: ReturnType<typeof import('./orbital-three').createFlight> | undefined;
@@ -25,7 +25,7 @@ function pausePage() {
 
 // Warm the chunk on intent, without running a renderer on the introduction page.
 function warm(event: Event) {
-  if (!motion.matches && (event.target as Element)?.closest?.('a[href="/onboarding/"], a[href="/cv/"]')) void load().catch(() => { modulePromise = undefined; });
+  if (!motion.matches && (event.target as Element)?.closest?.('a[href^="/"]:not([target])')) void load().catch(() => { modulePromise = undefined; });
 }
 document.addEventListener('pointerover', warm, { passive: true });
 document.addEventListener('focusin', warm);

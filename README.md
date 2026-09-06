@@ -1,7 +1,7 @@
 # Abdul Haque portfolio
 
-Five-page Astro design preview: introduction (`/`), onboarding (`/onboarding/`),
-curriculum vitae (`/cv/`), terms (`/terms/`), and privacy (`/privacy/`). No
+Six-page Astro design preview: introduction (`/`), onboarding (`/onboarding/`),
+About (`/about/`), curriculum vitae (`/cv/`), terms (`/terms/`), and privacy (`/privacy/`). No
 backend, tracking, data collection, or deployment.
 
 Start with [AGENTS.md](AGENTS.md), then the
@@ -35,5 +35,5 @@ The owner handles manual browser tests; agents must not use browser controls.
 
 Read the [framework recommendation](zensical%20docs/docs/architecture/framework.md)
 and [portfolio brief](zensical%20docs/docs/product/brief.md).
-Portfolio content, services, and CI/CD remain outside this phase. The onboarding
-map is included as a direct route preview with hover destinations.
+Further portfolio sections, services, and CI/CD remain deferred. The onboarding
+map links to Arrival and About. The guided spaceship flight loads on click, with a static reduced-motion scene and a text fallback when WebGL fails.

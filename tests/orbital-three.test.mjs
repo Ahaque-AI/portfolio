@@ -42,10 +42,16 @@ test('solar scene has deterministic stars, closed tracks and complete disposal',
   assert.equal(first.comet.visible, true);
   first.update(19, true);
   assert.equal(first.comet.visible, false);
-  const position = first.stops[0].planet.position.clone();
+  const position = first.stops[0].group.position.clone();
   first.update(19, true);
-  assert.ok(position.equals(first.stops[0].planet.position), 'frozen time preserves the planet frame');
-  assert.equal(first.rocket.group.children.length, 5);
+  assert.ok(position.equals(first.stops[0].group.position), 'frozen time preserves the planet frame');
+  assert.ok(first.rocket.group.children.length >= 7, 'ship has a cockpit, wings and twin engines');
+  assert.ok(first.stops.every(stop => stop.rocks.length === 12), 'every stop is an asteroid encounter');
+  first.strike(1);
+  const rock = first.stops[1].rocks[0];
+  const resting = rock.position.clone();
+  first.update(0);
+  assert.ok(rock.position.distanceTo(resting) > 0, 'an encounter breaks the asteroid field apart');
   let allocated = 0, released = 0;
   first.scene.traverse(object => {
     if (!object.geometry) return;
@@ -57,6 +63,23 @@ test('solar scene has deterministic stars, closed tracks and complete disposal',
   disposeScene(first.scene);
   disposeScene(second.scene);
   assert.equal(released, allocated);
+});
+
+test('spaceship spline reaches each stop with finite positions and headings', () => {
+  const system = solarExports.makeSolarSystem();
+  let start = system.rocket.group.position.clone();
+  for (const index of [0, 2, 1, 2, 0]) {
+    const end = system.stops[index].group.position.clone();
+    const path = solarExports.makeFlightPath(start, end);
+    assert.ok(path.getPointAt(0).distanceTo(start) < 1e-9);
+    assert.ok(path.getPointAt(1).distanceTo(end) < 1e-9);
+    for (let i = 0; i <= 60; i++) {
+      assert.ok(path.getPointAt(i / 60).toArray().every(Number.isFinite));
+      assert.ok(path.getTangentAt(i / 60).toArray().every(Number.isFinite));
+    }
+    start = end;
+  }
+  disposeScene(system.scene);
 });
 
 test('Three.js orbit contains finite spherical geometry and a closed visitor path', () => {

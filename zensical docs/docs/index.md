@@ -1,6 +1,6 @@
 # Knowledge domain map
 
-Status: three-page Astro design preview, 2026-09-05. See the root
+Status: six-page Astro preview with guided spaceship flight, 2026-09-06. See the root
 [README](../../README.md) for commands and [DESIGN.md](../../DESIGN.md) for shared UI.
 This directory uses the requested Zensical layout; no documentation engine
 or build configuration is installed yet. Markdown is directly readable.

@@ -51,16 +51,17 @@ from the owner-supplied PDF with pypdf under uv and reviewed before writing.
 ### Step 02: Solar system and rocket scene module
 
 Status: built 2026-09-06, awaiting owner review. Scene factory and mount/dispose
-API are implemented with no new dependencies. The module is not yet mounted on
-a page; the intent-loaded full-screen host remains Step 03. Geometry,
+API are implemented with no new dependencies. Step 03 now mounts the scene on
+guided-flight intent. Geometry,
 determinism and disposal have a focused non-browser test.
 
 - What: `src/scripts/solar-system.ts`, same lifecycle contract as
   `orbital-map.ts` (mount, visibility pause, reduced-motion freeze, full
   disposal). Scene: the existing globe reused as the sun, planet stops for
   Arrival, About and Work on orbital tracks, deterministic star field, one
-  sparse comet accent. Rocket built from cones and cylinders: ink body,
-  citron stripe and engine dot. Mouse-only parallax; everything decorative
+  sparse comet accent. Exploration ship built from a compact hull, cockpit,
+  broad wings and twin engines. Each destination has a sparse asteroid field
+  that approaches before impact and a short data stream on arrival. Mouse-only parallax; everything decorative
   stays aria-hidden.
 - Why: the flight needs one shared scene the overlay, captions and rocket
   fly-through can use.
@@ -69,6 +70,12 @@ determinism and disposal have a focused non-browser test.
 - Files: `src/scripts/solar-system.ts`, `src/scripts/rocket.ts`.
 
 ### Step 03: Full-screen guided flight overlay
+
+Status: built 2026-09-06, awaiting owner visual review. The trigger opens the
+spaceship overlay, with spline travel, camera follow, static reduced motion,
+and a caption fallback. Encounters run automatically and reveal information
+without in-flight actions. A single Back to map control stays at top left.
+First map visits spotlight the launch control until it starts the flight.
 
 - What: full-screen overlay on the onboarding page hosting the solar system.
   The rocket flies a spline through the stops; the camera follows. Each stop
@@ -83,6 +90,10 @@ determinism and disposal have a focused non-browser test.
   `src/pages/onboarding.astro`, `global.css`.
 
 ### Step 04: About page and map link
+
+Status: built 2026-09-06, awaiting owner review. About is a static route with
+five resume-based work summaries, reported results, tools, and an introduction
+action. The map links to About and identifies two open destinations.
 
 - What: `/about/` page in the shared identity: who Abdul is, the five work
   stories with reported metrics labeled as such, an honest tools list, and

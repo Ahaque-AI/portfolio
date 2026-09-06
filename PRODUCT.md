@@ -13,8 +13,8 @@ the owner's requested initial build. pnpm only. Surge remains the future host.
 
 ## Product Purpose
 
-Abdul Haque's personal AI engineering portfolio. Current scope is four pages:
-introduction form, onboarding route map, terms and conditions, and privacy policy.
+Abdul Haque's personal AI engineering portfolio. Current scope is six pages:
+introduction form, onboarding route map, About, CV, terms and conditions, and privacy policy.
 
 ## Users
 
@@ -54,3 +54,8 @@ No additional credentials, legal approval, or service capability may be invented
 - No preview path transmits personal information; policy pages remain accessible.
 - Use plain labels and honest feedback.
 - Share design primitives and document their ownership.
+
+The guided spaceship tutorial loads on intent from the map. Arrival and About
+are open destinations; Work remains a future point. About presents five resume
+work summaries with reported results. Reduced motion uses a static scene and
+WebGL failure preserves the caption tour. Steps 03 and 04 await owner review.

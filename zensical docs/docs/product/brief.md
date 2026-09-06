@@ -47,8 +47,8 @@ PDF into public assets; the CV is authored content.
    to the eventual notice and terms. Marketing permission, if ever wanted,
    is a separate decision. See the privacy domain for unresolved details.
 3. Offer a short guided introduction explaining the available route and future
-   navigation. The preview keeps the map itself as the guide, with one available
-   destination and future sections shown as muted points.
+   navigation. The preview keeps the map itself as the guide, with Arrival and
+   About available and Work shown as a muted future point.
 4. For the future tour, keep skip/exit and back available. Direct project links must work without
    replaying onboarding. A visitor can browse freely or follow the suggested order.
 5. Present a clear next action within each section and a final contact route.

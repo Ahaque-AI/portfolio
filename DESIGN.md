@@ -97,8 +97,8 @@ scrolling under every browser/text-size combination.
 
 The onboarding page is a viewport-first route map. The copy gives one clear
 instruction, then the visitor hovers over a destination and selects the one
-available point directly on the map. Back and one optional guided-flight button
-are the only separate controls. Future points remain visibly muted and are not
+available destination directly on the map. Back and one optional guided-flight button
+are the only separate controls. The future Work point remains visibly muted and is not
 presented as fake choices. Route motion is sparse: a slow signal along the path
 and restrained star twinkle. No floating particle wash or repeated shooting-star
 loop. The map now renders a lit Three.js sphere, depth-tested latitude and
@@ -109,8 +109,7 @@ motion stops offscreen, in hidden tabs and under reduced motion.
 
 The map labels are route annotations rather than floating captions: each carries
 an index, destination and concise state. Arrival remains a native link and has
-the brightest label at the lower-left launch point. About and Work stay muted,
-non-interactive labels with the same alignment system. Their touch-sized layout
+the brightest label at the lower-left launch point. About is a real link; Work stays a muted, non-interactive label with the same alignment system. Their touch-sized layout
 does not rely on hover. On capable devices, the Three.js map adds a slow star
 field drift, an orbital shimmer, a breathing signal halo and a small mouse-only
 camera parallax. The effects are part of one spatial instrument, not separate
@@ -122,12 +121,46 @@ The route signal eases back along the path instead of jumping from end to start.
 Introduction tilt applies to the whole scene, keeping SVG labels and WebGL
 geometry together.
 
-Guided flight Step 02 provides a scene module only, pending owner review and
-Step 03 overlay integration. It reuses the globe as a sun, adds Arrival, About
+Guided flight opens a full-screen native dialog from the map trigger and loads
+its scene on click. It reuses the globe as a sun, adds Arrival, About
 and Work planets on closed tracks, deterministic stars and one comet pass per
 24 seconds. The authored rocket uses ink geometry with a citron stripe and
 engine dot. Its host canvas is aria-hidden. Animation pauses offscreen and in
 hidden tabs, freezes under reduced motion, and releases resources on disposal.
+The rocket follows a spline from Arrival past Work to About, with a following
+camera. Captions occupy a separate bottom row so the scene never hides reading
+or controls. About ends with a real Enter About link. Back, skip and close remain
+available. Native modal behavior owns focus containment, inert background and
+Escape; closing restores trigger focus. Failed WebGL retains the compact text
+tour. No document scroll lock is applied. Reduced motion changes stops instantly.
+
+The guided flight is the portfolio's authored moment: the ship moves through
+four asteroid encounters, breaks their sparse fields apart and carries a short
+citron data stream from each encounter. The ship is a compact exploration craft
+with a dark cockpit, broad citron wings and twin engines, not a vertical rocket.
+Every button and internal destination receives the same orbital ring feedback;
+internal page destinations also use the shared WebGL orbit transition. On a
+session's first map visit, the rest of the page fades behind the glowing launch
+control and pointer interaction waits for launch. This focus state is cleared
+as soon as the flight starts, and no personal data is stored for it.
+
+The launch control uses the dark text token on a solid citron surface. Its
+first-visit focus veil uses a low-opacity background and a restrained 1.8px
+blur, preserving the map while making the launch area unmistakable. The game
+has one control only: Back to map at the top left. Encounters advance by flight
+time, not by controls. Asteroids close in before impact, then scatter and reveal
+the next information signal.
+
+About is a static reading surface using the shared rail and article layout.
+An introduction action appears beneath the opening profile, followed by five
+resume-based work summaries with figures explicitly labeled reported results.
+Arrival and About are open map destinations; Work remains unavailable.
+
+The CV is a dedicated resume surface, not a portfolio article. It removes the
+site chrome and reading rail, then presents the supplied one-page A4 resume as
+one fitted desktop sheet. The PDF's hierarchy drives its serif typography,
+blue section rules, compact rows and dense content. Narrow screens keep the
+same content but allow normal document scrolling for legibility.
 
 The owner explicitly requested Three.js for the page transition. On “See the
 route ahead”, a WebGL globe takes over at the source orbit's measured position,
@@ -169,7 +202,7 @@ tilt, and transitions.
 ## Shapes
 
 Orbital ellipses are the signature. The approved guided-flight scene alone uses
-an authored rocket and deterministic star field; avoid emoji stars and decorative
+an authored exploration ship, asteroids and deterministic star field; avoid emoji stars and decorative
 dashboards. Controls have 8px corners; checkbox 4px.
 Arrows share a 1.5px stroke. The favicon is the same orbital mark as the header.
 
@@ -187,7 +220,10 @@ Arrows share a 1.5px stroke. The favicon is the same orbital mark as the header.
 | `src/scripts/orbital-three.ts` | Shared Three.js globe geometry and flight renderer |
 | `src/scripts/orbit-navigation.ts` | Astro navigation lifecycle, cancellation, reduced motion and focus |
 | `src/scripts/orbital-map.ts` | Map renderer, aligned route, visibility and resource cleanup |
-| `src/scripts/solar-system.ts` | Guided-flight scene foundation and optional mount lifecycle; overlay integration is Step 03 |
+| `src/scripts/solar-system.ts` | Guided-flight scene, spline travel, following camera and mount lifecycle |
+| `src/components/GuidedFlight.astro` | Native full-screen dialog, caption row, close/skip/back and About landing |
+| `src/scripts/guided-flight.ts` | Intent loading, stop captions, cancellation, fallback and focus restoration |
+| `src/pages/about.astro` | Static profile, five work summaries, reported results and tools |
 | `src/scripts/rocket.ts` | Authored rocket geometry, local +Y nose direction; disposed by its scene owner |
 | `src/pages/index.astro` | Form state, inline errors, status and focus handling |
 | `src/pages/onboarding.astro` | Route map, direct destination, and guided flight |

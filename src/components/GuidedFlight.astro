@@ -1,0 +1,16 @@
+---
+import Arrow from './Arrow.astro';
+---
+<dialog class="tutorial-dialog guided-flight" id="tutorial-dialog" aria-labelledby="tutorial-title" aria-describedby="tutorial-copy">
+  <button class="flight-back" id="tutorial-close" type="button" autofocus><Arrow back /> Back to map</button>
+  <div class="flight-scene" id="flight-scene" aria-hidden="true"></div>
+  <div class="flight-caption">
+    <p class="flight-status" id="flight-status" role="status">Incoming signal</p>
+    <h2 id="tutorial-title" tabindex="-1">Start with the signal.</h2>
+    <p id="tutorial-copy">Arrival opens the introduction, where you can update your name.</p>
+  </div>
+</dialog>
+<script>
+  import { initGuidedFlight } from '../scripts/guided-flight';
+  document.addEventListener('astro:page-load', initGuidedFlight);
+</script>

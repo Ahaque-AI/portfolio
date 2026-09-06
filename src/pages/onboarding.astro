@@ -2,59 +2,23 @@
 import Shell from '../layouts/Shell.astro';
 import Arrow from '../components/Arrow.astro';
 import StarMap from '../components/StarMap.astro';
+import GuidedFlight from '../components/GuidedFlight.astro';
 ---
 <Shell title="The route ahead" description="A guided map of Abdul Haque's portfolio sections." page="onboarding">
   <main id="main" class="onboarding-layout">
     <section class="onboarding-copy" aria-labelledby="onboarding-title">
       <a class="back-link" href="/?edit=1"><Arrow back /> Back to introduction</a>
       <h1 id="onboarding-title">Follow the<br /><span>signal.</span></h1>
-      <p class="onboarding-lede">Arrival is open now. The orbit marks the work and the person behind it as they come online.</p>
-      <button class="tutorial-trigger" id="tutorial-trigger" type="button"><span>Take the guided flight</span><Arrow /></button>
-      <p class="route-note"><span class="location-dot"></span> One destination is open now. More will appear as the portfolio grows.</p>
+      <p class="onboarding-lede">Meet the person behind the work. Open About on the map, or take the spaceship for a guided introduction.</p>
+      <button class="tutorial-trigger orbit-action" id="tutorial-trigger" type="button"><span>Launch guided flight</span><Arrow /></button>
+      <p class="route-note"><span class="location-dot"></span> Arrival and About are open. Work is joining soon.</p>
     </section>
     <section class="onboarding-map" aria-labelledby="map-title">
       <h2 id="map-title" class="sr-only">Portfolio section map</h2>
       <StarMap />
-      <div class="map-legend"><span><i class="legend-dot legend-active"></i> Available now</span><span><i class="legend-dot legend-future"></i> Joining soon</span></div>
+      <div class="map-legend"><span><i class="legend-dot legend-active"></i> 2 destinations open</span><span><i class="legend-dot legend-future"></i> Work joining soon</span></div>
     </section>
   </main>
-  <dialog class="tutorial-dialog" id="tutorial-dialog" aria-labelledby="tutorial-title">
-    <div class="tutorial-topline"><span>GUIDED FLIGHT / 01</span><button class="dialog-close" id="tutorial-close" type="button" aria-label="Close guided flight">Close</button></div>
-    <div class="tutorial-orbit" aria-hidden="true"><span class="tutorial-pulse"></span><span class="tutorial-dot"></span></div>
-    <h2 id="tutorial-title">Start with the signal.</h2>
-    <p id="tutorial-copy">The Arrival point opens the introduction. It is the first stop in the route and the doorway to the work ahead.</p>
-    <div class="tutorial-progress" aria-label="Guided flight step 1 of 3"><span class="is-current"></span><span></span><span></span></div>
-    <div class="tutorial-actions"><button class="tutorial-next" id="tutorial-next" type="button">Next <Arrow /></button><button class="tutorial-skip" id="tutorial-skip" type="button">Finish later</button></div>
-  </dialog>
+  <GuidedFlight />
+  <p class="guided-first-note" id="guided-first-note" role="status" hidden>First signal received. Launch the guided flight to begin.</p>
 </Shell>
-<script>
-  document.addEventListener('astro:page-load', () => {
-  if (document.body.dataset.page !== 'onboarding') return;
-  const dialog = document.querySelector<HTMLDialogElement>('#tutorial-dialog')!;
-  const trigger = document.querySelector<HTMLButtonElement>('#tutorial-trigger')!;
-  const close = document.querySelector<HTMLButtonElement>('#tutorial-close')!;
-  const skip = document.querySelector<HTMLButtonElement>('#tutorial-skip')!;
-  const next = document.querySelector<HTMLButtonElement>('#tutorial-next')!;
-  const copy = document.querySelector<HTMLElement>('#tutorial-copy')!;
-  const title = document.querySelector<HTMLElement>('#tutorial-title')!;
-  const progress = [...document.querySelectorAll<HTMLElement>('.tutorial-progress span')];
-  const steps = [
-    ['Start with the signal.', 'The Arrival point opens the introduction, where you can update your name. It is the first stop in the route and the doorway to the work ahead.'],
-    ['Read the quiet points.', 'Work and About are marked on the map. They will open when those sections are ready.'],
-    ['Choose your landing.', 'Select Arrival to enter the available section, or come back when the route grows.']
-  ];
-  let step = 0;
-  function renderStep() {
-    title.textContent = steps[step][0];
-    copy.textContent = steps[step][1];
-    progress.forEach((item, index) => item.classList.toggle('is-current', index === step));
-    next.firstChild!.textContent = step === steps.length - 1 ? 'Finish ' : 'Next ';
-  }
-  function endTour() { dialog.close(); step = 0; renderStep(); }
-  trigger.addEventListener('click', () => { step = 0; renderStep(); dialog.showModal(); });
-  close.addEventListener('click', endTour);
-  skip.addEventListener('click', endTour);
-  next.addEventListener('click', () => { if (step === steps.length - 1) endTour(); else { step += 1; renderStep(); } });
-  dialog.addEventListener('click', (event) => { if (event.target === dialog) endTour(); });
-  });
-</script>

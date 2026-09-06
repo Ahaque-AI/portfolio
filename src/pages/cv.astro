@@ -1,111 +1,24 @@
 ---
 import Shell from '../layouts/Shell.astro';
-import Arrow from '../components/Arrow.astro';
 ---
-<Shell title="Curriculum vitae" description="The experience, skills, and education behind Abdul Haque's portfolio." page="cv">
-  <main id="main" class="legal-layout cv-layout">
-    <aside class="legal-aside">
-      <a class="back-link" href="/onboarding/"><Arrow back /> Back to the route map</a>
-      <div class="legal-orbit" aria-hidden="true"><svg viewBox="0 0 260 240" fill="none"><circle cx="130" cy="120" r="69" stroke="currentColor"/><ellipse cx="130" cy="120" rx="124" ry="42" transform="rotate(-35 130 120)" stroke="currentColor"/><ellipse cx="130" cy="120" rx="33" ry="69" stroke="currentColor"/><circle cx="224" cy="55" r="5" fill="var(--color-accent)" stroke="none"/></svg></div>
-      <nav class="contents" aria-label="On this page"><span>On this page</span><a href="#summary">Summary</a><a href="#skills">Technical skills</a><a href="#experience">Professional experience</a><a href="#projects">Research and projects</a><a href="#education">Education</a><a href="#leadership">Certifications and leadership</a></nav>
-      <a class="back-link cv-start" href="/"><Arrow /> Start the introduction</a>
-    </aside>
-    <article class="legal-article">
-      <h1>Abdul Haque</h1>
-      <p class="cv-headline">AI Software Engineer <span>|</span> Backend Systems, LLMs &amp; Agentic AI</p>
-      <p class="cv-contact"><a href="mailto:abdulhaque.dev@gmail.com">abdulhaque.dev@gmail.com</a><span>|</span><a href="tel:+923379211323">+92-337-9211323</a><span>|</span><a href="https://www.linkedin.com/in/abdul-haque-dev" target="_blank" rel="noopener">linkedin.com/in/abdul-haque-dev</a><span>|</span><a href="https://github.com/Ahaque-AI" target="_blank" rel="noopener">github.com/Ahaque-AI</a><span>|</span>Islamabad, Pakistan</p>
-      <section class="legal-section" id="summary">
-        <h2>Summary</h2>
-        <p>Backend AI engineer specialising in production LLM microservices (FastAPI) and multi-agent RAG systems (LangGraph, LangChain, CrewAI) on Azure, with hands-on experience deploying a CPU-only quantised inference pipeline serving 300+ daily sessions for an Australian government healthcare client.</p>
+<Shell title="Abdul Haque resume" description="Abdul Haque's one-page AI software engineer resume." page="cv" bare>
+  <main id="main" class="resume-page">
+    <article class="resume-sheet" aria-label="Abdul Haque resume">
+      <header class="resume-head">
+        <h1>Abdul Haque</h1>
+        <p>AI Software Engineer <span>|</span> Backend Systems, LLMs &amp; Agentic AI</p>
+        <p class="resume-contact"><a href="mailto:abdulhaque.dev@gmail.com">abdulhaque.dev@gmail.com</a><span>|</span><a href="tel:+923379211323">+92-337-9211323</a><span>|</span><a href="https://www.linkedin.com/in/abdul-haque-dev">linkedin.com/in/abdul-haque-dev</a><span>|</span><a href="https://github.com/Ahaque-AI">github.com/Ahaque-AI</a><span>|</span> Islamabad, Pakistan</p>
+      </header>
+      <section><h2>Summary</h2><p>Backend AI Engineer specialising in production LLM microservices and multi-agent RAG systems on Azure, with hands-on experience deploying a CPU-only quantised inference pipeline serving <strong>300+ daily sessions</strong> for an Australian government healthcare client.</p></section>
+      <section><h2>Technical Skills</h2><p><strong>Programming:</strong> Python, SQL, Bash, C++<br /><strong>Backend:</strong> FastAPI, REST APIs, microservices, AsyncIO, Pydantic, OAuth/JWT, middleware<br /><strong>Cloud &amp; Infra:</strong> Azure AKS, DevOps, Blob Storage, AWS boto3, GCP, Docker<br /><strong>AI/LLM:</strong> LangGraph, LangChain, CrewAI, OpenAI and Anthropic APIs, Azure OpenAI, vLLM, Ollama<br /><strong>ML/NLP &amp; Speech:</strong> PyTorch, HuggingFace Transformers, Scikit-learn, Faster-Whisper<br /><strong>Databases &amp; RAG:</strong> PostgreSQL pgvector, Neo4j Cypher, GraphRAG<br /><strong>Messaging &amp; Observability:</strong> Azure Service Bus, Kafka, MLflow, Prometheus, Grafana</p></section>
+      <section><h2>Professional Experience</h2><div class="resume-role"><strong>Associate Software Engineer, AI</strong><b>Dec 2025 - Present</b></div><p class="resume-meta">DeltaShoppe (Pvt.) Ltd, Islamabad <span>|</span> Partner: Kermit Tech (Norway) <span>|</span> Sole backend engineer across three concurrent AI client engagements.</p>
+        <div class="resume-project"><div><strong>AI Therapy Microservice</strong><em>Azure AKS, Faster-Whisper, Phi-3.5-Mini, Azure Service Bus, FastAPI</em></div><ul><li>Designed an event-driven audio pipeline for an Australian government healthcare client with <strong>300+ daily sessions</strong>.</li><li>Deployed Faster-Whisper and Phi-3.5-Mini INT8 on 15 GB AKS pods; a multiprocessing worker pool resolved lock contention and ONNX OOM failures.</li><li>Implemented JWKS verification, encrypted audio, dead-letter queues, retries and MLflow observability.</li></ul></div>
+        <div class="resume-project"><div><strong>AI Student Companion</strong><em>LangGraph, FastAPI, PostgreSQL pgvector, Docker</em></div><ul><li>Built multi-tenant RAG with per-client isolation and propositional chunking, reporting <strong>90% token reduction</strong>.</li><li>Sliding-window memory reduced session context from 100K to 10K tokens. Added scoped tools, PII redaction and audit logging.</li></ul></div>
+        <div class="resume-project"><div><strong>Real-Time Fraud Detection &amp; Regulatory Reporting</strong><em>Kafka, StreamSets, PostgreSQL, Docker, FastAPI</em></div><ul><li>Built a Kafka banking pipeline with PII masking and automated suspicious transaction reporting every five minutes.</li><li>Added Prometheus and Grafana alerts for verification failures.</li></ul></div>
+        <p class="resume-internships"><strong>Earlier internships:</strong> Data Science Intern, Securely Innovations, Apr-Nov 2024. Built a multi-threaded collection pipeline for about 3M automotive records. Computer Vision &amp; Generative AI Intern, DataInsight Lab, Jun-Aug 2024. Fine-tuned Stable Diffusion on 2×T4 GPUs.</p>
       </section>
-      <section class="legal-section" id="skills">
-        <h2>Technical skills</h2>
-        <ul class="cv-tools">
-          <li><strong>Programming:</strong> Python, SQL, Bash, C++</li>
-          <li><strong>Backend:</strong> FastAPI, REST APIs, microservices, AsyncIO, Pydantic, OAuth/JWT, middleware</li>
-          <li><strong>Cloud &amp; Infra:</strong> Azure (AKS, DevOps, Blob Storage), AWS (boto3), GCP, Docker</li>
-          <li><strong>AI/LLM:</strong> LangGraph, LangChain, CrewAI, multi-agent systems, OpenAI/Anthropic APIs, Azure OpenAI, vLLM, Ollama</li>
-          <li><strong>ML/NLP &amp; Speech:</strong> PyTorch, HuggingFace Transformers, Scikit-learn, Faster-Whisper</li>
-          <li><strong>Databases &amp; RAG:</strong> PostgreSQL (pgvector), Neo4j (Cypher), GraphRAG</li>
-          <li><strong>Messaging &amp; Observability:</strong> Azure Service Bus, Kafka, MLflow, Prometheus, Grafana</li>
-        </ul>
-      </section>
-      <section class="legal-section" id="experience">
-        <h2>Professional experience</h2>
-        <div class="cv-row">
-          <h3>Associate Software Engineer, AI</h3>
-          <p class="cv-dates">Dec 2025 to present</p>
-        </div>
-        <p class="cv-workplace">DeltaShoppe (Pvt.) Ltd, Islamabad <span>|</span> Partner: Kermit Tech (Norway)</p>
-        <p>Sole backend engineer rotating across three concurrent client engagements within a small AI engineering pod.</p>
-        <div class="cv-entry">
-          <div class="cv-row"><h4>AI Therapy Microservice</h4></div>
-          <p class="cv-stack">Azure AKS, Faster-Whisper, Phi-3.5-Mini, Azure Service Bus, FastAPI</p>
-          <ul class="cv-list">
-            <li>Designed the AI therapy microservice for an Australian government healthcare client: 300+ daily sessions with an event-driven audio pipeline on Azure Service Bus decoupling transcription and summarisation into background jobs.</li>
-            <li>Deployed Faster-Whisper and Phi-3.5-Mini (INT8) CPU-only on 15 GB AKS pods; a multiprocessing worker pool resolved lock contention and ONNX OOM failures.</li>
-            <li>JWKS token verification, encrypted audio at rest, dead-letter queues with retry logic, MLflow observability.</li>
-          </ul>
-        </div>
-        <div class="cv-entry">
-          <div class="cv-row"><h4>AI Student Companion</h4></div>
-          <p class="cv-stack">LangGraph, FastAPI, PostgreSQL (pgvector), Docker</p>
-          <ul class="cv-list">
-            <li>Built a multi-tenant RAG system with pgvector, per-client isolation, and propositional chunking (~10:1 compression, 90% token reduction). Sliding-window memory with importance scoring cut tokens from 100K to 10K per session.</li>
-            <li>Tool injector pattern for per-user permission scoping across LLM tools, with PII redaction middleware and audit logging.</li>
-            <li>Deployed via Azure DevOps CI/CD with retry and fallback across Groq and Mistral; load-tested at 5 to 10 concurrent sessions.</li>
-          </ul>
-        </div>
-        <div class="cv-entry">
-          <div class="cv-row"><h4>Real-Time Fraud Detection &amp; Regulatory Reporting</h4></div>
-          <p class="cv-stack">Kafka, StreamSets, PostgreSQL, Docker, FastAPI</p>
-          <ul class="cv-list">
-            <li>Built real-time fraud detection for regulated retail banking: an event-driven pipeline on Kafka with PII masking (6 fields) and automated Suspicious Transaction Report filing to the regulator every 5 minutes.</li>
-            <li>Monitored via Prometheus + Grafana alerting (3 dashboards) with CRITICAL alerts on verification failures.</li>
-          </ul>
-        </div>
-        <h4 class="cv-subhead">Earlier internships</h4>
-        <ul class="cv-list">
-          <li><strong>Data Science Intern, Securely Innovations (Pvt.) Ltd</strong> (Apr to Nov 2024): built a multi-threaded data collection pipeline scraping ~3M automotive parts records via network-level API replication, outperforming Selenium-based scrapers by 3&times;.</li>
-          <li><strong>Computer Vision &amp; Generative AI Intern, DataInsight Lab (FAST-NUCES)</strong> (Jun to Aug 2024): fine-tuned Stable Diffusion (DreamBooth + LoRA, QLoRA) for furniture/interior design generation on 2&times;T4 GPUs using model parallelism.</li>
-        </ul>
-      </section>
-      <section class="legal-section" id="projects">
-        <h2>Research &amp; projects</h2>
-        <div class="cv-entry">
-          <div class="cv-row"><h4>GraphRAG-Causal: Graph-Augmented Framework for Causal Reasoning in News</h4><p class="cv-dates">Aug 2024 to Apr 2025</p></div>
-          <p class="cv-stack">CrewAI Flows, FastAPI, Docker, Neo4j <span>|</span> <a href="https://github.com/Ahaque-AI/GraphRAG-Causal" target="_blank" rel="noopener">GraphRAG-Causal</a> <span>|</span> <a href="https://arxiv.org/abs/2506.11600" target="_blank" rel="noopener">arXiv</a></p>
-          <ul class="cv-list">
-            <li>Causal GraphRAG framework using XML cause-effect annotation and multi-hop graph traversal: 82.88% F1 / 80% accuracy on CausalNewsCorpus, on par with fine-tuned BERT-Large.</li>
-            <li>Agentic extension in CrewAI Flows integrating the graph DB and web search for controllable causal inference.</li>
-          </ul>
-        </div>
-        <div class="cv-entry">
-          <div class="cv-row"><h4>IntentLens: Multi-Agent Feedback Analysis</h4><p class="cv-dates">Aug 2024 to Jan 2025</p></div>
-          <p class="cv-stack">CrewAI, Groq API, Streamlit</p>
-          <ul class="cv-list"><li>Built a 4-agent system (scraper, intent analyser, search agent, supervisor) analysing 5,000+ customer reviews with LLM-as-judge evaluation.</li></ul>
-        </div>
-      </section>
-      <section class="legal-section" id="education">
-        <h2>Education</h2>
-        <div class="cv-entry">
-          <div class="cv-row"><h4>B.Sc. Data Science, FAST-NUCES, Islamabad</h4><p class="cv-dates">Aug 2021 to Jun 2025</p></div>
-          <p class="cv-meta">CGPA: 3.24/4.0 <span>|</span> Final-Year GPA: 3.75/4.0 <span>|</span> Dean's List: Fall 2024, Spring 2025 <span>|</span> FYP: GraphRAG-Causal</p>
-        </div>
-      </section>
-      <section class="legal-section" id="leadership">
-        <h2>Certifications &amp; leadership</h2>
-        <div class="cv-entry">
-          <div class="cv-row"><h4>Generative AI with LLMs</h4></div>
-          <p class="cv-stack">DeepLearning.AI &amp; AWS</p>
-        </div>
-        <div class="cv-entry">
-          <div class="cv-row"><h4>Section Leader, Code in Place</h4></div>
-          <p class="cv-stack">Stanford University, 2025</p>
-          <ul class="cv-list"><li>95% student retention across a global cohort.</li></ul>
-        </div>
-      </section>
-      <a class="legal-return" href="/onboarding/"><Arrow back /> Back to the route map</a>
+      <section><h2>Research &amp; Projects</h2><div class="resume-role"><strong>GraphRAG-Causal: Graph-Augmented Framework for Causal Reasoning in News</strong><b>Aug 2024 - Apr 2025</b></div><p class="resume-meta">CrewAI Flows, FastAPI, Docker, Neo4j <span>|</span> <a href="https://github.com/Ahaque-AI/GraphRAG-Causal">GraphRAG-Causal</a> <span>|</span> <a href="https://arxiv.org/abs/2506.11600">arXiv</a></p><ul><li>Causal GraphRAG with XML cause-effect annotation and multi-hop traversal: <strong>82.88% F1 / 80% accuracy</strong> on CausalNewsCorpus.</li><li>Agentic CrewAI Flows extension connecting graph data and web search.</li></ul><div class="resume-role"><strong>IntentLens: Multi-Agent Feedback Analysis</strong><b>Aug 2024 - Jan 2025</b></div><p class="resume-meta">CrewAI, Groq API, Streamlit. Built a four-agent workflow analysing <strong>5,000+ customer reviews</strong> with LLM-as-judge evaluation.</p></section>
+      <section class="resume-tail"><h2>Education</h2><div class="resume-role"><strong>B.Sc. Data Science, FAST-NUCES, Islamabad</strong><b>Aug 2021 - Jun 2025</b></div><p>CGPA: 3.24/4.0 <span>|</span> Final-Year GPA: 3.75/4.0 <span>|</span> Dean's List: Fall 2024, Spring 2025 <span>|</span> FYP: GraphRAG-Causal</p><p><strong>Certifications &amp; Leadership:</strong> Generative AI with LLMs, DeepLearning.AI &amp; AWS <span>|</span> Section Leader, Code in Place, Stanford University, 2025. 95% student retention across a global cohort.</p></section>
     </article>
   </main>
 </Shell>

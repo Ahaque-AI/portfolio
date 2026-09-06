@@ -1,0 +1,38 @@
+---
+import Shell from '../layouts/Shell.astro';
+import Arrow from '../components/Arrow.astro';
+const stories = [
+  { title: 'AI therapy microservice', copy: 'I built an asynchronous audio pipeline that separates transcription and summarisation into background jobs. CPU-only inference kept the deployment within its memory constraints.', result: 'Reported results: 300+ daily sessions on 15 GB AKS pods.', tools: 'FastAPI · Azure AKS · Faster-Whisper · Azure Service Bus' },
+  { title: 'AI student companion', copy: 'I built tenant-scoped retrieval with pgvector and per-user tool permissions. Sliding-window memory and importance scoring reduced the context carried between requests.', result: 'Reported results: session tokens reduced from 100K to 10K.', tools: 'LangGraph · FastAPI · PostgreSQL · pgvector' },
+  { title: 'Fraud detection and reporting', copy: 'I worked on an event-driven banking pipeline with Kafka, PII masking and monitoring for verification failures.', result: 'Reported results: automated regulatory reporting every five minutes.', tools: 'Kafka · StreamSets · PostgreSQL · Prometheus · Grafana' },
+  { title: 'GraphRAG-Causal', copy: 'I developed graph-augmented causal retrieval using cause-effect annotations and multi-hop traversal, with a CrewAI extension connecting the graph and web search.', result: 'Reported results: 82.88% F1 and 80% accuracy on CausalNewsCorpus.', tools: 'Neo4j · CrewAI · FastAPI' },
+  { title: 'IntentLens', copy: 'I built a four-agent feedback workflow with a scraper, intent analyser, search agent and supervisor. Outputs were evaluated using an LLM as judge.', result: 'Reported results: analysis of 5,000+ customer reviews.', tools: 'CrewAI · Groq API · Streamlit' },
+];
+---
+<Shell title="About Abdul" description="Abdul Haque's AI and backend engineering work, selected systems and tools." page="about">
+  <main id="main" class="legal-layout about-layout">
+    <aside class="legal-aside">
+      <a class="back-link" href="/onboarding/"><Arrow back /> Back to the route map</a>
+      <div class="legal-orbit" aria-hidden="true"><svg viewBox="0 0 260 240" fill="none"><circle data-orbit-core cx="130" cy="120" r="69" stroke="currentColor"/><ellipse cx="130" cy="120" rx="124" ry="42" transform="rotate(-35 130 120)" stroke="currentColor"/><circle cx="224" cy="55" r="5" fill="var(--color-accent)"/></svg></div>
+      <nav class="contents" aria-label="On this page"><span>On this page</span><a href="#selected-work">Selected work</a><a href="#tools">Tools I work with</a></nav>
+    </aside>
+    <article class="legal-article">
+      <h1>I'm Abdul.<br /><span class="about-accent">I build AI systems.</span></h1>
+      <p class="about-intro">My work sits between language models and the backend systems that run them: inference with limited memory, retrieval with clear permission boundaries, and pipelines that keep moving when jobs fail.</p>
+      <a class="tutorial-next about-action" href="/?edit=1">Start an introduction <Arrow /></a>
+      <section class="legal-section" id="selected-work">
+        <h2>Five systems I've worked on</h2>
+        <p>These summaries come from my resume. Figures are reported results, not independently verified benchmarks.</p>
+        {stories.map(story => <section class="about-story">
+          <h3>{story.title}</h3><p>{story.copy}</p><p class="about-result">{story.result}</p><p class="cv-stack">{story.tools}</p>
+        </section>)}
+      </section>
+      <section class="legal-section" id="tools">
+        <h2>Tools I work with</h2>
+        <p>Python and FastAPI for services. Azure AKS and Kubernetes for deployment. Kafka for event pipelines. PostgreSQL with pgvector and Neo4j for retrieval. LangGraph and CrewAI for agent workflows.</p>
+        <a class="legal-return" href="/cv/">Read my full CV <Arrow /></a>
+      </section>
+      <a class="legal-return" href="/onboarding/"><Arrow back /> Back to the route map</a>
+    </article>
+  </main>
+</Shell>

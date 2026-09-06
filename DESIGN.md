@@ -127,11 +127,15 @@ and Work planets on closed tracks, deterministic stars and one comet pass per
 24 seconds. The authored ship has broad citron wings, a dark cockpit and four
 engines. Its host canvas is aria-hidden. Animation pauses offscreen and in
 hidden tabs, freezes under reduced motion, and releases resources on disposal.
-The rocket follows a spline between asteroid encounters with a following camera.
-The ship stays centered and its engines pulse while the asteroid field moves toward
-it. Captions occupy one side at a time, alternating by encounter. Back to map is
-the only button. Wheel input is the flight control: scroll up advances and scroll
-down retraces the route. Native modal behavior owns focus containment, inert
+The guided scene uses a third-person shooter framing with no orbital route-map
+marks. Full-scale spherical section planets fill the distance, the swept-wing
+four-engine fighter fills the lower center, and large asteroid objectives occupy
+the flight line ahead. A non-interactive targeting reticle sits over the scene.
+The ship's engines pulse and its cyan bolt stream fires toward the active field
+after an advance. Captions occupy one side at a time,
+alternating by encounter. Back to map is the only button. Wheel input is the
+flight control: scroll up advances and scroll down retraces the route. Native
+modal behavior owns focus containment, inert
 background and Escape; closing restores trigger focus. The game locks its own
 viewport to avoid a dialog scrollbar. Failed WebGL retains readable captions.
 Reduced motion changes stops instantly.

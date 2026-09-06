@@ -1,32 +1,24 @@
 import * as THREE from 'three';
-import { makeOrbit, lightScene, disposeScene, pixelRatio } from './orbital-three';
+import { lightScene, disposeScene, pixelRatio } from './orbital-three';
 import { makeRocket } from './rocket';
 
 // Scene-only foundation for the guided overlay. No route or dialog ownership.
 export function makeSolarSystem() {
   const scene = new THREE.Scene();
   lightScene(scene);
-  const sun = makeOrbit();
-  sun.marker.visible = false;
-  sun.group.scale.setScalar(.72);
-  scene.add(sun.group);
   const stops = [
-    { id: 'arrival', radius: 2.6, phase: 2.5, size: .16 },
-    { id: 'about', radius: 3.7, phase: .6, size: .23 },
-    { id: 'work', radius: 4.8, phase: 4.9, size: .19 },
+    { id: 'arrival', radius: 2.6, phase: 2.5, size: 4.5, color: 0x53616a },
+    { id: 'about', radius: 3.7, phase: .6, size: 5.6, color: 0x435a65 },
+    { id: 'work', radius: 4.8, phase: 4.9, size: 5.1, color: 0x6c5b43 },
   ].map(({ id, radius, phase, size }) => {
-    const point = (angle: number) => new THREE.Vector3(radius * Math.cos(angle), radius * .56 * Math.sin(angle), radius * .18 * Math.sin(angle));
-    scene.add(new THREE.LineLoop(
-      new THREE.BufferGeometry().setFromPoints(Array.from({ length: 160 }, (_, i) => point(i / 160 * Math.PI * 2))),
-      new THREE.LineBasicMaterial({ color: 0xa5b4bb, transparent: true, opacity: .23 }),
-    ));
+    const point = (angle: number) => new THREE.Vector3(radius * .22 * Math.cos(angle), 2 + radius * .12 * Math.sin(angle), -19 - radius * 2.3 + radius * .06 * Math.sin(angle));
     const group = new THREE.Group();
-    const planet = new THREE.Mesh(new THREE.DodecahedronGeometry(size, 1), new THREE.MeshStandardMaterial({ color: id === 'arrival' ? 0xe7ecac : 0xa5b4bb, roughness: .9, flatShading: true }));
+    const planet = new THREE.Mesh(new THREE.SphereGeometry(size, 32, 20), new THREE.MeshStandardMaterial({ color: id === 'arrival' ? 0x53616a : id === 'about' ? 0x435a65 : 0x6c5b43, roughness: .95, flatShading: true }));
     group.add(planet);
     const rocks = Array.from({ length: 12 }, (_, index) => {
       const angle = index * 2.4;
-      const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(.025 + (index % 3) * .012, 0), new THREE.MeshStandardMaterial({ color: 0x53616a, roughness: 1, flatShading: true }));
-      rock.position.set(Math.cos(angle) * (.25 + (index % 4) * .05), Math.sin(angle) * (.18 + (index % 3) * .05), (index % 5 - 2) * .03);
+      const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(.22 + (index % 3) * .11, 1), new THREE.MeshStandardMaterial({ color: 0x53616a, roughness: 1, flatShading: true }));
+      rock.position.set(Math.cos(angle) * (2.2 + (index % 4) * .65), Math.sin(angle) * (1.7 + (index % 3) * .5), 1.2 + (index % 5) * .5);
       rock.userData.base = rock.position.clone();
       rock.userData.direction = rock.position.clone().normalize();
       group.add(rock);
@@ -53,9 +45,8 @@ export function makeSolarSystem() {
   );
   scene.add(comet);
   const rocket = makeRocket();
-  rocket.group.scale.setScalar(.65);
-  rocket.group.position.copy(stops[0].group.position).add(new THREE.Vector3(.35, .35, .2));
-  rocket.group.rotation.z = -.6;
+  rocket.group.scale.setScalar(1.45);
+  rocket.group.position.set(0, -3.2, 3.6);
   scene.add(rocket.group);
   const stream = new THREE.Points(new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(Array(36).fill(0), 3)), new THREE.PointsMaterial({ color: 0xe7ecac, size: 2.5, sizeAttenuation: false, transparent: true, opacity: 0, depthWrite: false }));
   scene.add(stream);
@@ -65,9 +56,9 @@ export function makeSolarSystem() {
   function approachStop(index: number, progress: number) { approach[index] = progress; }
   function strike(index: number) { struck = index + 1; approach[index] = 1; stops[index] && (stops[index].impact = 1); }
   function update(seconds: number, reduced = false) {
-    sun.globe.rotation.y = -.3 + seconds * .025;
     for (const stop of stops) {
-      stop.group.position.copy(stop.point(stop.phase + seconds * .09 / stop.radius));
+      stop.group.position.copy(stop.point(stop.phase));
+      stop.planet.rotation.y = seconds * .025 / stop.radius;
       stop.impact = Math.max(0, stop.impact - .012);
       stop.rocks.forEach(rock => {
         const incoming = approach[stops.indexOf(stop)];
@@ -83,7 +74,7 @@ export function makeSolarSystem() {
     const positions = stream.geometry.attributes.position.array as Float32Array;
     if (target && !reduced) {
       for (let index = 0; index < 12; index++) {
-        const point = target.group.position.clone().lerp(rocket.group.position, ((seconds * .9 + index / 12) % 1));
+        const point = rocket.group.position.clone().lerp(target.group.position, ((seconds * 2 + index / 12) % 1));
         positions.set(point.toArray(), index * 3);
       }
       stream.geometry.attributes.position.needsUpdate = true;
@@ -95,7 +86,7 @@ export function makeSolarSystem() {
     comet.material.opacity = comet.visible ? Math.sin((pass - 18) / 2 * Math.PI) * .5 : 0;
   }
   update(0);
-  return { scene, sun, stops, rocket, stars, comet, stream, arm, approachStop, strike, update };
+  return { scene, stops, rocket, stars, comet, stream, arm, approachStop, strike, update };
 }
 
 // The caller dynamically imports this module on intent and supplies an empty host.
@@ -105,7 +96,7 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
   try { renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'low-power' }); }
   catch { return; }
   const system = makeSolarSystem();
-  system.rocket.group.scale.setScalar(2.1);
+  system.rocket.group.scale.setScalar(3.3);
   const camera = new THREE.PerspectiveCamera(40, 1, .1, 100);
   const aim = new THREE.Vector2(), drift = new THREE.Vector2();
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -113,17 +104,13 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
   canvas.setAttribute('aria-hidden', 'true');
   canvas.style.cssText = 'display:block;width:100%;height:100%;pointer-events:none';
   host.append(canvas);
-  let frame = 0, last = 0, clock = 0, distance = 10;
+  let frame = 0, last = 0, clock = 0, distance = 11;
   let visible = false, sized = false, disposed = false;
   let travel = 1, targetIndex = 0, hit = true;
-  let path = makeFlightPath(system.rocket.group.position, system.rocket.group.position);
-  const heading = new THREE.Vector3(0, 1, 0);
   const look = new THREE.Vector3();
   function flyTo(index: number) {
     const stop = system.stops[index];
     if (!stop || disposed) return;
-    const end = stop.group.position.clone().add(new THREE.Vector3(.35, .35, .2));
-    path = makeFlightPath(system.rocket.group.position, end);
     travel = reduced.matches ? 1 : 0;
     targetIndex = index;
     hit = reduced.matches;
@@ -140,7 +127,7 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
       clock += delta / 1000;
       drift.lerp(aim, 1 - Math.exp(-delta / 295));
     }
-    // Hold planet locations so captions and rocket land on the same stops.
+    // Hold objectives in the forward view. Scroll input changes the active field.
     system.update(clock, reduced.matches);
     for (const stop of system.stops) stop.group.position.copy(stop.point(stop.phase));
     if (reduced.matches) travel = 1;
@@ -148,10 +135,8 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
     const eased = travel * travel * (3 - 2 * travel);
     system.approachStop(targetIndex, eased);
     if (!hit && travel === 1) { system.strike(targetIndex); hit = true; }
-    system.rocket.group.position.copy(path.getPointAt(eased));
-    if (travel < 1) system.rocket.group.quaternion.setFromUnitVectors(heading, path.getTangentAt(eased));
-    look.copy(system.rocket.group.position);
-    camera.position.set(look.x + drift.x * .4, look.y + drift.y * .3, distance);
+    look.set(drift.x * .45, drift.y * .3, -24);
+    camera.position.set(drift.x * .25, -1.2 + drift.y * .15, distance);
     camera.lookAt(look);
     try { renderer.render(system.scene, camera); }
     catch { dispose(); onFailure(); return; }
@@ -169,7 +154,7 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
     renderer.setPixelRatio(pixelRatio(width, height));
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
-    distance = Math.max(8, 3 / camera.aspect) / Math.tan(THREE.MathUtils.degToRad(20));
+    distance = Math.max(10, 3.5 / camera.aspect) / Math.tan(THREE.MathUtils.degToRad(20));
     camera.updateProjectionMatrix();
     resume();
   }

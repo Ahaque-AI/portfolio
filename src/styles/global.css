@@ -403,10 +403,10 @@ html.is-flight-open { overflow: hidden; }
 .resume-sheet span { color: var(--color-muted); padding-inline: .3em; }
 .resume-contact { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 14px !important; color: var(--color-muted); }
 .resume-sheet a { color: var(--color-text); text-decoration-color: var(--color-accent); text-underline-offset: 3px; }
-.resume-sheet section { margin-top: 20px; }
+.resume-sheet section { margin-top: 20px; padding: 0 14px 2px; border-radius: 3px; }
 .cv-ready .resume-sheet > section { opacity: 0; transform: translateY(18px); transition: opacity 560ms var(--ease), transform 560ms var(--ease); }
 .cv-ready .resume-sheet > section.is-visible { opacity: 1; transform: none; animation: cv-section-focus 1100ms var(--ease) both; }
-.resume-sheet section > h2 { margin: 0 0 8px; padding-bottom: 5px; border-bottom: 1px solid var(--color-border); color: var(--color-accent); font-size: clamp(20px, 2vw, 24px); line-height: 1.05; }
+.resume-sheet section > h2 { margin: 0 0 8px; padding-bottom: 7px; border-bottom: 1px solid var(--color-border); color: var(--color-accent); font-size: clamp(20px, 2vw, 24px); line-height: 1.05; letter-spacing: .01em; }
 .resume-sheet p { margin: 0; }
 .resume-role, .resume-project > div { display: flex; justify-content: space-between; gap: 18px; align-items: baseline; margin-top: 10px; }
 .resume-role strong, .resume-project strong { color: var(--color-text); font-size: 1.06em; }
@@ -421,7 +421,7 @@ html.is-flight-open { overflow: hidden; }
 @keyframes first-guidance { from { opacity: 0; } to { opacity: 1; } }
 @keyframes flight-beacon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
 @keyframes launch-commit { to { opacity: .2; transform: scale(.96); } }
-@keyframes cv-section-focus { 0% { box-shadow: inset 3px 0 0 var(--color-accent), 0 0 34px rgb(231 236 172 / .18); background: linear-gradient(90deg, rgb(231 236 172 / .08), transparent 48%); } 100% { box-shadow: inset 1px 0 0 rgb(231 236 172 / .22), 0 0 0 transparent; background: transparent; } }
+@keyframes cv-section-focus { 0% { box-shadow: inset 3px 0 0 var(--color-accent), 0 0 34px rgb(231 236 172 / .18); background: linear-gradient(90deg, rgb(231 236 172 / .08), transparent 48%); } 100% { box-shadow: inset 0 0 0 transparent, 0 0 0 transparent; background: transparent; } }
 @media (max-width: 760px) {
   .about-layout { padding-top: 12px; }
   .about-layout .legal-aside { margin-bottom: 8px; }

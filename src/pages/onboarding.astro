@@ -23,3 +23,9 @@ import GuidedFlight from '../components/GuidedFlight.astro';
   <button class="free-roam" id="free-roam" type="button">Explore freely</button>
   <p class="guided-first-note" id="guided-first-note" role="status" hidden>First signal received. Launch the guided flight to begin.</p>
 </Shell>
+<script>
+  import { readVisitorName } from '../scripts/visitor-name.mjs';
+  document.addEventListener('astro:page-load', () => {
+    if (!readVisitorName()) window.location.replace('/');
+  }, { once: true });
+</script>

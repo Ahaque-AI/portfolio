@@ -59,10 +59,16 @@ determinism and disposal have a focused non-browser test.
   `orbital-map.ts` (mount, visibility pause, reduced-motion freeze, full
   disposal). Scene: the existing globe reused as the sun, planet stops for
   Arrival, About and Work on orbital tracks, deterministic star field, one
-  sparse comet accent. Exploration ship built from a compact hull, cockpit,
-  broad wings and twin engines. Each destination has a sparse asteroid field
-  that approaches before impact and a short data stream on arrival. Mouse-only parallax; everything decorative
-  stays aria-hidden.
+  sparse comet accent. Exploration ship: detailed fighter with pointed nose
+  and sensor, glass canopy, twin swept delta wings with red/green wingtip
+  lights, twin lathe-nozzle engines with layered flame and a local point
+  light, twin tail fins, twin cannons, underside running lights, dorsal
+  strobe and a headlight that warms the next asteroid field. Each
+  destination has a sparse asteroid field that approaches before impact and
+  a short data stream on arrival. The ship banks into the turn using a
+  damped cross of previous and current spline tangents; a reduced slice of
+  the same bank rolls the camera so the visitor feels the turn. Mouse-only
+  parallax; everything decorative stays aria-hidden.
 - Why: the flight needs one shared scene the overlay, captions and rocket
   fly-through can use.
 - Verify: type check plus a focused unit test on geometry/disposal, mirroring

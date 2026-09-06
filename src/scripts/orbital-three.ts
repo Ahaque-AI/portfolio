@@ -15,13 +15,20 @@ export function lightScene(scene: THREE.Scene) {
 }
 
 export function disposeScene(scene: THREE.Scene) {
+  // Walk once to collect unique geometry and materials, then dispose each once.
+  // Disposing a shared material from every referencing mesh would dispatch the
+  // dispose event many times and double-free GPU resources.
+  const geometries = new Set<THREE.BufferGeometry>();
+  const materials = new Set<THREE.Material>();
   scene.traverse(object => {
     if (object instanceof THREE.Mesh || object instanceof THREE.Line || object instanceof THREE.Points) {
-      object.geometry.dispose();
-      const materials = Array.isArray(object.material) ? object.material : [object.material];
-      materials.forEach(material => material.dispose());
+      if (object.geometry) geometries.add(object.geometry);
+      const mats = Array.isArray(object.material) ? object.material : [object.material];
+      mats.forEach(material => material && materials.add(material));
     }
   });
+  geometries.forEach(geometry => geometry.dispose());
+  materials.forEach(material => material.dispose());
 }
 
 export function pixelRatio(width: number, height: number) {

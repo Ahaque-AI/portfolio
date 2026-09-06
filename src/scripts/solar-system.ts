@@ -72,11 +72,9 @@ export function makeSolarSystem() {
         rock.scale.setScalar(1 + incoming * 4);
       });
     }
+    // Ship-side animation (engine cores, flame length, running lights, strobe, canopy pulse).
+    rocket.update?.(seconds, reduced);
     const target = stops[struck - 1];
-    rocket.thrusters.forEach((thruster, index) => {
-      const pulse = reduced ? 1 : 1 + Math.sin(seconds * 13 + index) * .14;
-      thruster.scale.set(pulse, 1 + (pulse - 1) * 2, pulse);
-    });
     const positions = stream.geometry.attributes.position.array as Float32Array;
     if (target && !reduced) {
       for (let index = 0; index < 12; index++) {
@@ -116,9 +114,13 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
   let path = makeFlightPath(system.rocket.group.position, system.rocket.group.position);
   const heading = new THREE.Vector3(0, 1, 0);
   const tangent = new THREE.Vector3();
+  const previousTangent = new THREE.Vector3(0, 0, 1);
   const look = new THREE.Vector3();
   const smoothCamera = new THREE.Vector3();
   const smoothLook = new THREE.Vector3();
+  const worldUp = new THREE.Vector3(0, 1, 0);
+  const turnCross = new THREE.Vector3();
+  let smoothBank = 0;
   let cameraReady = false;
   function flyTo(index: number) {
     const stop = system.stops[index];
@@ -130,6 +132,10 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
     targetIndex = index;
     hit = reduced.matches;
     cameraReady = false;
+    smoothBank = 0;
+    // Seed the previous tangent with the start of the new path so the first frame
+    // does not bank from "rest" to the new heading.
+    previousTangent.copy(path.getTangentAt(0)).normalize();
     system.arm(index);
     if (reduced.matches) system.strike(index);
     resume();
@@ -158,13 +164,25 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
     }
     system.rocket.group.position.copy(path.getPointAt(eased));
     tangent.copy(path.getTangentAt(Math.min(.999, eased))).normalize();
+    // Bank the ship into the turn. Cross of previous and current tangents projected
+    // onto world up gives the turn direction; smooth it so the roll feels weighted.
+    turnCross.crossVectors(previousTangent, tangent);
+    const turnAmount = turnCross.dot(worldUp);
+    const targetBank = THREE.MathUtils.clamp(turnAmount * 9, -.42, .42);
+    const bankSettle = 1 - Math.exp(-delta / 220);
+    smoothBank += (targetBank - smoothBank) * bankSettle;
+    previousTangent.copy(tangent);
     system.rocket.group.quaternion.setFromUnitVectors(heading, tangent);
+    // Local +Y is now aligned with the tangent, so a rotateY rolls the ship.
+    if (Math.abs(smoothBank) > 1e-4) system.rocket.group.rotateY(smoothBank);
     look.copy(system.stops[targetIndex].group.position).add(new THREE.Vector3(drift.x * .45, drift.y * .3, 0));
     const desiredCamera = system.rocket.group.position.clone().add(new THREE.Vector3(drift.x * .25, 2.8 + drift.y * .15, distance));
     if (!cameraReady) { smoothCamera.copy(desiredCamera); smoothLook.copy(look); cameraReady = true; }
     const settle = 1 - Math.exp(-delta / 150);
     smoothCamera.lerp(desiredCamera, settle);
     smoothLook.lerp(look, 1 - Math.exp(-delta / 190));
+    // Slight camera roll so the visitor feels the turn without losing the planet.
+    camera.up.set(0, 1, 0).applyAxisAngle(tangent, smoothBank * .22);
     camera.position.copy(smoothCamera);
     camera.lookAt(smoothLook);
     try { renderer.render(system.scene, camera); }

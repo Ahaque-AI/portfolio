@@ -125,18 +125,38 @@ geometry together.
 Guided flight opens a full-screen native dialog from the map trigger and loads
 its scene on click. It reuses the globe as a sun, adds Arrival, About
 and Work planets on closed tracks, deterministic stars and one comet pass per
-24 seconds. The authored ship has broad citron wings, a dark cockpit and four
-engines. Its host canvas is aria-hidden. Animation pauses offscreen and in
-hidden tabs, freezes under reduced motion, and releases resources on disposal.
+24 seconds. The authored ship is a detailed exploration fighter: pointed nose
+with a sensor spike and ring, a blue glass canopy framed in metal with a
+pilot helmet visible behind it, dorsal spine and cargo bay panel, two
+beveled swept delta wings with darker underside panels and red/green
+wingtip navigation lights, twin lathe-nozzle engines with glow ring, bright
+inner core, layered cyan flame plume and a local point light, twin tail fins,
+twin forward cannons with muzzle rings, a row of underside citron running
+lights, a dorsal strobe and a top antenna stalk. Its host canvas is
+aria-hidden. Animation pauses offscreen and in hidden tabs, freezes under
+reduced motion, and releases resources on disposal. The shared
+`disposeScene` collects unique geometries and materials first and disposes
+each one once, even when meshes share a PBR material.
 The guided scene uses a third-person shooter framing with no orbital route-map
 marks. Four full-scale spherical section planets sit at distinct lateral and
 depth coordinates, each with its own red, teal, violet or blue color. The
-swept-wing four-engine fighter and following camera travel between them, so
+swept-wing twin-engine fighter and following camera travel between them, so
 asteroid fields pass the player during each control-led approach. Travel paths
 arc around each destination so a return never cuts through a planet.
 Planets have layered atmosphere and ring highlights. The ship holds a
 lower-center rear-flight composition with its exhausts facing the visitor.
 A non-interactive targeting reticle sits over the scene.
+The flight reads the curvature of the spline: the render path cross-products
+the previous and current tangents, projects the result on world up to learn
+the turn direction, then rolls the ship around its own forward axis with a
+damped follow-through. A reduced slice of the same bank rotates the camera
+up vector so the visitor feels the turn without losing the destination.
+A forward headlight spot light brightens asteroids as the ship closes on
+each stop. The ship's engines pulse with a slow length modulation and a
+faster flicker, the cyan glow lights breathe with the throttle, running
+lights blink on a slow phase-staggered pattern, the dorsal strobe fires a
+short flash about every 1.2 seconds, and the canopy emissive intensity
+breathes so the cockpit reads as alive.
 The ship's engines pulse and its cyan bolt stream fires toward the active field
 after an advance. Captions occupy one side at a time,
 alternating by encounter. Back to map, Up and Down are the flight controls. Up
@@ -252,7 +272,7 @@ Arrows share a 1.5px stroke. The favicon is the same orbital mark as the header.
 | `src/components/GuidedFlight.astro` | Native full-screen dialog, caption row, Back to map and sector controls |
 | `src/scripts/guided-flight.ts` | Intent loading, stop captions, cancellation, fallback and focus restoration |
 | `src/pages/about.astro` | Static profile, five work summaries, reported results and tools |
-| `src/scripts/rocket.ts` | Authored rocket geometry, local +Y nose direction; disposed by its scene owner |
+| `src/scripts/rocket.ts` | Authored exploration-fighter geometry, local +Y nose direction, layered engine glow and per-frame update for the scene owner |
 | `src/pages/index.astro` | Form state, inline errors, status and focus handling |
 | `src/pages/onboarding.astro` | Route map, direct destination, and guided flight |
 | `src/pages/cv.astro` | Resume reading surface in the resume's own structure, full contact line and plain figures (owner decision 2026-09-05) |

@@ -49,17 +49,19 @@ export function mountMap(map: HTMLElement) {
     frame = 0;
     if (disposed) return;
     const frozen = map.hasAttribute('data-flight-landing') || reduced.matches;
-    if (!frozen && last) clock += Math.min(now - last, 100);
+    const delta = last ? Math.min(now - last, 50) : 0;
+    if (!frozen) clock += delta;
     last = now;
     const time = clock;
     const phase = time * .00018;
-    drift.lerp(aim, .055);
+    if (!frozen) drift.lerp(aim, 1 - Math.exp(-delta / 295));
     camera.position.set(drift.x * 12, drift.y * 9, 1000);
     camera.lookAt(drift.x * 3, drift.y * 2, 0);
     orbit.group.rotation.set(Math.sin(phase) * .025, Math.sin(phase * .7) * .04, 0);
     orbit.globe.rotation.y = -.3 + time * .000025;
     orbit.globe.rotation.z = .48 + Math.sin(phase * .6) * .05;
-    signal.position.copy(route.getPoint((time % 14000) / 14000));
+    const travel = (time % 28000) / 14000;
+    signal.position.copy(route.getPointAt((1 - Math.cos(Math.PI * travel)) / 2));
     signalHalo.position.copy(signal.position);
     const pulse = .8 + (Math.sin(phase * 8) + 1) * .35;
     signalHalo.scale.setScalar(pulse);
@@ -73,7 +75,7 @@ export function mountMap(map: HTMLElement) {
     catch { dispose(); return; }
     if (visible && !document.hidden && !reduced.matches) frame = requestAnimationFrame(render);
   }
-  function resume() { cancelAnimationFrame(frame); render(performance.now()); }
+  function resume() { cancelAnimationFrame(frame); last = 0; render(performance.now()); }
   function pointMap(event: PointerEvent) {
     if (reduced.matches || event.pointerType !== 'mouse') return;
     const rect = map.getBoundingClientRect();

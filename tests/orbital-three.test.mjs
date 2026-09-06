@@ -19,6 +19,46 @@ const exports = {};
 new Function('require', 'exports', compiled)(name => name === './flight-orbit' ? flightExports : require(name), exports);
 const { disposeScene, pixelRatio } = exports;
 
+const rocketExports = {};
+const solarExports = {};
+for (const [file, output] of [['rocket', rocketExports], ['solar-system', solarExports]]) {
+  const code = ts.transpileModule(readFileSync(new URL(`../src/scripts/${file}.ts`, import.meta.url), 'utf8'), {
+    compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS },
+  }).outputText;
+  new Function('require', 'exports', code)(name => {
+    if (name === './orbital-three') return exports;
+    if (name === './rocket') return rocketExports;
+    return require(name);
+  }, output);
+}
+
+test('solar scene has deterministic stars, closed tracks and complete disposal', () => {
+  const first = solarExports.makeSolarSystem();
+  const second = solarExports.makeSolarSystem();
+  assert.deepEqual(first.stops.map(stop => stop.id), ['arrival', 'about', 'work']);
+  assert.deepEqual(first.stars.geometry.attributes.position.array, second.stars.geometry.attributes.position.array);
+  for (const stop of first.stops) assert.ok(stop.point(0).distanceTo(stop.point(Math.PI * 2)) < 1e-10);
+  first.update(19);
+  assert.equal(first.comet.visible, true);
+  first.update(19, true);
+  assert.equal(first.comet.visible, false);
+  const position = first.stops[0].planet.position.clone();
+  first.update(19, true);
+  assert.ok(position.equals(first.stops[0].planet.position), 'frozen time preserves the planet frame');
+  assert.equal(first.rocket.group.children.length, 5);
+  let allocated = 0, released = 0;
+  first.scene.traverse(object => {
+    if (!object.geometry) return;
+    assert.ok([...object.geometry.attributes.position.array].every(Number.isFinite));
+    allocated += 2;
+    object.geometry.addEventListener('dispose', () => released++);
+    object.material.addEventListener('dispose', () => released++);
+  });
+  disposeScene(first.scene);
+  disposeScene(second.scene);
+  assert.equal(released, allocated);
+});
+
 test('Three.js orbit contains finite spherical geometry and a closed visitor path', () => {
   const orbit = makeFlightOrbit();
   assert.ok(orbit.globe.children.length > 12);

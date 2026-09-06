@@ -116,6 +116,19 @@ field drift, an orbital shimmer, a breathing signal halo and a small mouse-only
 camera parallax. The effects are part of one spatial instrument, not separate
 decorative loops.
 
+Orbit clocks pause without catching up after visibility changes. Map parallax
+uses elapsed-time damping so its response is consistent across refresh rates.
+The route signal eases back along the path instead of jumping from end to start.
+Introduction tilt applies to the whole scene, keeping SVG labels and WebGL
+geometry together.
+
+Guided flight Step 02 provides a scene module only, pending owner review and
+Step 03 overlay integration. It reuses the globe as a sun, adds Arrival, About
+and Work planets on closed tracks, deterministic stars and one comet pass per
+24 seconds. The authored rocket uses ink geometry with a citron stripe and
+engine dot. Its host canvas is aria-hidden. Animation pauses offscreen and in
+hidden tabs, freezes under reduced motion, and releases resources on disposal.
+
 The owner explicitly requested Three.js for the page transition. On “See the
 route ahead”, a WebGL globe takes over at the source orbit's measured position,
 expands and rotates for 900ms, holds the route during the swap, then contracts
@@ -155,8 +168,9 @@ tilt, and transitions.
 
 ## Shapes
 
-Orbital ellipses are the signature; avoid rockets, emoji stars, random particle
-fields, or decorative dashboards. Controls have 8px corners; checkbox 4px.
+Orbital ellipses are the signature. The approved guided-flight scene alone uses
+an authored rocket and deterministic star field; avoid emoji stars and decorative
+dashboards. Controls have 8px corners; checkbox 4px.
 Arrows share a 1.5px stroke. The favicon is the same orbital mark as the header.
 
 ## Components
@@ -173,6 +187,8 @@ Arrows share a 1.5px stroke. The favicon is the same orbital mark as the header.
 | `src/scripts/orbital-three.ts` | Shared Three.js globe geometry and flight renderer |
 | `src/scripts/orbit-navigation.ts` | Astro navigation lifecycle, cancellation, reduced motion and focus |
 | `src/scripts/orbital-map.ts` | Map renderer, aligned route, visibility and resource cleanup |
+| `src/scripts/solar-system.ts` | Guided-flight scene foundation and optional mount lifecycle; overlay integration is Step 03 |
+| `src/scripts/rocket.ts` | Authored rocket geometry, local +Y nose direction; disposed by its scene owner |
 | `src/pages/index.astro` | Form state, inline errors, status and focus handling |
 | `src/pages/onboarding.astro` | Route map, direct destination, and guided flight |
 | `src/pages/cv.astro` | Resume reading surface in the resume's own structure, full contact line and plain figures (owner decision 2026-09-05) |

@@ -46,10 +46,13 @@
   const speed = 0.00048;
   let frame = 0;
   let visible = true;
+  let clock = 0, last = 0;
   function moveVisitor(now: number) {
     frame = 0;
     if (!reducedMotion.matches && !document.hidden && visible && traveler?.isConnected) {
-      const t = now * speed;
+      if (last) clock += Math.min(now - last, 50);
+      last = now;
+      const t = clock * speed;
       const x = orbit.cx + orbit.rx * Math.cos(t) * Math.cos(orbit.angle) - orbit.ry * Math.sin(t) * Math.sin(orbit.angle);
       const y = orbit.cy + orbit.rx * Math.cos(t) * Math.sin(orbit.angle) + orbit.ry * Math.sin(t) * Math.cos(orbit.angle);
       traveler.setAttribute('transform', `translate(${x} ${y})`);
@@ -58,6 +61,7 @@
   }
   function resume() {
     cancelAnimationFrame(frame);
+    last = 0;
     frame = requestAnimationFrame(moveVisitor);
   }
   const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; resume(); });

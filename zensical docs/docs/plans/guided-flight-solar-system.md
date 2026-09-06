@@ -50,6 +50,11 @@ from the owner-supplied PDF with pypdf under uv and reviewed before writing.
 
 ### Step 02: Solar system and rocket scene module
 
+Status: built 2026-09-06, awaiting owner review. Scene factory and mount/dispose
+API are implemented with no new dependencies. The module is not yet mounted on
+a page; the intent-loaded full-screen host remains Step 03. Geometry,
+determinism and disposal have a focused non-browser test.
+
 - What: `src/scripts/solar-system.ts`, same lifecycle contract as
   `orbital-map.ts` (mount, visibility pause, reduced-motion freeze, full
   disposal). Scene: the existing globe reused as the sun, planet stops for

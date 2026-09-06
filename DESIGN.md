@@ -171,12 +171,18 @@ is a top-right Explore freely action that clears the veil. Once clear, the map
 destinations are available for the visitor to choose. Sector controls sit above
 the flight scene for direct pointer, touch and keyboard use.
 ArrowUp and ArrowDown work even when focus remains on the Back to map control.
+On narrow portrait screens, the controls form a two-button safe-area dock and
+the caption reserves the space directly above it. Short landscape screens keep
+the caption on the left and stack controls on the right. Native button keyboard
+activation is left intact so one press changes exactly one sector.
 Only the selected planet is visible during flight. A deterministic star volume
 covers the complete route depth so the background remains spatial at every
 section. The camera targets that world
 continuously with damped camera and look-at settling, keeping the planet, reticle
 and returning ship centered at arrival. The camera depth range covers all four
-worlds, and travel duration scales with the distance between them. The fighter
+worlds, and travel duration scales with the distance between them. Interrupted
+travel begins from the ship's current position while the existing camera state
+continues smoothly. The fighter
 uses a larger reference-matched silhouette with a pointed pale fuselage, blue
 canopy, broad swept wings, dark engine pods, four bright exhausts and forward
 cannons.

@@ -279,7 +279,8 @@ a[data-flight-busy] { cursor: progress; }
   .legal-layout { grid-template-columns: 210px minmax(0, 1fr); gap: 44px; padding-inline: 32px; }
 }
 @media (max-width: 760px) {
-  .site-header { height: 94px; }
+  .site-header { height: 82px; padding-inline: 16px; gap: 12px; }
+  .header-side { gap: 8px; }
   .header-location { display: none; }
   .header-note { font-size: 10px; gap: 6px; }
   .identity { font-size: 14px; gap: 9px; }
@@ -417,7 +418,7 @@ html.is-flight-open { overflow: hidden; }
 .resume-sheet li + li { margin-top: 2px; }
 .resume-internships { margin-top: 9px !important; }
 .resume-tail p { margin-top: 5px; }
-@media (max-width: 620px) { .resume-page { padding: 24px 16px; } .resume-sheet { padding: 26px 20px; } .resume-role, .resume-project > div { display: block; } .resume-role b, .resume-project em { display: block; margin-top: 3px; text-align: left; } }
+@media (max-width: 620px) { .resume-page { padding: calc(82px + env(safe-area-inset-top)) 12px max(24px, env(safe-area-inset-bottom)); } .resume-back { top: max(14px, env(safe-area-inset-top)); left: 12px; } .resume-sheet { padding: 22px 16px; font-size: 13px; line-height: 1.48; } .resume-head h1 { font-size: 36px; } .resume-contact { gap: 6px 2px; } .resume-sheet section { margin-top: 24px; padding-inline: 0; } .resume-role, .resume-project > div { display: block; } .resume-role b, .resume-project em { display: block; margin-top: 3px; text-align: left; white-space: normal; } .resume-sheet ul { padding-left: 1.15em; } }
 @keyframes first-guidance { from { opacity: 0; } to { opacity: 1; } }
 @keyframes flight-beacon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
 @keyframes launch-commit { to { opacity: .2; transform: scale(.96); } }
@@ -426,6 +427,30 @@ html.is-flight-open { overflow: hidden; }
   .about-layout { padding-top: 12px; }
   .about-layout .legal-aside { margin-bottom: 8px; }
   .has-spaceship .flight-scene { min-height: 100dvh; }
-  .flight-caption { left: 24px; bottom: max(24px, env(safe-area-inset-bottom)); }
-  .flight-caption h2 { font-size: 30px; }
+  .flight-back { top: max(12px, env(safe-area-inset-top)); left: max(12px, env(safe-area-inset-left)); }
+  .flight-hud { inset: max(16px, env(safe-area-inset-top)) 16px auto; }
+  .flight-hud > span { display: none; }
+  .flight-hud i, .flight-hud b { top: 38vh; }
+  .flight-controls { right: max(12px, env(safe-area-inset-right)); bottom: max(12px, env(safe-area-inset-bottom)); left: max(12px, env(safe-area-inset-left)); grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .flight-controls button { min-width: 0; min-height: 48px; padding: 10px 12px; }
+  .flight-caption, .guided-flight[data-caption-side='right'] .flight-caption { right: 18px; bottom: calc(max(12px, env(safe-area-inset-bottom)) + 68px); left: 18px; width: auto; padding: 14px 0; transition: none; }
+  .flight-caption::before { inset: -20px -18px; background: linear-gradient(0deg, rgb(12 21 28 / .98) 42%, rgb(12 21 28 / .72) 76%, transparent); filter: blur(8px); }
+  .flight-caption .flight-status { margin-bottom: 6px; font-size: 10px; line-height: 1.4; letter-spacing: .08em; }
+  .flight-caption h2 { max-width: 18ch; font-size: clamp(24px, 8vw, 32px); line-height: 1.06; }
+  .flight-caption p:not(.flight-status) { max-width: 42ch; margin-top: 8px; font-size: 13px; line-height: 1.45; }
+}
+@media (max-width: 520px) {
+  .header-note { display: none; }
+  .header-onboarding { min-height: 44px; padding-inline: 11px; }
+  .header-cv { min-height: 44px; padding-inline: 13px; }
+}
+@media (max-width: 380px) {
+  .identity > span { display: none; }
+  .identity img { width: 34px; height: 34px; }
+}
+@media (max-width: 760px) and (max-height: 560px) and (orientation: landscape) {
+  .flight-controls { right: max(12px, env(safe-area-inset-right)); bottom: max(12px, env(safe-area-inset-bottom)); left: auto; width: 154px; grid-template-columns: 1fr; }
+  .flight-caption, .guided-flight[data-caption-side='right'] .flight-caption { right: auto; bottom: max(12px, env(safe-area-inset-bottom)); left: max(18px, env(safe-area-inset-left)); width: min(48vw, 390px); }
+  .flight-caption h2 { font-size: clamp(22px, 5vw, 30px); }
+  .flight-caption p:not(.flight-status) { font-size: 12px; }
 }

@@ -44,6 +44,7 @@ function setup({ failure = false, delayed = false } = {}) {
 test('guided-flight moves between asteroid encounters by explicit sector controls', async () => {
   const { elements: e, calls } = setup();
   await e['#tutorial-trigger'].handlers.click();
+  assert.equal(e['#flight-next'].handlers.keydown, undefined, 'native button activation must not advance twice');
   e['#flight-next'].handlers.click();
   e['#flight-next'].handlers.click();
   e['#flight-next'].handlers.click();

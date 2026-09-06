@@ -90,8 +90,6 @@ export function initGuidedFlight() {
     document.querySelector('#guided-first-note')?.setAttribute('hidden', '');
     freeRoam.hidden = true;
   }, { signal: events.signal });
-  next.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); moveForward(); } }, { signal: events.signal });
-  previous.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); moveBack(); } }, { signal: events.signal });
   modal.addEventListener('keydown', event => {
     if (event.key === 'ArrowUp') { event.preventDefault(); moveForward(); }
     if (event.key === 'ArrowDown') { event.preventDefault(); moveBack(); }

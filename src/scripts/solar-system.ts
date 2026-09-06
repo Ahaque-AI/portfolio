@@ -127,11 +127,10 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
     if (!stop || disposed) return;
     system.stops.forEach((candidate, candidateIndex) => { candidate.group.visible = candidateIndex === index || candidateIndex === activeIndex; });
     path = makeFlightPath(system.rocket.group.position, stop.group.position.clone().add(new THREE.Vector3(0, -2.2, 7)));
-    travelDuration = THREE.MathUtils.clamp(path.getLength() * 58, 1800, 4200);
+    travelDuration = THREE.MathUtils.clamp(path.getLength() * 48, 1600, 3400);
     travel = reduced.matches ? 1 : 0;
     targetIndex = index;
     hit = reduced.matches;
-    cameraReady = false;
     smoothBank = 0;
     // Seed the previous tangent with the start of the new path so the first frame
     // does not bank from "rest" to the new heading.

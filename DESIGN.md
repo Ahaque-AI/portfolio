@@ -72,7 +72,8 @@ but it must not be required to discover the next action. The footer begins below
 the first viewport so it is available through scrolling without competing with
 the page task.
 
-Shared shell: identity, location, legal navigation, footer. Desktop entry uses
+Shared shell: identity, location, an always-available Enter onboarding action,
+CV navigation, legal navigation, footer. Desktop entry uses
 two unequal columns: orbit/identity left, form right (maximum 460px). The orbit
 is deliberately oversized, with a 320 to 560px height budget, so it reads as
 the main visual anchor rather than a small illustration. It sits slightly toward

@@ -51,6 +51,8 @@ body[data-page=intro] .site-footer { margin-top: 24px; }
 .identity-role { display: block; font-size: 12px; font-weight: 400; color: var(--color-muted); margin-top: 3px; }
 .header-note { display: flex; gap: 9px; align-items: center; color: var(--color-muted); font-size: 12px; }
 .header-side { display: flex; align-items: center; gap: 18px; }
+.header-onboarding { display: inline-flex; align-items: center; min-height: 38px; padding: 7px 14px; border: 1px solid var(--color-accent); border-radius: 999px; color: var(--color-accent); font-size: 11px; font-weight: 650; letter-spacing: .04em; text-decoration: none; }
+.header-onboarding:hover, .header-onboarding:focus-visible { background: var(--color-accent); color: var(--color-background); }
 .header-cv { display: inline-flex; align-items: center; min-height: 38px; padding: 7px 16px; border: 1px solid var(--color-border); border-radius: 999px; font-size: 12px; font-weight: 600; letter-spacing: .08em; text-decoration: none; transition: border-color 180ms, color 180ms; }
 .header-cv:hover, .header-cv[aria-current=page] { border-color: var(--color-accent); color: var(--color-accent); }
 .header-location { opacity: .85; }
@@ -405,7 +407,7 @@ html.is-flight-open { overflow: hidden; }
 .resume-sheet a { color: var(--color-text); text-decoration-color: var(--color-accent); text-underline-offset: 3px; }
 .resume-sheet section { margin-top: 20px; }
 .cv-ready .resume-sheet > section { opacity: 0; transform: translateY(18px); transition: opacity 560ms var(--ease), transform 560ms var(--ease); }
-.cv-ready .resume-sheet > section.is-visible { opacity: 1; transform: none; }
+.cv-ready .resume-sheet > section.is-visible { opacity: 1; transform: none; animation: cv-section-focus 900ms var(--ease) both; }
 .resume-sheet section > h2 { margin: 0 0 8px; padding-bottom: 5px; border-bottom: 1px solid var(--color-border); color: var(--color-accent); font-size: clamp(20px, 2vw, 24px); line-height: 1.05; }
 .resume-sheet p { margin: 0; }
 .resume-role, .resume-project > div { display: flex; justify-content: space-between; gap: 18px; align-items: baseline; margin-top: 10px; }
@@ -421,6 +423,7 @@ html.is-flight-open { overflow: hidden; }
 @keyframes first-guidance { from { opacity: 0; } to { opacity: 1; } }
 @keyframes flight-beacon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
 @keyframes launch-commit { to { opacity: .2; transform: scale(.96); } }
+@keyframes cv-section-focus { 0% { box-shadow: inset 2px 0 0 var(--color-accent), 0 0 28px rgb(231 236 172 / .12); } 100% { box-shadow: inset 0 0 0 transparent, 0 0 0 transparent; } }
 @media (max-width: 760px) {
   .about-layout { padding-top: 12px; }
   .about-layout .legal-aside { margin-bottom: 8px; }

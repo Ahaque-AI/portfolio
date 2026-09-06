@@ -133,6 +133,8 @@ test('full-screen flight cannot pause before it unlocks sector controls', () => 
 
 test('onboarding map keeps its animation clock through mobile resizes', () => {
   const source = readFileSync(new URL('../src/scripts/orbital-map.ts', import.meta.url), 'utf8');
+  assert.doesNotMatch(source, /new IntersectionObserver/);
+  assert.match(source, /if \(!document\.hidden && !reduced\.matches\) frame = requestAnimationFrame\(render\)/);
   assert.match(source, /if \(!frame\) frame = requestAnimationFrame\(render\)/);
   assert.doesNotMatch(source, /function resume\(\) \{\s*cancelAnimationFrame\(frame\);\s*last = 0/);
 });

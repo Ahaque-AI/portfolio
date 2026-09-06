@@ -109,7 +109,7 @@ export function initGuidedFlight() {
     if (event.key === 'ArrowDown') { event.preventDefault(); moveBack(); }
   }, { signal: events.signal });
   modal.querySelector('#tutorial-close')!.addEventListener('click', () => modal.close(), { signal: events.signal });
-  modal.addEventListener('close', () => { release(); if (freeRoam) freeRoam.hidden = false; if (button.isConnected) button.focus({ preventScroll: true }); }, { signal: events.signal });
+  modal.addEventListener('close', () => { release(); if (button.isConnected) button.focus({ preventScroll: true }); }, { signal: events.signal });
   document.addEventListener('astro:before-swap', () => {
     events.abort(); release(); modal.close();
   }, { once: true });

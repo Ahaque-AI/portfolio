@@ -109,7 +109,9 @@ loop. The map now renders a lit Three.js sphere, depth-tested latitude and
 longitude lines, two orbital tracks, and a signal along the destination curve.
 The original SVG remains the fallback when WebGL is unavailable. The canvas and
 SVG share an 820 × 520 aspect ratio so destination targets stay aligned. Map
-motion stops offscreen, in hidden tabs and under reduced motion.
+motion runs while the onboarding page is active and stops in hidden tabs or
+under reduced motion. It does not depend on viewport intersection because the
+focus veil and mobile reflow can make that signal transient.
 The animated renderer mounts only after the full-name gate succeeds. Its resize
 path preserves the active frame and clock so mobile browser-chrome changes do
 not leave the onboarding orbit static.
@@ -181,7 +183,9 @@ Reduced motion changes stops instantly.
 
 Onboarding keeps the launch focus state intentionally simple: the only map exit
 is a top-right Explore freely action that clears the veil. Once clear, the map
-destinations are available for the visitor to choose. Sector controls sit above
+destinations are available for the visitor to choose. Launching the guided
+flight hides Explore freely for the rest of that onboarding view, including
+after the flight closes. Sector controls sit above
 the flight scene for direct pointer, touch and keyboard use.
 ArrowUp and ArrowDown work even when focus remains on the Back to map control.
 On narrow portrait screens, the controls form a two-button safe-area dock and

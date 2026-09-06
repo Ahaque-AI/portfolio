@@ -52,6 +52,7 @@ test('guided-flight moves between asteroid encounters by explicit sector control
   assert.deepEqual(calls.filter(value => typeof value === 'number'), [0, 1, 2, 3, 2]);
   e['#tutorial-close'].handlers.click();
   assert.ok(calls.includes('dispose'));
+  assert.equal(e['#free-roam'].hidden, true, 'free exploration choice stays hidden after launch');
   assert.equal(calls.at(-1), 'focus:#tutorial-trigger');
 });
 
@@ -75,4 +76,5 @@ test('guided-flight warms and reuses one scene module request', () => {
   assert.match(source, /button\.addEventListener\('focus', warmScene/);
   assert.match(source, /button\.addEventListener\('pointerdown', warmScene/);
   assert.match(source, /await prepareScene\(\)/);
+  assert.doesNotMatch(source, /freeRoam\.hidden = false/);
 });

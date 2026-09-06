@@ -40,7 +40,7 @@ export function mountMap(map: HTMLElement) {
   scene.add(stars);
   host.append(renderer.domElement);
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  let frame = 0, visible = false, disposed = false;
+  let frame = 0, disposed = false;
   // Own clock so the flight landing freeze and the resumed motion stay continuous.
   let clock = 0, last = 0;
   const aim = new THREE.Vector2();
@@ -73,10 +73,10 @@ export function mountMap(map: HTMLElement) {
     (stars.material as THREE.PointsMaterial).opacity = .3 + (Math.sin(phase * .8) + 1) * .09;
     try { renderer.render(scene, camera); }
     catch { dispose(); return; }
-    if (visible && !document.hidden && !reduced.matches) frame = requestAnimationFrame(render);
+    if (!document.hidden && !reduced.matches) frame = requestAnimationFrame(render);
   }
   function resume() {
-    if (!visible || document.hidden) {
+    if (document.hidden) {
       cancelAnimationFrame(frame);
       frame = 0;
       last = 0;
@@ -97,12 +97,11 @@ export function mountMap(map: HTMLElement) {
     renderer.setSize(width, height);
     resume();
   });
-  const visibility = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; resume(); });
   function dispose() {
     if (disposed) return;
     disposed = true;
     cancelAnimationFrame(frame);
-    resize.disconnect(); visibility.disconnect();
+    resize.disconnect();
     reduced.removeEventListener('change', resume);
     map.removeEventListener('pointermove', pointMap);
     map.removeEventListener('pointerleave', resetMap);
@@ -119,7 +118,7 @@ export function mountMap(map: HTMLElement) {
     render(performance.now());
     if (disposed) return;
     map.classList.add('has-three');
-    resize.observe(host); visibility.observe(host);
+    resize.observe(host);
     reduced.addEventListener('change', resume);
     map.addEventListener('pointermove', pointMap, { passive: true });
     map.addEventListener('pointerleave', resetMap);

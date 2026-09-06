@@ -143,8 +143,10 @@ viewport to avoid a dialog scrollbar. Failed WebGL retains readable captions.
 Reduced motion changes stops instantly.
 
 Sector controls sit above the scene for direct pointer, touch and keyboard use.
+ArrowUp and ArrowDown work even when focus remains on the Back to map control.
 Only the selected planet is visible during flight. The camera targets that world
-continuously, keeping the planet, reticle and returning ship centered at arrival.
+continuously with damped camera and look-at settling, keeping the planet, reticle
+and returning ship centered at arrival.
 
 The guided flight is the portfolio's authored moment: the ship moves through
 four asteroid encounters, breaks their sparse fields apart and carries a short

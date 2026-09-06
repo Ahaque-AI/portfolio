@@ -47,7 +47,8 @@ test('guided-flight moves between asteroid encounters by explicit sector control
   e['#flight-next'].handlers.click();
   e['#flight-next'].handlers.click();
   e['#flight-next'].handlers.click();
-  assert.deepEqual(calls.filter(value => typeof value === 'number'), [0, 1, 2, 3]);
+  e['#tutorial-dialog'].handlers.keydown({ key: 'ArrowDown', preventDefault() {} });
+  assert.deepEqual(calls.filter(value => typeof value === 'number'), [0, 1, 2, 3, 2]);
   e['#tutorial-close'].handlers.click();
   assert.ok(calls.includes('dispose'));
   assert.equal(calls.at(-1), 'focus:#tutorial-trigger');

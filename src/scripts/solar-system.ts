@@ -112,6 +112,9 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
   const heading = new THREE.Vector3(0, 1, 0);
   const tangent = new THREE.Vector3();
   const look = new THREE.Vector3();
+  const smoothCamera = new THREE.Vector3();
+  const smoothLook = new THREE.Vector3();
+  let cameraReady = false;
   function flyTo(index: number) {
     const stop = system.stops[index];
     if (!stop || disposed) return;
@@ -145,8 +148,13 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
     tangent.copy(path.getTangentAt(Math.min(.999, eased))).normalize();
     system.rocket.group.quaternion.setFromUnitVectors(heading, tangent);
     look.copy(system.stops[targetIndex].group.position).add(new THREE.Vector3(drift.x * .45, drift.y * .3, 0));
-    camera.position.copy(system.rocket.group.position).add(new THREE.Vector3(drift.x * .25, -4.2 + drift.y * .15, distance));
-    camera.lookAt(look);
+    const desiredCamera = system.rocket.group.position.clone().add(new THREE.Vector3(drift.x * .25, -4.2 + drift.y * .15, distance));
+    if (!cameraReady) { smoothCamera.copy(desiredCamera); smoothLook.copy(look); cameraReady = true; }
+    const settle = 1 - Math.exp(-delta / 150);
+    smoothCamera.lerp(desiredCamera, settle);
+    smoothLook.lerp(look, 1 - Math.exp(-delta / 190));
+    camera.position.copy(smoothCamera);
+    camera.lookAt(smoothLook);
     try { renderer.render(system.scene, camera); }
     catch { dispose(); onFailure(); return; }
     if (visible && !document.hidden && !reduced.matches) frame = requestAnimationFrame(render);

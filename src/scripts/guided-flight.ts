@@ -85,6 +85,10 @@ export function initGuidedFlight() {
   previous.addEventListener('click', moveBack, { signal: events.signal });
   next.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); moveForward(); } }, { signal: events.signal });
   previous.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); moveBack(); } }, { signal: events.signal });
+  modal.addEventListener('keydown', event => {
+    if (event.key === 'ArrowUp') { event.preventDefault(); moveForward(); }
+    if (event.key === 'ArrowDown') { event.preventDefault(); moveBack(); }
+  }, { signal: events.signal });
   modal.querySelector('#tutorial-close')!.addEventListener('click', () => modal.close(), { signal: events.signal });
   modal.addEventListener('close', () => { release(); if (button.isConnected) button.focus({ preventScroll: true }); }, { signal: events.signal });
   document.addEventListener('astro:before-swap', () => {

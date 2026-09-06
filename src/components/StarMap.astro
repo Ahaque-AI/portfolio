@@ -37,9 +37,10 @@
   </div>
 </div>
 <script>
+  import { readVisitorName } from '../scripts/visitor-name.mjs';
   document.addEventListener('astro:page-load', () => {
     const map = document.querySelector<HTMLElement>('.star-map');
-    if (!map) return;
+    if (!map || !readVisitorName()) return;
     void import('../scripts/orbital-map').then(({ mountMap }) => {
       if (map.isConnected) mountMap(map);
     }).catch(() => { /* The authored SVG stays available without WebGL. */ });

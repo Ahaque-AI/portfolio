@@ -75,7 +75,15 @@ export function mountMap(map: HTMLElement) {
     catch { dispose(); return; }
     if (visible && !document.hidden && !reduced.matches) frame = requestAnimationFrame(render);
   }
-  function resume() { cancelAnimationFrame(frame); last = 0; render(performance.now()); }
+  function resume() {
+    if (!visible || document.hidden) {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      last = 0;
+      return;
+    }
+    if (!frame) frame = requestAnimationFrame(render);
+  }
   function pointMap(event: PointerEvent) {
     if (reduced.matches || event.pointerType !== 'mouse') return;
     const rect = map.getBoundingClientRect();

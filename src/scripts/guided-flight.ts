@@ -22,6 +22,8 @@ export function initGuidedFlight() {
   const previous = modal.querySelector<HTMLButtonElement>('#flight-previous')!;
   const freeRoam = document.querySelector<HTMLButtonElement>('#free-roam');
   const events = new AbortController();
+  let sceneModule: Promise<typeof import('./solar-system')> | undefined;
+  const prepareScene = () => sceneModule ??= import('./solar-system');
   let scene: ReturnType<typeof mountSolarSystem>;
   let visit = 0, stop = 0, moving = false;
   function setMoving(value: boolean) {
@@ -74,7 +76,7 @@ export function initGuidedFlight() {
     button.setAttribute('aria-busy', 'true');
     status.textContent = 'Preparing spaceship…';
     try {
-      const { mountSolarSystem } = await import('./solar-system');
+      const { mountSolarSystem } = await prepareScene();
       if (request !== visit || !modal.open || !modal.isConnected) return;
       scene = mountSolarSystem(host, fallback, setMoving);
       if (!scene) fallback();
@@ -89,6 +91,10 @@ export function initGuidedFlight() {
   document.querySelector('#guided-first-note')?.removeAttribute('hidden');
   requestAnimationFrame(() => button.focus({ preventScroll: true }));
   button.addEventListener('click', open, { signal: events.signal });
+  const warmScene = () => { void prepareScene(); };
+  button.addEventListener('focus', warmScene, { signal: events.signal });
+  button.addEventListener('pointerenter', warmScene, { signal: events.signal });
+  button.addEventListener('pointerdown', warmScene, { signal: events.signal });
   const moveForward = () => move(1);
   const moveBack = () => move(-1);
   next.addEventListener('click', moveForward, { signal: events.signal });

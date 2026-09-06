@@ -68,3 +68,11 @@ test('closing while the chunk loads never mounts a stale scene', async () => {
   resolve(); await opening;
   assert.ok(!calls.includes('mount'));
 });
+
+test('guided-flight warms and reuses one scene module request', () => {
+  const source = readFileSync(new URL('../src/scripts/guided-flight.ts', import.meta.url), 'utf8');
+  assert.match(source, /sceneModule \?\?= import\('\.\/solar-system'\)/);
+  assert.match(source, /button\.addEventListener\('focus', warmScene/);
+  assert.match(source, /button\.addEventListener\('pointerdown', warmScene/);
+  assert.match(source, /await prepareScene\(\)/);
+});

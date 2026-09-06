@@ -131,6 +131,12 @@ test('full-screen flight cannot pause before it unlocks sector controls', () => 
   assert.match(source, /onTravel\(false\)/);
 });
 
+test('onboarding map keeps its animation clock through mobile resizes', () => {
+  const source = readFileSync(new URL('../src/scripts/orbital-map.ts', import.meta.url), 'utf8');
+  assert.match(source, /if \(!frame\) frame = requestAnimationFrame\(render\)/);
+  assert.doesNotMatch(source, /function resume\(\) \{\s*cancelAnimationFrame\(frame\);\s*last = 0/);
+});
+
 test('flight code measures and settles into the incoming page orbit', () => {
   const source = readFileSync(new URL('../src/scripts/orbital-three.ts', import.meta.url), 'utf8');
   assert.match(source, /const target = document\.querySelector<SVGSVGElement>\('\.orbit-art, \.map-art, \.legal-orbit svg'\)/);

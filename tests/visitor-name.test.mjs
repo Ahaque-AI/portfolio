@@ -46,3 +46,9 @@ test('home onboarding action validates and explains a missing name', () => {
   assert.match(intro, /mode = 'name-only';\s*if \(!showErrors\(true\)\) return;/);
   assert.match(intro, /saveVisitorName\(name\.value\);\s*location\.assign\(onboarding\.href\)/);
 });
+
+test('animated onboarding map mounts only after a full name is saved', () => {
+  const map = readFileSync(new URL('../src/components/StarMap.astro', import.meta.url), 'utf8');
+  assert.match(map, /import \{ readVisitorName \}/);
+  assert.match(map, /if \(!map \|\| !readVisitorName\(\)\) return;/);
+});

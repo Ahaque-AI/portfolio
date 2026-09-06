@@ -110,6 +110,9 @@ longitude lines, two orbital tracks, and a signal along the destination curve.
 The original SVG remains the fallback when WebGL is unavailable. The canvas and
 SVG share an 820 × 520 aspect ratio so destination targets stay aligned. Map
 motion stops offscreen, in hidden tabs and under reduced motion.
+The animated renderer mounts only after the full-name gate succeeds. Its resize
+path preserves the active frame and clock so mobile browser-chrome changes do
+not leave the onboarding orbit static.
 
 The map labels are route annotations rather than floating captions: each carries
 an index, destination and concise state. Arrival remains a native link and has
@@ -126,7 +129,9 @@ Introduction tilt applies to the whole scene, keeping SVG labels and WebGL
 geometry together.
 
 Guided flight opens a full-screen native dialog from the map trigger and loads
-its scene on click. It reuses the globe as a sun, adds Arrival, About
+its scene on interaction intent and reuses that cached module on click. Focus,
+pointer entry and touch-down warm the scene so launch feedback is immediate on
+desktop and mobile. It reuses the globe as a sun, adds Arrival, About
 and Work planets on closed tracks, deterministic stars and one comet pass per
 24 seconds. The authored ship is a detailed exploration fighter: pointed nose
 with a sensor spike and ring, a blue glass canopy framed in metal with a

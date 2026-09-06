@@ -19,9 +19,6 @@ export function initGuidedFlight() {
   const copy = modal.querySelector<HTMLElement>('#tutorial-copy')!;
   const status = modal.querySelector<HTMLElement>('#flight-status')!;
   const events = new AbortController();
-  const firstRunKey = 'portfolio-guided-flight-started';
-  const started = () => { try { return sessionStorage.getItem(firstRunKey); } catch { return null; } };
-  const markStarted = () => { try { sessionStorage.setItem(firstRunKey, 'true'); } catch { /* A launch still works when browser storage is unavailable. */ } };
   let scene: ReturnType<typeof mountSolarSystem>;
   let visit = 0, stop = 0, advance = 0;
   function caption() {
@@ -52,16 +49,17 @@ export function initGuidedFlight() {
     scene?.dispose(); scene = undefined;
     button.removeAttribute('aria-busy');
     modal.classList.remove('has-spaceship');
+    document.documentElement.classList.remove('is-flight-open');
   }
   async function open() {
     if (modal.open) return;
-    markStarted();
     document.body.classList.remove('is-guided-focus');
     document.querySelector('#guided-first-note')?.setAttribute('hidden', '');
     button.classList.add('is-launching');
     stop = 0; caption();
     modal.classList.add('has-spaceship');
     modal.showModal();
+    document.documentElement.classList.add('is-flight-open');
     const request = ++visit;
     button.setAttribute('aria-busy', 'true');
     status.textContent = 'Preparing spaceship…';
@@ -77,11 +75,9 @@ export function initGuidedFlight() {
       button.classList.remove('is-launching');
     }
   }
-  if (!started()) {
-    document.body.classList.add('is-guided-focus');
-    document.querySelector('#guided-first-note')?.removeAttribute('hidden');
-    requestAnimationFrame(() => button.focus({ preventScroll: true }));
-  }
+  document.body.classList.add('is-guided-focus');
+  document.querySelector('#guided-first-note')?.removeAttribute('hidden');
+  requestAnimationFrame(() => button.focus({ preventScroll: true }));
   button.addEventListener('click', open, { signal: events.signal });
   modal.querySelector('#tutorial-close')!.addEventListener('click', () => modal.close(), { signal: events.signal });
   modal.addEventListener('close', () => { release(); if (button.isConnected) button.focus({ preventScroll: true }); }, { signal: events.signal });

@@ -124,28 +124,27 @@ geometry together.
 Guided flight opens a full-screen native dialog from the map trigger and loads
 its scene on click. It reuses the globe as a sun, adds Arrival, About
 and Work planets on closed tracks, deterministic stars and one comet pass per
-24 seconds. The authored rocket uses ink geometry with a citron stripe and
-engine dot. Its host canvas is aria-hidden. Animation pauses offscreen and in
+24 seconds. The authored ship has broad citron wings, a dark cockpit and four
+engines. Its host canvas is aria-hidden. Animation pauses offscreen and in
 hidden tabs, freezes under reduced motion, and releases resources on disposal.
-The rocket follows a spline from Arrival past Work to About, with a following
-camera. Captions occupy a separate bottom row so the scene never hides reading
-or controls. About ends with a real Enter About link. Back, skip and close remain
-available. Native modal behavior owns focus containment, inert background and
-Escape; closing restores trigger focus. Failed WebGL retains the compact text
-tour. No document scroll lock is applied. Reduced motion changes stops instantly.
+The rocket follows a spline between asteroid encounters with a following camera.
+Captions occupy a separate bottom row. Back to map is the sole game control;
+encounters advance automatically. Native modal behavior owns focus containment,
+inert background and Escape; closing restores trigger focus. The game locks its
+own viewport to avoid a dialog scrollbar. Failed WebGL retains readable captions.
+Reduced motion changes stops instantly.
 
 The guided flight is the portfolio's authored moment: the ship moves through
 four asteroid encounters, breaks their sparse fields apart and carries a short
-citron data stream from each encounter. The ship is a compact exploration craft
-with a dark cockpit, broad citron wings and twin engines, not a vertical rocket.
-Every button and internal destination receives the same orbital ring feedback;
-internal page destinations also use the shared WebGL orbit transition. On a
-session's first map visit, the rest of the page fades behind the glowing launch
-control and pointer interaction waits for launch. This focus state is cleared
-as soon as the flight starts, and no personal data is stored for it.
+citron data stream from each encounter. The ship has broad citron wings, a dark
+cockpit and four engines. Every button and internal destination receives the
+same orbital ring feedback; internal page destinations also use the shared WebGL
+orbit transition. Each arrival at the map begins with the rest of the page behind
+the glowing launch control until the flight starts. This focus state clears as
+soon as the flight starts and stores nothing.
 
 The launch control uses the dark text token on a solid citron surface. Its
-first-visit focus veil uses a low-opacity background and a restrained 1.8px
+launch focus veil uses a low-opacity background and a restrained 1.8px
 blur, preserving the map while making the launch area unmistakable. The game
 has one control only: Back to map at the top left. Encounters advance by flight
 time, not by controls. Asteroids close in before impact, then scatter and reveal
@@ -157,10 +156,10 @@ resume-based work summaries with figures explicitly labeled reported results.
 Arrival and About are open map destinations; Work remains unavailable.
 
 The CV is a dedicated resume surface, not a portfolio article. It removes the
-site chrome and reading rail, then presents the supplied one-page A4 resume as
-one fitted desktop sheet. The PDF's hierarchy drives its serif typography,
-blue section rules, compact rows and dense content. Narrow screens keep the
-same content but allow normal document scrolling for legibility.
+site chrome and reading rail, then presents the complete supplied resume in the
+portfolio's Chakra Petch and Manrope type system. Its dark reading sheet preserves
+the PDF hierarchy without clipping or scaling the document to fit one viewport.
+Normal document scrolling keeps every detail readable at every screen size.
 
 The owner explicitly requested Three.js for the page transition. On “See the
 route ahead”, a WebGL globe takes over at the source orbit's measured position,
@@ -181,13 +180,10 @@ use. Browser shader compilation and visual smoothness require owner testing.
 
 Legal pages pair a 250px navigation
 rail with a reading column up to 660px; mobile removes the decorative rail.
-The CV page shares that rail layout and adds a persistent header CV control
-on every page. It reproduces the resume's own structure top to bottom (name,
-headline, contact line, summary, skills, experience, projects, education,
-certifications) in the portfolio identity, and states its figures plainly as
-the resume does. The header CV control navigates in the same tab from every
-page, so the orbit flight plays on the switch; it opened a new tab from the
-introduction before that was changed on 2026-09-05.
+The CV page has no rail and reproduces the resume's own structure top to bottom
+(name, headline, contact line, summary, skills, experience, projects, education,
+certifications) in the portfolio identity. The header CV control navigates in
+the same tab from every page, so the orbit flight plays on the switch.
 Document scroll owns all pages. No scroll lock or custom cursor.
 
 ## Elevation & Depth
@@ -221,7 +217,7 @@ Arrows share a 1.5px stroke. The favicon is the same orbital mark as the header.
 | `src/scripts/orbit-navigation.ts` | Astro navigation lifecycle, cancellation, reduced motion and focus |
 | `src/scripts/orbital-map.ts` | Map renderer, aligned route, visibility and resource cleanup |
 | `src/scripts/solar-system.ts` | Guided-flight scene, spline travel, following camera and mount lifecycle |
-| `src/components/GuidedFlight.astro` | Native full-screen dialog, caption row, close/skip/back and About landing |
+| `src/components/GuidedFlight.astro` | Native full-screen dialog, caption row and Back to map |
 | `src/scripts/guided-flight.ts` | Intent loading, stop captions, cancellation, fallback and focus restoration |
 | `src/pages/about.astro` | Static profile, five work summaries, reported results and tools |
 | `src/scripts/rocket.ts` | Authored rocket geometry, local +Y nose direction; disposed by its scene owner |

@@ -35,7 +35,7 @@ function setup({ failure = false, delayed = false } = {}) {
     requestAnimationFrame: callback => callback(),
     clearTimeout() {},
     window: { setTimeout: callback => { timers.push(callback); return timers.length; } },
-    document: { body: { classList: { add() {}, remove() {} } }, querySelector: element, addEventListener() {} },
+    document: { body: { classList: { add() {}, remove() {} } }, documentElement: { classList: { add() {}, remove() {} } }, querySelector: element, addEventListener() {} },
     loadScene: () => delayed ? new Promise(done => { resolve = done; }) : Promise.resolve(module),
   });
   return { elements, calls, advance: () => timers.shift()?.(), resolve: () => resolve(module) };

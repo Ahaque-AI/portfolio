@@ -182,9 +182,10 @@ Arrival and About are open map destinations; Work remains unavailable.
 The CV is a dedicated resume surface, not a portfolio article. It includes a
 persistent Back to map action, then removes the
 site chrome and reading rail, then presents the complete supplied resume in the
-portfolio's Chakra Petch and Manrope type system. Its compact 980px reading sheet
+portfolio's Chakra Petch and Manrope type system. Its compact 1120px reading sheet
 preserves the PDF hierarchy without clipping or enlarging the document to fill a
-viewport. Normal document scrolling keeps every detail readable at every screen size.
+viewport. Dense but readable spacing lets most of the resume sit in one desktop
+viewport, while normal document scrolling remains available for smaller screens.
 
 The owner explicitly requested Three.js for the page transition. On “See the
 route ahead”, a WebGL globe takes over at the source orbit's measured position,

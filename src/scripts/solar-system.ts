@@ -129,6 +129,7 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
     travel = reduced.matches ? 1 : 0;
     targetIndex = index;
     hit = reduced.matches;
+    cameraReady = false;
     system.arm(index);
     if (reduced.matches) system.strike(index);
     resume();

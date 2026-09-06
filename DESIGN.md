@@ -186,6 +186,8 @@ portfolio's Chakra Petch and Manrope type system. Its compact 1120px reading she
 preserves the PDF hierarchy without clipping or enlarging the document to fill a
 viewport. Dense but readable spacing lets most of the resume sit in one desktop
 viewport, while normal document scrolling remains available for smaller screens.
+Sections reveal with a restrained upward fade as they enter the reading viewport;
+the full semantic document remains available without scripting.
 
 The owner explicitly requested Three.js for the page transition. On “See the
 route ahead”, a WebGL globe takes over at the source orbit's measured position,

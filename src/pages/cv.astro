@@ -24,3 +24,15 @@ import Arrow from '../components/Arrow.astro';
     </article>
   </main>
 </Shell>
+<script>
+  document.addEventListener('astro:page-load', () => {
+    document.documentElement.classList.add('cv-ready');
+    const sections = document.querySelectorAll<HTMLElement>('.resume-sheet > section');
+    const reveal = (section: HTMLElement) => section.classList.add('is-visible');
+    if (!('IntersectionObserver' in window)) { sections.forEach(reveal); return; }
+    const observer = new IntersectionObserver(entries => entries.forEach(entry => {
+      if (entry.isIntersecting) { reveal(entry.target as HTMLElement); observer.unobserve(entry.target); }
+    }), { rootMargin: '0px 0px -12% 0px', threshold: .08 });
+    sections.forEach(section => observer.observe(section));
+  });
+</script>

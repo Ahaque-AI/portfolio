@@ -2,9 +2,9 @@ import type { mountSolarSystem } from './solar-system';
 
 export const flightStops = [
   { planet: 0, name: '01 / SIGNAL FOUND', title: 'AI systems under real constraints.', copy: 'I build backend AI systems that keep moving when inference is limited, jobs fail, or data needs clear boundaries.' },
-  { planet: 2, name: '02 / ASTEROID FIELD', title: 'Production work, not demos.', copy: 'A CPU-only therapy service handled 300+ daily sessions. A student companion reduced session context from 100K to 10K tokens.' },
-  { planet: 1, name: '03 / RESEARCH LOCK', title: 'GraphRAG-Causal and IntentLens.', copy: 'I use graph retrieval and multi-agent workflows to make model behaviour inspectable, testable and useful.' },
-  { planet: 2, name: '04 / MISSION LOG', title: 'Kafka, FastAPI, Azure, pgvector and Neo4j.', copy: 'The work connects real-time reporting, retrieval systems and production service design. The route map is ready when you are.' },
+  { planet: 1, name: '02 / ASTEROID FIELD', title: 'Production work, not demos.', copy: 'A CPU-only therapy service handled 300+ daily sessions. A student companion reduced session context from 100K to 10K tokens.' },
+  { planet: 2, name: '03 / RESEARCH LOCK', title: 'GraphRAG-Causal and IntentLens.', copy: 'I use graph retrieval and multi-agent workflows to make model behaviour inspectable, testable and useful.' },
+  { planet: 3, name: '04 / MISSION LOG', title: 'Kafka, FastAPI, Azure, pgvector and Neo4j.', copy: 'The work connects real-time reporting, retrieval systems and production service design. The route map is ready when you are.' },
 ];
 
 export function initGuidedFlight() {

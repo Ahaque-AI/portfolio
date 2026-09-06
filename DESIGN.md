@@ -128,9 +128,10 @@ and Work planets on closed tracks, deterministic stars and one comet pass per
 engines. Its host canvas is aria-hidden. Animation pauses offscreen and in
 hidden tabs, freezes under reduced motion, and releases resources on disposal.
 The guided scene uses a third-person shooter framing with no orbital route-map
-marks. Full-scale spherical section planets fill the distance, the swept-wing
-four-engine fighter fills the lower center, and large asteroid objectives occupy
-the flight line ahead. A non-interactive targeting reticle sits over the scene.
+marks. Four full-scale spherical section planets sit at distinct lateral and
+depth coordinates. The swept-wing four-engine fighter and following camera travel
+between them, so asteroid fields pass the player during each scroll-led approach.
+A non-interactive targeting reticle sits over the scene.
 The ship's engines pulse and its cyan bolt stream fires toward the active field
 after an advance. Captions occupy one side at a time,
 alternating by encounter. Back to map is the only button. Wheel input is the

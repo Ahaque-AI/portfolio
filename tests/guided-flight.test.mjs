@@ -48,7 +48,7 @@ test('guided-flight moves between asteroid encounters by scroll and returns thro
   e['#tutorial-dialog'].handlers.wheel(up);
   e['#tutorial-dialog'].handlers.wheel(up);
   e['#tutorial-dialog'].handlers.wheel(up);
-  assert.deepEqual(calls.filter(value => typeof value === 'number'), [0, 2, 1, 2]);
+  assert.deepEqual(calls.filter(value => typeof value === 'number'), [0, 1, 2, 3]);
   e['#tutorial-close'].handlers.click();
   assert.ok(calls.includes('dispose'));
   assert.equal(calls.at(-1), 'focus:#tutorial-trigger');

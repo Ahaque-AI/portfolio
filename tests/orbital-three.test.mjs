@@ -35,7 +35,7 @@ for (const [file, output] of [['rocket', rocketExports], ['solar-system', solarE
 test('solar scene has deterministic stars, closed tracks and complete disposal', () => {
   const first = solarExports.makeSolarSystem();
   const second = solarExports.makeSolarSystem();
-  assert.deepEqual(first.stops.map(stop => stop.id), ['arrival', 'about', 'work']);
+  assert.deepEqual(first.stops.map(stop => stop.id), ['arrival', 'therapy', 'research', 'systems']);
   assert.deepEqual(first.stars.geometry.attributes.position.array, second.stars.geometry.attributes.position.array);
   for (const stop of first.stops) assert.ok(stop.point(0).distanceTo(stop.point(Math.PI * 2)) < 1e-10);
   first.update(19);

@@ -7,13 +7,14 @@ export function makeSolarSystem() {
   const scene = new THREE.Scene();
   lightScene(scene);
   const stops = [
-    { id: 'arrival', radius: 2.6, phase: 2.5, size: 4.5, color: 0x53616a },
-    { id: 'about', radius: 3.7, phase: .6, size: 5.6, color: 0x435a65 },
-    { id: 'work', radius: 4.8, phase: 4.9, size: 5.1, color: 0x6c5b43 },
-  ].map(({ id, radius, phase, size }) => {
-    const point = (angle: number) => new THREE.Vector3(radius * .22 * Math.cos(angle), 2 + radius * .12 * Math.sin(angle), -19 - radius * 2.3 + radius * .06 * Math.sin(angle));
+    { id: 'arrival', radius: 2.6, phase: 2.5, size: 4.5, color: 0x53616a, base: new THREE.Vector3(-5, 4, -30) },
+    { id: 'therapy', radius: 3.7, phase: .6, size: 5.6, color: 0x435a65, base: new THREE.Vector3(8, -2, -58) },
+    { id: 'research', radius: 4.8, phase: 4.9, size: 5.1, color: 0x6c5b43, base: new THREE.Vector3(-9, 5, -88) },
+    { id: 'systems', radius: 5.9, phase: 1.8, size: 6.2, color: 0x35434b, base: new THREE.Vector3(6, 1, -120) },
+  ].map(({ id, radius, phase, size, color, base }) => {
+    const point = (angle: number) => base.clone().add(new THREE.Vector3(Math.cos(angle) * .35, Math.sin(angle) * .22, Math.sin(angle) * .08));
     const group = new THREE.Group();
-    const planet = new THREE.Mesh(new THREE.SphereGeometry(size, 32, 20), new THREE.MeshStandardMaterial({ color: id === 'arrival' ? 0x53616a : id === 'about' ? 0x435a65 : 0x6c5b43, roughness: .95, flatShading: true }));
+    const planet = new THREE.Mesh(new THREE.SphereGeometry(size, 32, 20), new THREE.MeshStandardMaterial({ color, roughness: .95, flatShading: true }));
     group.add(planet);
     const rocks = Array.from({ length: 12 }, (_, index) => {
       const angle = index * 2.4;
@@ -96,7 +97,7 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
   try { renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'low-power' }); }
   catch { return; }
   const system = makeSolarSystem();
-  system.rocket.group.scale.setScalar(3.3);
+  system.rocket.group.scale.setScalar(2.2);
   const camera = new THREE.PerspectiveCamera(40, 1, .1, 100);
   const aim = new THREE.Vector2(), drift = new THREE.Vector2();
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -107,10 +108,14 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
   let frame = 0, last = 0, clock = 0, distance = 11;
   let visible = false, sized = false, disposed = false;
   let travel = 1, targetIndex = 0, hit = true;
+  let path = makeFlightPath(system.rocket.group.position, system.rocket.group.position);
+  const heading = new THREE.Vector3(0, 1, 0);
+  const tangent = new THREE.Vector3();
   const look = new THREE.Vector3();
   function flyTo(index: number) {
     const stop = system.stops[index];
     if (!stop || disposed) return;
+    path = makeFlightPath(system.rocket.group.position, stop.group.position.clone().add(new THREE.Vector3(0, -2.2, 7)));
     travel = reduced.matches ? 1 : 0;
     targetIndex = index;
     hit = reduced.matches;
@@ -127,7 +132,7 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
       clock += delta / 1000;
       drift.lerp(aim, 1 - Math.exp(-delta / 295));
     }
-    // Hold objectives in the forward view. Scroll input changes the active field.
+    // Objectives stay fixed in space while the ship and camera travel between them.
     system.update(clock, reduced.matches);
     for (const stop of system.stops) stop.group.position.copy(stop.point(stop.phase));
     if (reduced.matches) travel = 1;
@@ -135,8 +140,11 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
     const eased = travel * travel * (3 - 2 * travel);
     system.approachStop(targetIndex, eased);
     if (!hit && travel === 1) { system.strike(targetIndex); hit = true; }
-    look.set(drift.x * .45, drift.y * .3, -24);
-    camera.position.set(drift.x * .25, -1.2 + drift.y * .15, distance);
+    system.rocket.group.position.copy(path.getPointAt(eased));
+    tangent.copy(path.getTangentAt(Math.min(.999, eased))).normalize();
+    system.rocket.group.quaternion.setFromUnitVectors(heading, tangent);
+    look.copy(system.rocket.group.position).addScaledVector(tangent, 18).add(new THREE.Vector3(drift.x * .45, drift.y * .3, 0));
+    camera.position.copy(system.rocket.group.position).add(new THREE.Vector3(drift.x * .25, -4.2 + drift.y * .15, distance));
     camera.lookAt(look);
     try { renderer.render(system.scene, camera); }
     catch { dispose(); onFailure(); return; }

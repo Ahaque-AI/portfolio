@@ -148,7 +148,9 @@ Only the selected planet is visible during flight. The camera targets that world
 continuously with damped camera and look-at settling, keeping the planet, reticle
 and returning ship centered at arrival. The camera depth range covers all four
 worlds, and travel duration scales with the distance between them. The fighter
-uses a larger silhouette with four bright exhausts and forward cannons.
+uses a larger reference-matched silhouette with a pointed pale fuselage, blue
+canopy, broad swept wings, dark engine pods, four bright exhausts and forward
+cannons.
 
 The guided flight is the portfolio's authored moment: the ship moves through
 four asteroid encounters, breaks their sparse fields apart and carries a short

@@ -20,23 +20,20 @@ export function initGuidedFlight() {
   const status = modal.querySelector<HTMLElement>('#flight-status')!;
   const events = new AbortController();
   let scene: ReturnType<typeof mountSolarSystem>;
-  let visit = 0, stop = 0, advance = 0;
+  let visit = 0, stop = 0, wheelDistance = 0;
   function caption() {
     const current = flightStops[stop];
     title.textContent = current.title;
     copy.textContent = current.copy;
-    status.textContent = current.name;
+    status.textContent = `${current.name} · SCROLL UP TO FLY · SCROLL DOWN TO RETURN`;
+    modal.dataset.captionSide = stop % 2 ? 'right' : 'left';
     scene?.flyTo(current.planet);
   }
-  function queueAdvance(request: number) {
-    clearTimeout(advance);
-    if (stop === flightStops.length - 1) return;
-    advance = window.setTimeout(() => {
-      if (request !== visit || !modal.open) return;
-      stop += 1;
-      caption();
-      queueAdvance(request);
-    }, 4100);
+  function move(direction: number) {
+    const next = Math.max(0, Math.min(flightStops.length - 1, stop + direction));
+    if (next === stop) return;
+    stop = next;
+    caption();
   }
   function fallback() {
     scene?.dispose(); scene = undefined;
@@ -45,7 +42,6 @@ export function initGuidedFlight() {
   }
   function release() {
     visit++;
-    clearTimeout(advance);
     scene?.dispose(); scene = undefined;
     button.removeAttribute('aria-busy');
     modal.classList.remove('has-spaceship');
@@ -68,7 +64,7 @@ export function initGuidedFlight() {
       if (request !== visit || !modal.open || !modal.isConnected) return;
       scene = mountSolarSystem(host, fallback);
       if (!scene) fallback();
-      else { caption(); queueAdvance(request); }
+      else caption();
     } catch { if (request === visit) fallback(); }
     finally {
       if (request === visit) button.removeAttribute('aria-busy');
@@ -79,6 +75,13 @@ export function initGuidedFlight() {
   document.querySelector('#guided-first-note')?.removeAttribute('hidden');
   requestAnimationFrame(() => button.focus({ preventScroll: true }));
   button.addEventListener('click', open, { signal: events.signal });
+  modal.addEventListener('wheel', event => {
+    event.preventDefault();
+    wheelDistance += event.deltaY;
+    if (Math.abs(wheelDistance) < 56) return;
+    move(wheelDistance < 0 ? 1 : -1);
+    wheelDistance = 0;
+  }, { passive: false, signal: events.signal });
   modal.querySelector('#tutorial-close')!.addEventListener('click', () => modal.close(), { signal: events.signal });
   modal.addEventListener('close', () => { release(); if (button.isConnected) button.focus({ preventScroll: true }); }, { signal: events.signal });
   document.addEventListener('astro:before-swap', () => {

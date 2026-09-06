@@ -365,7 +365,8 @@ body.is-guided-focus #tutorial-trigger { z-index: 31; box-shadow: 0 0 0 8px rgb(
 html.is-flight-open { overflow: hidden; }
 .has-spaceship .flight-scene { display: block; width: 100%; height: 100%; min-height: 100dvh; overflow: hidden; }
 .flight-back { position: fixed; z-index: 4; top: max(20px, env(safe-area-inset-top)); left: max(20px, env(safe-area-inset-left)); display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 12px; border: 0; background: rgb(12 21 28 / .72); color: var(--color-text); font-size: 12px; }
-.flight-caption { position: fixed; z-index: 3; left: clamp(24px, 7vw, 120px); bottom: max(32px, env(safe-area-inset-bottom)); width: min(580px, calc(100% - 48px)); padding: 20px 0; pointer-events: none; }
+.flight-caption { position: fixed; z-index: 3; left: clamp(24px, 7vw, 120px); bottom: max(32px, env(safe-area-inset-bottom)); width: min(430px, calc(100% - 48px)); padding: 20px 0; pointer-events: none; transition: left 420ms var(--ease), right 420ms var(--ease); }
+.guided-flight[data-caption-side='right'] .flight-caption { right: clamp(24px, 7vw, 120px); left: auto; }
 .flight-caption::before { content: ''; position: absolute; inset: -32px -48px; z-index: -1; background: linear-gradient(90deg, rgb(12 21 28 / .94), transparent); filter: blur(12px); }
 .flight-caption .flight-status { font-size: 12px; color: var(--color-accent); margin: 0 0 8px; letter-spacing: .12em; }
 .flight-caption h2 { font-size: clamp(30px, 4vw, 54px); }
@@ -378,28 +379,28 @@ html.is-flight-open { overflow: hidden; }
 .about-story { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--color-line); }
 .about-story h3 { font-family: var(--font-display); font-size: 22px; font-weight: 500; }
 .about-story .about-result { color: var(--color-accent); }
-.resume-page { min-height: 100dvh; padding: clamp(32px, 6vw, 96px) clamp(20px, 5vw, 80px); background: var(--color-background); color: var(--color-text); }
-.resume-sheet { width: min(100%, 1120px); margin: 0 auto; padding: clamp(28px, 5vw, 72px); border: 1px solid var(--color-line); background: var(--color-background); font-family: var(--font-body); font-size: clamp(14px, 1.15vw, 16px); line-height: 1.62; color: var(--color-text); }
+.resume-page { min-height: 100dvh; padding: clamp(24px, 4vw, 56px) clamp(16px, 4vw, 48px); background: var(--color-background); color: var(--color-text); }
+.resume-sheet { box-sizing: border-box; width: min(100%, 980px); margin: 0 auto; padding: clamp(24px, 3vw, 42px); border: 1px solid var(--color-line); background: var(--color-background); font-family: var(--font-body); font-size: clamp(12.5px, .92vw, 14px); line-height: 1.46; color: var(--color-text); }
 .resume-sheet h1, .resume-sheet h2 { font-family: var(--font-display); font-weight: 500; }
-.resume-head { padding-bottom: 28px; border-bottom: 1px solid var(--color-border); }
-.resume-head h1 { font-size: clamp(44px, 7vw, 76px); letter-spacing: -.05em; }
+.resume-head { padding-bottom: 20px; border-bottom: 1px solid var(--color-border); }
+.resume-head h1 { font-size: clamp(40px, 5vw, 58px); letter-spacing: -.05em; }
 .resume-head > p { margin-top: 6px; }
 .resume-head > p:first-of-type { color: var(--color-accent); font-size: clamp(16px, 1.8vw, 21px); }
 .resume-sheet span { color: var(--color-muted); padding-inline: .3em; }
 .resume-contact { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 14px !important; color: var(--color-muted); }
 .resume-sheet a { color: var(--color-text); text-decoration-color: var(--color-accent); text-underline-offset: 3px; }
-.resume-sheet section { margin-top: 40px; }
-.resume-sheet section > h2 { margin: 0 0 16px; padding-bottom: 9px; border-bottom: 1px solid var(--color-border); color: var(--color-accent); font-size: clamp(24px, 3vw, 32px); line-height: 1.05; }
+.resume-sheet section { margin-top: 28px; }
+.resume-sheet section > h2 { margin: 0 0 11px; padding-bottom: 7px; border-bottom: 1px solid var(--color-border); color: var(--color-accent); font-size: clamp(22px, 2.4vw, 27px); line-height: 1.05; }
 .resume-sheet p { margin: 0; }
-.resume-role, .resume-project > div { display: flex; justify-content: space-between; gap: 18px; align-items: baseline; margin-top: 22px; }
+.resume-role, .resume-project > div { display: flex; justify-content: space-between; gap: 18px; align-items: baseline; margin-top: 15px; }
 .resume-role strong, .resume-project strong { color: var(--color-text); font-size: 1.06em; }
 .resume-role b { flex-shrink: 0; color: var(--color-accent); font-size: .88em; font-weight: 700; white-space: nowrap; }
 .resume-project em { flex-shrink: 0; color: var(--color-muted); font-size: .86em; text-align: right; }
 .resume-meta, .resume-internships { margin-top: 4px !important; color: var(--color-muted); }
-.resume-sheet ul { margin: 10px 0 0; padding-left: 1.25em; }
-.resume-sheet li + li { margin-top: 6px; }
-.resume-internships { margin-top: 18px !important; }
-.resume-tail p { margin-top: 10px; }
+.resume-sheet ul { margin: 7px 0 0; padding-left: 1.25em; }
+.resume-sheet li + li { margin-top: 4px; }
+.resume-internships { margin-top: 12px !important; }
+.resume-tail p { margin-top: 7px; }
 @media (max-width: 620px) { .resume-page { padding: 24px 16px; } .resume-sheet { padding: 26px 20px; } .resume-role, .resume-project > div { display: block; } .resume-role b, .resume-project em { display: block; margin-top: 3px; text-align: left; } }
 @keyframes first-guidance { from { opacity: 0; } to { opacity: 1; } }
 @keyframes flight-beacon { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }

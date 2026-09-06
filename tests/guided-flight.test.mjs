@@ -41,17 +41,20 @@ function setup({ failure = false, delayed = false } = {}) {
   return { elements, calls, advance: () => timers.shift()?.(), resolve: () => resolve(module) };
 }
 
-test('guided-flight runs asteroid encounters automatically and returns through one back control', async () => {
-  const { elements: e, calls, advance } = setup();
+test('guided-flight moves between asteroid encounters by scroll and returns through one back control', async () => {
+  const { elements: e, calls } = setup();
   await e['#tutorial-trigger'].handlers.click();
-  advance(); advance(); advance();
+  const up = { deltaY: -100, preventDefault() {} };
+  e['#tutorial-dialog'].handlers.wheel(up);
+  e['#tutorial-dialog'].handlers.wheel(up);
+  e['#tutorial-dialog'].handlers.wheel(up);
   assert.deepEqual(calls.filter(value => typeof value === 'number'), [0, 2, 1, 2]);
   e['#tutorial-close'].handlers.click();
   assert.ok(calls.includes('dispose'));
   assert.equal(calls.at(-1), 'focus:#tutorial-trigger');
 });
 
-test('WebGL failure keeps the automatic text encounter usable', async () => {
+test('WebGL failure keeps the scroll-piloted text encounter usable', async () => {
   const { elements: e } = setup({ failure: true });
   await e['#tutorial-trigger'].handlers.click();
   assert.match(e['#flight-status'].textContent, /Text tour available/);

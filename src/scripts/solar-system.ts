@@ -76,6 +76,10 @@ export function makeSolarSystem() {
       });
     }
     const target = stops[struck - 1];
+    rocket.thrusters.forEach((thruster, index) => {
+      const pulse = reduced ? 1 : 1 + Math.sin(seconds * 13 + index) * .14;
+      thruster.scale.set(pulse, 1 + (pulse - 1) * 2, pulse);
+    });
     const positions = stream.geometry.attributes.position.array as Float32Array;
     if (target && !reduced) {
       for (let index = 0; index < 12; index++) {
@@ -101,7 +105,7 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
   try { renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true, powerPreference: 'low-power' }); }
   catch { return; }
   const system = makeSolarSystem();
-  system.rocket.group.scale.setScalar(1.1);
+  system.rocket.group.scale.setScalar(2.1);
   const camera = new THREE.PerspectiveCamera(40, 1, .1, 100);
   const aim = new THREE.Vector2(), drift = new THREE.Vector2();
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -109,7 +113,7 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
   canvas.setAttribute('aria-hidden', 'true');
   canvas.style.cssText = 'display:block;width:100%;height:100%;pointer-events:none';
   host.append(canvas);
-  let frame = 0, last = 0, clock = 0, distance = 16;
+  let frame = 0, last = 0, clock = 0, distance = 10;
   let visible = false, sized = false, disposed = false;
   let travel = 1, targetIndex = 0, hit = true;
   let path = makeFlightPath(system.rocket.group.position, system.rocket.group.position);
@@ -146,7 +150,7 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
     if (!hit && travel === 1) { system.strike(targetIndex); hit = true; }
     system.rocket.group.position.copy(path.getPointAt(eased));
     if (travel < 1) system.rocket.group.quaternion.setFromUnitVectors(heading, path.getTangentAt(eased));
-    look.copy(system.rocket.group.position).multiplyScalar(.55);
+    look.copy(system.rocket.group.position);
     camera.position.set(look.x + drift.x * .4, look.y + drift.y * .3, distance);
     camera.lookAt(look);
     try { renderer.render(system.scene, camera); }
@@ -165,7 +169,7 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
     renderer.setPixelRatio(pixelRatio(width, height));
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
-    distance = Math.max(4.5, 4 / camera.aspect) / Math.tan(THREE.MathUtils.degToRad(20));
+    distance = Math.max(8, 3 / camera.aspect) / Math.tan(THREE.MathUtils.degToRad(20));
     camera.updateProjectionMatrix();
     resume();
   }

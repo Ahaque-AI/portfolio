@@ -128,10 +128,12 @@ and Work planets on closed tracks, deterministic stars and one comet pass per
 engines. Its host canvas is aria-hidden. Animation pauses offscreen and in
 hidden tabs, freezes under reduced motion, and releases resources on disposal.
 The rocket follows a spline between asteroid encounters with a following camera.
-Captions occupy a separate bottom row. Back to map is the sole game control;
-encounters advance automatically. Native modal behavior owns focus containment,
-inert background and Escape; closing restores trigger focus. The game locks its
-own viewport to avoid a dialog scrollbar. Failed WebGL retains readable captions.
+The ship stays centered and its engines pulse while the asteroid field moves toward
+it. Captions occupy one side at a time, alternating by encounter. Back to map is
+the only button. Wheel input is the flight control: scroll up advances and scroll
+down retraces the route. Native modal behavior owns focus containment, inert
+background and Escape; closing restores trigger focus. The game locks its own
+viewport to avoid a dialog scrollbar. Failed WebGL retains readable captions.
 Reduced motion changes stops instantly.
 
 The guided flight is the portfolio's authored moment: the ship moves through
@@ -146,9 +148,9 @@ soon as the flight starts and stores nothing.
 The launch control uses the dark text token on a solid citron surface. Its
 launch focus veil uses a low-opacity background and a restrained 1.8px
 blur, preserving the map while making the launch area unmistakable. The game
-has one control only: Back to map at the top left. Encounters advance by flight
-time, not by controls. Asteroids close in before impact, then scatter and reveal
-the next information signal.
+has one button only: Back to map at the top left. Scroll up advances and scroll
+down returns to the earlier encounter. Asteroids close in before impact, then
+scatter and reveal the selected information signal.
 
 About is a static reading surface using the shared rail and article layout.
 An introduction action appears beneath the opening profile, followed by five
@@ -157,9 +159,9 @@ Arrival and About are open map destinations; Work remains unavailable.
 
 The CV is a dedicated resume surface, not a portfolio article. It removes the
 site chrome and reading rail, then presents the complete supplied resume in the
-portfolio's Chakra Petch and Manrope type system. Its dark reading sheet preserves
-the PDF hierarchy without clipping or scaling the document to fit one viewport.
-Normal document scrolling keeps every detail readable at every screen size.
+portfolio's Chakra Petch and Manrope type system. Its compact 980px reading sheet
+preserves the PDF hierarchy without clipping or enlarging the document to fill a
+viewport. Normal document scrolling keeps every detail readable at every screen size.
 
 The owner explicitly requested Three.js for the page transition. On “See the
 route ahead”, a WebGL globe takes over at the source orbit's measured position,

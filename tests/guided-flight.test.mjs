@@ -41,13 +41,12 @@ function setup({ failure = false, delayed = false } = {}) {
   return { elements, calls, advance: () => timers.shift()?.(), resolve: () => resolve(module) };
 }
 
-test('guided-flight moves between asteroid encounters by scroll and returns through one back control', async () => {
+test('guided-flight moves between asteroid encounters by explicit sector controls', async () => {
   const { elements: e, calls } = setup();
   await e['#tutorial-trigger'].handlers.click();
-  const up = { deltaY: -100, preventDefault() {} };
-  e['#tutorial-dialog'].handlers.wheel(up);
-  e['#tutorial-dialog'].handlers.wheel(up);
-  e['#tutorial-dialog'].handlers.wheel(up);
+  e['#flight-next'].handlers.click();
+  e['#flight-next'].handlers.click();
+  e['#flight-next'].handlers.click();
   assert.deepEqual(calls.filter(value => typeof value === 'number'), [0, 1, 2, 3]);
   e['#tutorial-close'].handlers.click();
   assert.ok(calls.includes('dispose'));

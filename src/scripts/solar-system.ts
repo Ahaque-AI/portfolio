@@ -7,14 +7,14 @@ export function makeSolarSystem() {
   const scene = new THREE.Scene();
   lightScene(scene);
   const stops = [
-    { id: 'arrival', radius: 2.6, phase: 2.5, size: 4.5, color: 0x53616a, base: new THREE.Vector3(-5, 4, -30) },
-    { id: 'therapy', radius: 3.7, phase: .6, size: 5.6, color: 0x435a65, base: new THREE.Vector3(8, -2, -58) },
-    { id: 'research', radius: 4.8, phase: 4.9, size: 5.1, color: 0x6c5b43, base: new THREE.Vector3(-9, 5, -88) },
-    { id: 'systems', radius: 5.9, phase: 1.8, size: 6.2, color: 0x35434b, base: new THREE.Vector3(6, 1, -120) },
+    { id: 'arrival', radius: 2.6, phase: 2.5, size: 4.5, color: 0xa24834, base: new THREE.Vector3(-5, 4, -30) },
+    { id: 'therapy', radius: 3.7, phase: .6, size: 5.6, color: 0x24665e, base: new THREE.Vector3(8, -2, -58) },
+    { id: 'research', radius: 4.8, phase: 4.9, size: 5.1, color: 0x554481, base: new THREE.Vector3(-9, 5, -88) },
+    { id: 'systems', radius: 5.9, phase: 1.8, size: 6.2, color: 0x235f91, base: new THREE.Vector3(6, 1, -120) },
   ].map(({ id, radius, phase, size, color, base }) => {
     const point = (angle: number) => base.clone().add(new THREE.Vector3(Math.cos(angle) * .35, Math.sin(angle) * .22, Math.sin(angle) * .08));
     const group = new THREE.Group();
-    const planet = new THREE.Mesh(new THREE.SphereGeometry(size, 32, 20), new THREE.MeshStandardMaterial({ color, roughness: .95, flatShading: true }));
+    const planet = new THREE.Mesh(new THREE.SphereGeometry(size, 32, 20), new THREE.MeshStandardMaterial({ color, roughness: .95, flatShading: true, emissive: color, emissiveIntensity: .08 }));
     group.add(planet);
     const rocks = Array.from({ length: 12 }, (_, index) => {
       const angle = index * 2.4;
@@ -136,8 +136,8 @@ export function mountSolarSystem(host: HTMLElement, onFailure: () => void = () =
     system.update(clock, reduced.matches);
     for (const stop of system.stops) stop.group.position.copy(stop.point(stop.phase));
     if (reduced.matches) travel = 1;
-    else travel = Math.min(1, travel + delta / 1800);
-    const eased = travel * travel * (3 - 2 * travel);
+    else travel = Math.min(1, travel + delta / 2400);
+    const eased = travel * travel * travel * (travel * (travel * 6 - 15) + 10);
     system.approachStop(targetIndex, eased);
     if (!hit && travel === 1) { system.strike(targetIndex); hit = true; }
     system.rocket.group.position.copy(path.getPointAt(eased));

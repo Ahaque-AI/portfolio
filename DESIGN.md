@@ -129,13 +129,14 @@ engines. Its host canvas is aria-hidden. Animation pauses offscreen and in
 hidden tabs, freezes under reduced motion, and releases resources on disposal.
 The guided scene uses a third-person shooter framing with no orbital route-map
 marks. Four full-scale spherical section planets sit at distinct lateral and
-depth coordinates. The swept-wing four-engine fighter and following camera travel
-between them, so asteroid fields pass the player during each scroll-led approach.
+depth coordinates, each with its own red, teal, violet or blue color. The
+swept-wing four-engine fighter and following camera travel between them, so
+asteroid fields pass the player during each control-led approach.
 A non-interactive targeting reticle sits over the scene.
 The ship's engines pulse and its cyan bolt stream fires toward the active field
 after an advance. Captions occupy one side at a time,
-alternating by encounter. Back to map is the only button. Wheel input is the
-flight control: scroll up advances and scroll down retraces the route. Native
+alternating by encounter. Back to map, Up and Down are the flight controls. Up
+advances exactly one sector and Down retraces exactly one. Native
 modal behavior owns focus containment, inert
 background and Escape; closing restores trigger focus. The game locks its own
 viewport to avoid a dialog scrollbar. Failed WebGL retains readable captions.
@@ -153,8 +154,9 @@ soon as the flight starts and stores nothing.
 The launch control uses the dark text token on a solid citron surface. Its
 launch focus veil uses a low-opacity background and a restrained 1.8px
 blur, preserving the map while making the launch area unmistakable. The game
-has one button only: Back to map at the top left. Scroll up advances and scroll
-down returns to the earlier encounter. Asteroids close in before impact, then
+has three buttons: Back to map at the top left plus Up and Down at the lower
+right. Up advances one sector and Down returns to the earlier encounter.
+Asteroids close in before impact, then
 scatter and reveal the selected information signal.
 
 About is a static reading surface using the shared rail and article layout.
@@ -224,7 +226,7 @@ Arrows share a 1.5px stroke. The favicon is the same orbital mark as the header.
 | `src/scripts/orbit-navigation.ts` | Astro navigation lifecycle, cancellation, reduced motion and focus |
 | `src/scripts/orbital-map.ts` | Map renderer, aligned route, visibility and resource cleanup |
 | `src/scripts/solar-system.ts` | Guided-flight scene, spline travel, following camera and mount lifecycle |
-| `src/components/GuidedFlight.astro` | Native full-screen dialog, caption row and Back to map |
+| `src/components/GuidedFlight.astro` | Native full-screen dialog, caption row, Back to map and sector controls |
 | `src/scripts/guided-flight.ts` | Intent loading, stop captions, cancellation, fallback and focus restoration |
 | `src/pages/about.astro` | Static profile, five work summaries, reported results and tools |
 | `src/scripts/rocket.ts` | Authored rocket geometry, local +Y nose direction; disposed by its scene owner |

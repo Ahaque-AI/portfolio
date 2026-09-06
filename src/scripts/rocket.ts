@@ -21,6 +21,8 @@ export function makeRocket() {
     mesh.scale.x = side;
     mesh.position.z = -.08;
     group.add(mesh);
+    const cannon = part(new THREE.BoxGeometry(.09, .62, .09), 0x29363e, .02, side * .96, .04);
+    cannon.rotation.z = side * -.14;
   }
   for (const side of [-1, 1]) {
     const fin = part(new THREE.ConeGeometry(.11, .38, 4), 0x29363e, -.18, side * .22, -.1);
@@ -30,6 +32,8 @@ export function makeRocket() {
   const thrusters = [-.42, -.14, .14, .42].map(x => {
     const flame = part(new THREE.ConeGeometry(.058, .28, 10), 0x63e8ff, -.7, x);
     flame.rotation.x = Math.PI;
+    (flame.material as THREE.MeshStandardMaterial).emissive.setHex(0x167c9b);
+    (flame.material as THREE.MeshStandardMaterial).emissiveIntensity = 2;
     return flame;
   });
   return { group, hull, nose, cockpit, engines, thrusters };

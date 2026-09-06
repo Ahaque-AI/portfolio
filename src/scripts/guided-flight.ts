@@ -18,15 +18,19 @@ export function initGuidedFlight() {
   const title = modal.querySelector<HTMLElement>('#tutorial-title')!;
   const copy = modal.querySelector<HTMLElement>('#tutorial-copy')!;
   const status = modal.querySelector<HTMLElement>('#flight-status')!;
+  const next = modal.querySelector<HTMLButtonElement>('#flight-next')!;
+  const previous = modal.querySelector<HTMLButtonElement>('#flight-previous')!;
   const events = new AbortController();
   let scene: ReturnType<typeof mountSolarSystem>;
-  let visit = 0, stop = 0, wheelDistance = 0;
+  let visit = 0, stop = 0;
   function caption() {
     const current = flightStops[stop];
     title.textContent = current.title;
     copy.textContent = current.copy;
-    status.textContent = `${current.name} · SCROLL UP TO FLY · SCROLL DOWN TO RETURN`;
+    status.textContent = `${current.name} · USE UP OR DOWN TO CHANGE SECTOR`;
     modal.dataset.captionSide = stop % 2 ? 'right' : 'left';
+    next.disabled = stop === flightStops.length - 1;
+    previous.disabled = stop === 0;
     scene?.flyTo(current.planet);
   }
   function move(direction: number) {
@@ -75,13 +79,8 @@ export function initGuidedFlight() {
   document.querySelector('#guided-first-note')?.removeAttribute('hidden');
   requestAnimationFrame(() => button.focus({ preventScroll: true }));
   button.addEventListener('click', open, { signal: events.signal });
-  modal.addEventListener('wheel', event => {
-    event.preventDefault();
-    wheelDistance += event.deltaY;
-    if (Math.abs(wheelDistance) < 56) return;
-    move(wheelDistance < 0 ? 1 : -1);
-    wheelDistance = 0;
-  }, { passive: false, signal: events.signal });
+  next.addEventListener('click', () => move(1), { signal: events.signal });
+  previous.addEventListener('click', () => move(-1), { signal: events.signal });
   modal.querySelector('#tutorial-close')!.addEventListener('click', () => modal.close(), { signal: events.signal });
   modal.addEventListener('close', () => { release(); if (button.isConnected) button.focus({ preventScroll: true }); }, { signal: events.signal });
   document.addEventListener('astro:before-swap', () => {
